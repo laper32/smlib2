@@ -43,21 +43,3 @@
 #include <smlib2/hint.inc>
 #include <smlib2/md5.inc>
 #include <smlib2/base64.inc>
-
-// Here is used for _ArmsFix_ Extension
-// Do not edit it unless you _EXACTLY_ know what you are doing!
-public Extension _ext_armsFix = 
-{
-	name = "ArmsFix",
-	file = "ArmsFix.ext.2.csgo",
-#if defined AUTOLOAD_EXTENSIONS
-	autoload = 1,
-#else
-	autoload = 0,
-#endif
-#if defined REQUIRE_EXTENSIONS
-	required = 1,
-#else
-	required = 0
-#endif
-};
