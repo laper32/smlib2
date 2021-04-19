@@ -673,7 +673,7 @@ inline void SendHudTextMessage2(int client, int channel, const char[] message)
     EndMessage();
 }
 
-inline void SendHudTextMessageEx( int client, int channel, const float hold, 
+inline void SendHudTextMessageEx(int client, int channel, const float hold, 
                                 const float pos[2], const int color[4], int effect, 
                                 float fxTime, float fadeIn, float fadeOut, 
                                 const char[] message)
