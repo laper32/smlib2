@@ -601,17 +601,17 @@ inline void TextColor(Protobuf TextMsg, const char[] message)
 }
 
 // =============================================
-// TextMsg
+// HudMsg
 // =============================================
 
-static int testMsg_clr1[4] = {255, 255, 255, 255};
-static int textMsg_clr2[4] = {255, 255, 255, 255};
-static float textMsg_pos[2] = {-1.0, -1.0}; // at center
-static float textMsg_hold = 1.0;
-static int textMsg_effect = 0;
-static float textMsg_fxTime = 0.0;
-static float textMsg_fadeIn = 0.0;
-static float textMsg_fadeOut = 0.0;
+static int hudMsg_clr1[4] = {255, 255, 255, 255};
+static int hudMsg_clr2[4] = {255, 255, 255, 255};
+static float hudMsg_pos[2] = {-1.0, -1.0}; // at center
+static float hudMsg_hold = 1.0;
+static int hudMsg_effect = 0;
+static float hudMsg_fxTime = 0.0;
+static float hudMsg_fadeIn = 0.0;
+static float hudMsg_fadeOut = 0.0;
 
 // Vector2D pos
 // float holdtime
@@ -622,20 +622,20 @@ static float textMsg_fadeOut = 0.0;
 // float fadeOut
 inline void SetHudTextParamsUM(float pos[2], float holdtime, int color[4], int effect, float fxTime, float fadeIn, float fadeOut)
 {
-    textMsg_pos[0]      = pos[0];
-    textMsg_pos[1]      = pos[1];
+    hudMsg_pos[0]      = pos[0];
+    hudMsg_pos[1]      = pos[1];
 
-    textMsg_hold        = holdtime;
+    hudMsg_hold        = holdtime;
 
-    textMsg_clr1[0]     = color[0];
-    textMsg_clr1[1]     = color[1];
-    textMsg_clr1[2]     = color[2];
-    textMsg_clr1[3]     = color[3];
+    hudMsg_clr1[0]     = color[0];
+    hudMsg_clr1[1]     = color[1];
+    hudMsg_clr1[2]     = color[2];
+    hudMsg_clr1[3]     = color[3];
 
-    textMsg_effect      = effect;
-    textMsg_fxTime      = fxTime;
-    textMsg_fadeIn      = fadeIn;
-    textMsg_fadeOut     = fadeOut;
+    hudMsg_effect      = effect;
+    hudMsg_fxTime      = fxTime;
+    hudMsg_fadeIn      = fadeIn;
+    hudMsg_fadeOut     = fadeOut;
 }
 
 inline void SendHudTextMessage(int client, int channel, const char[] buffer, any ...)
@@ -645,14 +645,14 @@ inline void SendHudTextMessage(int client, int channel, const char[] buffer, any
 
     Protobuf HudMsg = view_as<Protobuf>(StartMessageOne("HudMsg", client, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
     HudMsg.SetInt("channel", channel);
-    HudMsg.SetVector2D("pos", textMsg_pos);
-    HudMsg.SetColor("clr1", textMsg_clr1);
-    HudMsg.SetColor("clr2", textMsg_clr2);
-    HudMsg.SetInt("effect", textMsg_effect);
-    HudMsg.SetFloat("fade_in_time", textMsg_fadeIn);
-    HudMsg.SetFloat("fade_out_time", textMsg_fadeOut);
-    HudMsg.SetFloat("fx_time", textMsg_fxTime);
-    HudMsg.SetFloat("hold_time", textMsg_hold);
+    HudMsg.SetVector2D("pos", hudMsg_pos);
+    HudMsg.SetColor("clr1", hudMsg_clr1);
+    HudMsg.SetColor("clr2", hudMsg_clr2);
+    HudMsg.SetInt("effect", hudMsg_effect);
+    HudMsg.SetFloat("fade_in_time", hudMsg_fadeIn);
+    HudMsg.SetFloat("fade_out_time", hudMsg_fadeOut);
+    HudMsg.SetFloat("fx_time", hudMsg_fxTime);
+    HudMsg.SetFloat("hold_time", hudMsg_hold);
     HudMsg.SetString("text", message);
     EndMessage();
 }
@@ -661,14 +661,14 @@ inline void SendHudTextMessage2(int client, int channel, const char[] message)
 {
     Protobuf HudMsg = view_as<Protobuf>(StartMessageOne("HudMsg", client, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
     HudMsg.SetInt("channel", channel);
-    HudMsg.SetVector2D("pos", textMsg_pos);
-    HudMsg.SetColor("clr1", textMsg_clr1);
-    HudMsg.SetColor("clr2", textMsg_clr2);
-    HudMsg.SetInt("effect", textMsg_effect);
-    HudMsg.SetFloat("fade_in_time", textMsg_fadeIn);
-    HudMsg.SetFloat("fade_out_time", textMsg_fadeOut);
-    HudMsg.SetFloat("fx_time", textMsg_fxTime);
-    HudMsg.SetFloat("hold_time", textMsg_hold);
+    HudMsg.SetVector2D("pos", hudMsg_pos);
+    HudMsg.SetColor("clr1", hudMsg_clr1);
+    HudMsg.SetColor("clr2", hudMsg_clr2);
+    HudMsg.SetInt("effect", hudMsg_effect);
+    HudMsg.SetFloat("fade_in_time", hudMsg_fadeIn);
+    HudMsg.SetFloat("fade_out_time", hudMsg_fadeOut);
+    HudMsg.SetFloat("fx_time", hudMsg_fxTime);
+    HudMsg.SetFloat("hold_time", hudMsg_hold);
     HudMsg.SetString("text", message);
     EndMessage();
 }
@@ -683,7 +683,7 @@ inline void SendHudTextMessageEx(int client, int channel, const float hold,
     HudMsg.SetFloat("hold_time", hold);
     HudMsg.SetVector2D("pos", pos);
     HudMsg.SetColor("clr1", color);
-    HudMsg.SetColor("clr2", textMsg_clr2);
+    HudMsg.SetColor("clr2", hudMsg_clr2);
     HudMsg.SetInt("effect", effect);
     HudMsg.SetFloat("fx_time", fxTime);
     HudMsg.SetFloat("fade_in_time", fadeIn);
@@ -696,14 +696,14 @@ inline void SendHudTextMessageClients(int channel, int[] clients, int numClients
 {
     Protobuf HudMsg = view_as<Protobuf>(StartMessage("HudMsg", clients, numClients, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
     HudMsg.SetInt("channel", channel);
-    HudMsg.SetVector2D("pos", textMsg_pos);
-    HudMsg.SetColor("clr1", textMsg_clr1);
-    HudMsg.SetColor("clr2", textMsg_clr2);
-    HudMsg.SetInt("effect", textMsg_effect);
-    HudMsg.SetFloat("fade_in_time", textMsg_fadeIn);
-    HudMsg.SetFloat("fade_out_time", textMsg_fadeOut);
-    HudMsg.SetFloat("fx_time", textMsg_fxTime);
-    HudMsg.SetFloat("hold_time", textMsg_hold);
+    HudMsg.SetVector2D("pos", hudMsg_pos);
+    HudMsg.SetColor("clr1", hudMsg_clr1);
+    HudMsg.SetColor("clr2", hudMsg_clr2);
+    HudMsg.SetInt("effect", hudMsg_effect);
+    HudMsg.SetFloat("fade_in_time", hudMsg_fadeIn);
+    HudMsg.SetFloat("fade_out_time", hudMsg_fadeOut);
+    HudMsg.SetFloat("fx_time", hudMsg_fxTime);
+    HudMsg.SetFloat("hold_time", hudMsg_hold);
     HudMsg.SetString("text", message);
     EndMessage();
 }
@@ -715,14 +715,14 @@ inline void SendHudTextMessageAll(int channel, const char[] buffer, any ...)
 
     Protobuf HudMsg = view_as<Protobuf>(StartMessageAll("HudMsg", USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
     HudMsg.SetInt("channel", channel);
-    HudMsg.SetVector2D("pos", textMsg_pos);
-    HudMsg.SetColor("clr1", textMsg_clr1);
-    HudMsg.SetColor("clr2", textMsg_clr2);
-    HudMsg.SetInt("effect", textMsg_effect);
-    HudMsg.SetFloat("fade_in_time", textMsg_fadeIn);
-    HudMsg.SetFloat("fade_out_time", textMsg_fadeOut);
-    HudMsg.SetFloat("fx_time", textMsg_fxTime);
-    HudMsg.SetFloat("hold_time", textMsg_hold);
+    HudMsg.SetVector2D("pos", hudMsg_pos);
+    HudMsg.SetColor("clr1", hudMsg_clr1);
+    HudMsg.SetColor("clr2", hudMsg_clr2);
+    HudMsg.SetInt("effect", hudMsg_effect);
+    HudMsg.SetFloat("fade_in_time", hudMsg_fadeIn);
+    HudMsg.SetFloat("fade_out_time", hudMsg_fadeOut);
+    HudMsg.SetFloat("fx_time", hudMsg_fxTime);
+    HudMsg.SetFloat("hold_time", hudMsg_hold);
     HudMsg.SetString("text", message);
     EndMessage();
 
