@@ -22,8 +22,8 @@
 #include <cstrike>
 #endif
 
-#if !defined _ptah_included
-#include <ptah>
+#if !defined _PTaH_included
+#include <PTaH>
 #endif
 
 #if !defined _dhooks_included
