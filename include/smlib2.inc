@@ -6,29 +6,8 @@
 #define inline stock
 #define extern native
 
-#if !defined _sourcemod_included
-#include <sourcemod>
-#endif
-
-#if !defined _sdktools_included
-#include <sdktools>
-#endif
-
-#if !defined _sdkhooks_included
-#include <sdkhooks>
-#endif
-
-#if !defined _cstrike_included
-#include <cstrike>
-#endif
-
-#if !defined _PTaH_included
-#include <PTaH>
-#endif
-
-#if !defined _dhooks_included
-#include <dhooks>
-#endif
+// Must include sourcemod, SDKTools, SDKHooks
+// Optional include CStrike, PTaH, DHooks
 
 #include <smlib2/const.inc>
 #include <smlib2/engine.inc>
