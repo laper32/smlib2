@@ -188,7 +188,7 @@ inline int mime2url(const char[] sSource, char[] sResult, int len)
 
     nLength = strlen(sSource);
 
-    char sTemp[ nLength + 1 ]; // Buffer string
+    char[] sTemp = new char[ nLength + 1 ]; // Buffer string
 
     // Loop through string
     for (int i = 0; i < nLength; i++) 
@@ -226,7 +226,7 @@ inline int url2mime(const char[] sSource, char[] sResult, int len)
 
     nLength = strlen(sSource);
 
-    char sTemp[ nLength + 1 ]; // Buffer string
+    char[] sTemp = new char[ nLength + 1 ]; // Buffer string
 
     // Loop through string
     for (int i = 0; i < nLength; i++) 

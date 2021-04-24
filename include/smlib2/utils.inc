@@ -42,7 +42,7 @@ inline int UTIL_CreateTrain(char[] sClassname, float vPosition[3], float vAngle[
         if (hasLength(sSound)) DispatchKeyValue(entity, "MoveSound", sSound);
         
         // Sets render mode
-        UTIL_SetRenderColor(entity, Color_Alpha, 0);
+        UTIL_SetRenderColor(entity, Clr_A, 0);
         
         // Spawn the entity
         DispatchSpawn(entity);
@@ -1409,7 +1409,7 @@ inline void UTIL_RemoveEntity(int entity, float flDelayTime)
  *
  * @return                  The decal index.
  **/
-inline void UTIL_PrecacheDecal(char[] sDecal)
+inline int UTIL_PrecacheDecal(char[] sDecal)
 {
     // Precache main decal
     int iDecal = PrecacheDecal(sDecal, true);
@@ -1916,7 +1916,7 @@ inline void GetParticleEffectName(int iIndex, char[] sEffect, int iMaxLen)
  *
  * @return                  The table size.    
  **/
-inline void GetEffectNameCount(/*void*/)
+inline int GetEffectNameCount(/*void*/)
 {
     // Initialize the table index
     static int table = INVALID_STRING_TABLE;

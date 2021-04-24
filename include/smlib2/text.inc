@@ -613,6 +613,13 @@ static float hudMsg_fxTime = 0.0;
 static float hudMsg_fadeIn = 0.0;
 static float hudMsg_fadeOut = 0.0;
 
+// Vector2D pos
+// float holdtime
+// Color color
+// int effect
+// float fxTime
+// float fadeIn
+// float fadeOut
 inline void SetHudTextParamsUM(float pos[2], float holdtime, int color[4], int effect, float fxTime, float fadeIn, float fadeOut)
 {
     hudMsg_pos[0]      = pos[0];

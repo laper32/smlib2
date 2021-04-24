@@ -87,12 +87,12 @@ inline void InitDataPropOffset(int &iOffset, int entity, char[] sProp)
 /**
  * @brief This is the primary exported function by a dll, referenced by name via dynamic binding
  *        that exposes an opqaue function pointer to the interface.
- * 
- * @note  Warning: You must register GAMEDATA_CONFIG with your own gamedata config, otherwise it WILL NOT BE COMPLIED!!!
  *
  * @param gameConf          The game config handle.
  * @param sKey              Key to retrieve from the key section.
  * @param pAddress          (Optional) The optional interface address.
+ * 
+ * @return Address pointer
  **/
 inline Address CreateEngineInterface(GameData gameConf, char[] sKey, Address pAddress = Address_Null) 
 {
@@ -112,7 +112,7 @@ inline Address CreateEngineInterface(GameData gameConf, char[] sKey, Address pAd
         // Validate call
         if ((hInterface = EndPrepSDKCall()) == null)
         {
-            SetFailState("[Engine] [GameData Validation] CreateEngineInterface: Failed to load SDK call \"CreateInterface\". Update signature in \"%s\"", GAMEDATA_CONFIG);
+            SetFailState("[Engine] [GameData Validation] CreateEngineInterface: Failed to load SDK call \"CreateInterface\". Update signature in the config what you have registered.");
             return Address_Null;
         }
     }

@@ -518,9 +518,9 @@ inline int ToolsGetMoney(int entity)
  * @param entity            The entity index.
  * @param amount            The money value.
  */
-inline int ToolsSetMoney(int entity, int amount)
+inline void ToolsSetMoney(int entity, int amount)
 {
-    return SetEntProp(entity, Prop_Data, "m_iAccount", amount);
+    SetEntProp(entity, Prop_Data, "m_iAccount", amount);
 }
 
 /**

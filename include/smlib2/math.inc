@@ -76,7 +76,7 @@ inline any clamp(any val, any i1, any i2)
  */
 inline any overflow(any value, any i1, any i2)
 {
-    return (value % max) + min;
+    return (value % i2) + i1;
 }
 
 /**
