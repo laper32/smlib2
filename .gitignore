@@ -4,6 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 .vscode
+compile.ps1
+compiled/
 
 # User-specific files
 *.rsuser
