@@ -62,7 +62,7 @@ done
 cp test.sp addons/sourcemod/scripting/test.sp
 cp -rf include/* addons/sourcemod/scripting/include
 
-addons/sourcemod/scripting/spcomp -E -v2 -O2 addons/sourcemod/scripting/test.sp -o"build/addons/sourcemod/plugins/test.smx"
+addons/sourcemod/scripting/spcomp -E -v2 -O2 addons/sourcemod/scripting/test.sp
 if [ ! -f "build/addons/sourcemod/plugins/test.smx" ]; then
     echo "Build: test.smx failed. Check error output"
     exit 1
