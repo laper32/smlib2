@@ -52,7 +52,7 @@ wget "https://raw.githubusercontent.com/peace-maker/DHooks2/dynhooks/sourcemod_f
 echo ""
 
 echo "Version info"
-for file in include/const.inc
+for file in include/smlib2/const.inc
 do
     sed -i "s%<Major>.<Minor>.<GitCommit>%$MAJOR.$MINOR.$COUNT%g" $file > output.txt
     sed -i "s%<Date>%$DATE%g" $file > output.txt
@@ -63,7 +63,7 @@ cp test.sp addons/sourcemod/scripting/test.sp
 cp -rf include/* addons/sourcemod/scripting/include
 
 addons/sourcemod/scripting/spcomp -E -v2 -O2 addons/sourcemod/scripting/test.sp
-if [ ! -f "build/addons/sourcemod/plugins/test.smx" ]; then
+if [ ! -f "addons/sourcemod/scripting/test.smx" ]; then
     echo "Build: test.smx failed. Check error output"
     exit 1
 fi
