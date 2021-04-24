@@ -43,12 +43,12 @@ echo "SourceMod Library 2"
 
 # PTaH
 echo "PTaH"
-wget "https://github.com/komashchenko/PTaH/raw/master/PTaH.inc" -q -O src/include/PTaH.inc
+wget "https://github.com/komashchenko/PTaH/raw/master/PTaH.inc" -q -O include/PTaH.inc
 echo ""
 
 # DHook
 echo "DHook"
-wget "https://raw.githubusercontent.com/peace-maker/DHooks2/dynhooks/sourcemod_files/scripting/include/dhooks.inc" -q -O src/include/dhooks.inc
+wget "https://raw.githubusercontent.com/peace-maker/DHooks2/dynhooks/sourcemod_files/scripting/include/dhooks.inc" -q -O include/dhooks.inc
 echo ""
 
 echo "Version info"
