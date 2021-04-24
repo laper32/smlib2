@@ -501,6 +501,29 @@ inline void ToolsSetGravity(int entity, float flValue)
 }
 
 /**
+ * @brief Gets the money of an entity.
+ *
+ * @param entity            The entity index.
+ * 
+ * @return                  The money amount.
+ */
+inline int ToolsGetMoney(int entity)
+{
+    return GetEntProp(entity, Prop_Data, "m_iAccount");
+}
+
+/**
+ * @brief Sets the money of an entity.
+ *
+ * @param entity            The entity index.
+ * @param amount            The money value.
+ */
+inline int ToolsSetMoney(int entity, int amount)
+{
+    return SetEntProp(entity, Prop_Data, "m_iAccount", amount);
+}
+
+/**
  * @brief Sets the spotting of a entity.
  * 
  * @param entity            The entity index.

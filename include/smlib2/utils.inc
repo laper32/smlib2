@@ -991,6 +991,38 @@ inline int UTIL_CreateLight(int parent = -1, float vPosition[3] = NULL_VECTOR, c
 }
 
 /**
+ * @brief Create a speaker entity.
+ *
+ * @param vPosition         The origin of the spawn.
+ * @param vAngle            The angle of the spawn.
+ * @param iSource           The source entity index.
+ * @param flRemoveTime      About how many seconds delay to remove.
+ *
+ * @return                  The entity index.
+ */
+inline int UTIL_SpawnSpeaker(float vPosition[3], float vAngle[3], int iSource, float flRemoveTime = 0.1)
+{
+    int entity = CreateEntityByName("info_target");
+
+    if (entity != -1)
+    {
+        DispatchSpawn(entity);
+
+        TeleportEntity(entity, vPosition, vAngle, NULL_VECTOR);
+
+        SetVariantString("!activator");
+        AcceptEntityInput(entity, "SetParent", iSource, entity, 0);
+
+        if (flRemoveTime > 0.0)
+        {
+            UTIL_RemoveEntity(entity, flRemoveTime);
+        }
+    }
+
+    return entity;
+}
+
+/**
  * @brief Sets the glowing on the entity.
  * 
  * @param entity            The entity index.

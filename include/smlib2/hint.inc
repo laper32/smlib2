@@ -603,7 +603,7 @@ methodmap InstructorHud < Event
  * @param b                 The color index :: blue.
  * @param caption           The alart message index.
  */
-stock void CreateInstructorHint(int client,
+inline void CreateInstructorHint(int client,
                                 float holdtime,
                                 InstructorHud_Icon icon,
                                 float radius,
@@ -637,7 +637,7 @@ stock void CreateInstructorHint(int client,
  * @param b                 The color index :: blue.
  * @param caption           The alart message index.
  */
-stock void CreateInstructorHintAll(float holdtime,
+inline void CreateInstructorHintAll(float holdtime,
                                    InstructorHud_Icon icon,
                                    float radius,
                                    int r,
