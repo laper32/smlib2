@@ -1,7 +1,7 @@
 /**
  * ============================================================================
  *
- *  Zombie Plague
+ *  SourceMod Library 2
  *
  *  File:          engine.sp
  *  Type:          Engine
