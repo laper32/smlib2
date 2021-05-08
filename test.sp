@@ -18,6 +18,10 @@ public void OnPluginStart()
     mime2url(NULL_STRING, string(anystr))
     url2mime(NULL_STRING, string(anystr))
 
+    // convert
+    ConvertSettingToBool("yes");
+    ConvertSettingToBool("no");
+
     // engine
     GameData gd 
     int offset = 0
@@ -73,7 +77,11 @@ public void OnPluginStart()
     GetPercentageFloat(1.0, 1.0)
     mean({1, 2, 3})
 
-    // // md5
+    // matrix
+    float mat[16];
+    Matrix3x4Identity(mat);
+
+    // md5
     md5sum(NULL_STRING, string(anystr))
 
     // mem

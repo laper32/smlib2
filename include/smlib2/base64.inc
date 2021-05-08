@@ -1,6 +1,7 @@
 #if defined _base64_included
-#endinput
+    #endinput
 #endif
+
 #define _base64_included
 
 /**********************************************************************************

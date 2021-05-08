@@ -1,6 +1,7 @@
 #if defined _const_included
-#endinput
+    #endinput
 #endif
+
 #define _const_included
 
 // version info

@@ -1,6 +1,7 @@
 #if defined _hint_included
-#endinput
+    #endinput
 #endif
+
 #define _hint_included
 
 /**

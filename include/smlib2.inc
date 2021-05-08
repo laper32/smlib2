@@ -10,6 +10,7 @@
 // Optional include CStrike, PTaH, DHooks
 
 #include <smlib2/const>
+#include <smlib2/convert>
 #include <smlib2/engine>
 #include <smlib2/math>
 #include <smlib2/mem>
@@ -23,3 +24,4 @@
 #include <smlib2/md5>
 #include <smlib2/base64>
 #include <smlib2/sound>
+#include <smlib2/matrix>

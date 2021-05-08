@@ -509,7 +509,7 @@ inline void ToolsSetGravity(int entity, float flValue)
  */
 inline int ToolsGetMoney(int entity)
 {
-    return GetEntProp(entity, Prop_Data, "m_iAccount");
+    return GetEntProp(entity, Prop_Send, "m_iAccount");
 }
 
 /**
@@ -520,7 +520,7 @@ inline int ToolsGetMoney(int entity)
  */
 inline void ToolsSetMoney(int entity, int amount)
 {
-    SetEntProp(entity, Prop_Data, "m_iAccount", amount);
+    SetEntProp(entity, Prop_Send, "m_iAccount", amount);
 }
 
 /**

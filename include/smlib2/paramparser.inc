@@ -1,3 +1,9 @@
+#if defined _paramparser_included
+    #endinput
+#endif
+
+#define _paramparser_included
+
 /**
  * Provides functions for parsing single line strings, and parameters in key = "value" format.
  *
@@ -7,11 +13,6 @@
  *			key3 = "value4", "value5", "value6"
  *			key4 = "value7"
  */
-
-#if defined _paramparser_included
-#endinput
-#endif
-#define _paramparser_included
 
 /**
  * @section Parsing error codes.
