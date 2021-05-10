@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          playermgr.sp
- *  Type:          Player
  *  Description:   Player Manager
  *
  *  Copyright (c) 2021 laper32.
@@ -76,6 +75,9 @@ inline bool IsPlayerExist(int client, bool bAlive = true)
 
 /**
  * @brief Returns whether a player is in a spesific group or not.
+ * 
+ * @note This is only works in default SourceMod Admin.
+ * If you have your own management system, DO NOT USE THIS FUNCTION, OR YOU WILL GET INTO TROUBLE!
  *
  * @param client            The client index.
  * @param sGroup            The SourceMod group name to check.
@@ -138,7 +140,12 @@ inline bool IsPlayerInGroup(int client, char[] sGroup)
     return false;
 }
 
-inline int GetPlayingCount()
+/**
+ * @brief Gets amount of total players what in game.
+ *
+ * @return                  The amount of total alive players.
+ **/
+inline int GetTotalPlayers()
 {
     // Initialize index
     int iPlaying;
@@ -159,11 +166,33 @@ inline int GetPlayingCount()
 }
 
 /**
+ * @brief Gets the amount of total players, team specified.
+ *
+ * @param team              The team index.
+ *
+ * @return                  The amount of a team of players.
+ */
+inline int GetTeamPlayers(int team)
+{
+    int iPlayer;
+
+    for (int i = 1; i <= MaxClients; i++)
+    {
+        if (IsPlayerExist(i, false) && GetClientTeam(team) == team)
+        {
+            iPlayer++;
+        }
+    }
+
+    return iPlayer;
+}
+
+/**
  * @brief Gets amount of total alive players.
  *
  * @return                  The amount of total alive players.
- **/
-inline int GetAliveCount()
+ */
+inline int GetTotalAlive()
 {
     // Initialize index
     int iAlive;
@@ -180,5 +209,27 @@ inline int GetAliveCount()
     }
     
     // Return amount
+    return iAlive;
+}
+
+/**
+ * @brief Gets amount of total alive players, team specified.
+ *
+ * @param team              The team index.
+ *
+ * @return                  The amount of alive of a team of players.
+ */
+inline int GetTeamAlive(int team)
+{
+    int iAlive;
+
+    for (int i = 1; i <= MaxClients; i++)
+    {
+        if (IsPlayerExist(i) && GetClientTeam(i) == team)
+        {
+            iAlive++;
+        }
+    }
+
     return iAlive;
 }

@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          const.sp
- *  Type:          Constant
  *  Description:   Constant definitions.
  *
  *  Copyright (c) 2021 laper32.

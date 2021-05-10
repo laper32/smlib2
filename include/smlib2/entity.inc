@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          entity.sp
- *  Type:          Entity
  *  Description:   Entity related.
  *
  *  Copyright (c) 2021 laper32.

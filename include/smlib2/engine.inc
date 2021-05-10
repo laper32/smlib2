@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          engine.sp
- *  Type:          Engine
  *  Description:   Engine related
  *
  *  Copyright (c) 2021 laper32.

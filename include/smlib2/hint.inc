@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          hint.sp
- *  Type:          Hint
  *  Description:   Interface for instructor hint.
  *
  *  Copyright (c) 2021 laper32.

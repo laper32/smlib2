@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          math.sp
- *  Type:          Math
  *  Description:   Mathlib.
  *
  *  Copyright (c) 2021 laper32.

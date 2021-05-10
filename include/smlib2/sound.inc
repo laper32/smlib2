@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          sound.sp
- *  Type:          Sound
  *  Description:   Sound utilities
  *
  *  Copyright (c) 2021 laper32.

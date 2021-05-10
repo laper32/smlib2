@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          paramparser.sp
- *  Type:          Parser
  *  Description:   Parser for parameters
  *
  *  Copyright (c) 2021 laper32.

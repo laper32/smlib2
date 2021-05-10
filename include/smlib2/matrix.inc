@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          matrix.sp
- *  Type:          Matrix
  *  Description:   Matrix implentation.
  *
  *  Copyright (c) 2021 laper32.

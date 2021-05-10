@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          utils.sp
- *  Type:          Utilities
  *  Description:   Utilities, used for storing non-classfied functions.
  *
  *  Copyright (c) 2021 laper32.

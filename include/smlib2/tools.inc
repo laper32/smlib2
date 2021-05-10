@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          tools.sp
- *  Type:          Tools
  *  Description:   Tools related, used for not classified functions.
  *
  *  Copyright (c) 2021 laper32.

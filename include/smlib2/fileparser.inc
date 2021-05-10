@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          fileparser.sp
- *  Type:          Parser
  *  Description:   Parse the specific resource file.
  *
  *  Copyright (c) 2021 laper32.

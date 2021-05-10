@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          base64.sp
- *  Type:          Base 64
  *  Description:   Base 64 algorithm.
  *
  *  Copyright (c) 2021 laper32.

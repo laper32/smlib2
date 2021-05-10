@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          md5.sp
- *  Type:          MD5
  *  Description:   MD5 algorithm.
  *
  *  Copyright (c) 2021 laper32.

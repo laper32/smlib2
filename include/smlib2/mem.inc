@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          mem.sp
- *  Type:          Memory
  *  Description:   Memory library
  *
  *  Copyright (c) 2021 laper32.

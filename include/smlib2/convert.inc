@@ -4,7 +4,6 @@
  *  SourceMod Library 2
  *
  *  File:          convert.sp
- *  Type:          Convert
  *  Description:   Convertion with specific requirements
  *
  *  Copyright (c) 2021 laper32.
