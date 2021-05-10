@@ -18,6 +18,14 @@ public void OnPluginStart()
     mime2url(NULL_STRING, string(anystr))
     url2mime(NULL_STRING, string(anystr))
 
+    // cvar
+    ConVar whatever;
+    CvarLockOnCvarHook(whatever, "old", "new")
+    CvarUnlockOnCvarHook(whatever, "old", "new")
+    CvarLockOnCvarHook2(whatever, "old", "new")
+    CvarLockOnCvarHook3(whatever, "old", "new")
+    CvarOnCheatSet(whatever, 0)
+
     // convert
     ConvertSettingToBool("yes");
     ConvertSettingToBool("no");
@@ -104,8 +112,14 @@ public void OnPluginStart()
     // playermgr
     IsPlayerExist(0, true)
     IsPlayerInGroup(0, "")
-    GetPlayingCount()
-    GetAliveCount()
+    GetPlayers(true, true, CS_TEAM_CT)
+    GetPlayers(true, false, CS_TEAM_CT)
+    GetPlayers(false, true, CS_TEAM_CT)
+    GetPlayers(false, false, CS_TEAM_CT)
+    GetTotalPlayers()
+    GetTeamPlayers(CS_TEAM_CT)
+    GetTotalAlives()
+    GetTeamAlives(CS_TEAM_CT)
 
     // sound
     int[] val = new int[16];

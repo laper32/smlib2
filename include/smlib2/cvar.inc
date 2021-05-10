@@ -3,7 +3,7 @@
  *
  *  SourceMod Library 2
  *
- *  File:          convert.sp
+ *  File:          cvar.sp
  *  Description:   Console variables
  *
  *  Copyright (c) 2021 laper32.
@@ -39,7 +39,7 @@
  * @param oldValue          The value before the attempted change.
  * @param newValue          The new value.
  **/
-public void CvarsLockOnCvarHook(ConVar hConVar, char[] oldValue, char[] newValue)
+public void CvarLockOnCvarHook(ConVar hConVar, char[] oldValue, char[] newValue)
 {
     // Revert to locked value
     hConVar.IntValue = 0;
@@ -53,7 +53,7 @@ public void CvarsLockOnCvarHook(ConVar hConVar, char[] oldValue, char[] newValue
  * @param oldValue          The value before the attempted change.
  * @param newValue          The new value.
  **/
-public void CvarsUnlockOnCvarHook(ConVar hConVar, char[] oldValue, char[] newValue)
+public void CvarUnlockOnCvarHook(ConVar hConVar, char[] oldValue, char[] newValue)
 {
     // Revert to locked value
     hConVar.IntValue = 1;
@@ -67,10 +67,10 @@ public void CvarsUnlockOnCvarHook(ConVar hConVar, char[] oldValue, char[] newVal
  * @param oldValue          The value before the attempted change.
  * @param newValue          The new value.
  **/
-public void CvarsLockOnCvarHook2(ConVar hConVar, char[] oldValue, char[] newValue)
+public void CvarLockOnCvarHook2(ConVar hConVar, char[] oldValue, char[] newValue)
 {
     // Revert to locked value
-    CvarsOnCheatSet(hConVar, 0);
+    CvarOnCheatSet(hConVar, 0);
 }
 
 /**
@@ -81,7 +81,7 @@ public void CvarsLockOnCvarHook2(ConVar hConVar, char[] oldValue, char[] newValu
  * @param oldValue          The value before the attempted change.
  * @param newValue          The new value.
  **/
-public void CvarsLockOnCvarHook3(ConVar hConVar, char[] oldValue, char[] newValue)
+public void CvarLockOnCvarHook3(ConVar hConVar, char[] oldValue, char[] newValue)
 {
     // Revert to locked value
     hConVar.SetString("");
@@ -97,7 +97,7 @@ public void CvarsLockOnCvarHook3(ConVar hConVar, char[] oldValue, char[] newValu
  * @param hConVar           Handle to the convar.
  * @param iValue            New integer value.
  **/
-inline void CvarsOnCheatSet(ConVar hConVar, int iValue) 
+inline void CvarOnCheatSet(ConVar hConVar, int iValue) 
 {
     // Revert to locked value
     hConVar.Flags = (hConVar.Flags & ~FCVAR_CHEAT);

@@ -141,95 +141,102 @@ inline bool IsPlayerInGroup(int client, char[] sGroup)
 }
 
 /**
- * @brief Gets amount of total players what in game.
+ * @brief Get players in the game.
  *
- * @return                  The amount of total alive players.
- **/
-inline int GetTotalPlayers()
+ * @param aliveOnly             Sets true to count alive only.
+ * @param teamOnly              Sets true to count team only.
+ * @param teamNum               Team specified.
+ *
+ * @return                      Players what have been counted.
+ */
+inline int GetPlayers(bool aliveOnly, bool teamOnly, int teamNum)
 {
-    // Initialize index
-    int iPlaying;
-
-    // i = client index
-    for (int i = 1; i <= MaxClients; i++)
+    if (aliveOnly)
     {
-        // Validate client
-        if (IsPlayerExist(i, false))
-        {
-            // Increment amount
-            iPlaying++;
-        }
+        return (teamOnly) ? GetTeamAlives(teamNum) : GetTotalAlives();
     }
-    
-    // Return amount
-    return iPlaying;
+    else
+    {
+        return (teamOnly) ? GetTeamPlayers(teamNum) : GetTotalPlayers();
+    }
 }
 
 /**
- * @brief Gets the amount of total players, team specified.
+ * @brief Gets total players in the game.
  *
- * @param team              The team index.
+ * @return                      Total players in the game.
+ */
+inline int GetTotalPlayers()
+{
+    int iPlayer;
+
+    for (int client = 1; client <= MaxClients; client++)
+    {
+        if (IsPlayerExist(client, false)) 
+        {
+            iPlayer++;
+        }
+    }
+    return iPlayer;
+}
+
+/**
+ * @brief Gets total team players in the game.
  *
- * @return                  The amount of a team of players.
+ * @param team                  Team number.
+ *
+ * @return                      Total team players in the game.
  */
 inline int GetTeamPlayers(int team)
 {
     int iPlayer;
 
-    for (int i = 1; i <= MaxClients; i++)
+    for (int client = 1; client <= MaxClients; client++)
     {
-        if (IsPlayerExist(i, false) && GetClientTeam(team) == team)
+        if (IsPlayerExist(client, false) && (GetClientTeam(client) == team)) 
         {
             iPlayer++;
         }
     }
-
     return iPlayer;
 }
 
 /**
- * @brief Gets amount of total alive players.
+ * @brief Gets total alive players in the game.
  *
- * @return                  The amount of total alive players.
+ * @return                      Total alive players in the game.
  */
-inline int GetTotalAlive()
+inline int GetTotalAlives()
 {
-    // Initialize index
-    int iAlive;
+    int iPlayer;
 
-    // i = client index
-    for (int i = 1; i <= MaxClients; i++)
+    for (int client = 1; client <= MaxClients; client++)
     {
-        // Validate client
-        if (IsPlayerExist(i))
+        if (IsPlayerExist(client)) 
         {
-            // Increment amount
-            iAlive++;
+            iPlayer++;
         }
     }
-    
-    // Return amount
-    return iAlive;
+    return iPlayer;
 }
 
 /**
- * @brief Gets amount of total alive players, team specified.
+ * @brief Gets total alive team players in the game.
  *
- * @param team              The team index.
+ * @param team                  Team number.
  *
- * @return                  The amount of alive of a team of players.
+ * @return                      Total alive team players in the game.
  */
-inline int GetTeamAlive(int team)
+inline int GetTeamAlives(int team)
 {
-    int iAlive;
+    int iPlayer;
 
-    for (int i = 1; i <= MaxClients; i++)
+    for (int client = 1; client <= MaxClients; client++)
     {
-        if (IsPlayerExist(i) && GetClientTeam(i) == team)
+        if (IsPlayerExist(client) && (GetClientTeam(client) == team)) 
         {
-            iAlive++;
+            iPlayer++;
         }
     }
-
-    return iAlive;
+    return iPlayer;
 }
