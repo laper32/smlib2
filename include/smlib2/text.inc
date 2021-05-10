@@ -24,10 +24,10 @@
  * ============================================================================
  */
 
-#if defined _text_included
+#if defined _smlib2_text_included
 #endinput
 #endif
-#define _text_included
+#define _smlib2_text_included
 
 #define MAXSPACELENGTH 1024
 static char g_PlaceHolder[MAXSPACELENGTH+1];

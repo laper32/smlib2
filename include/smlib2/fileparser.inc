@@ -24,11 +24,11 @@
  * ============================================================================
  */
 
-#if defined _fileparser_included
+#if defined _smlib2_fileparser_included
     #endinput
 #endif
 
-#define _fileparser_included
+#define _smlib2_fileparser_included
 
 /**
  * @brief Precache models and return model index.

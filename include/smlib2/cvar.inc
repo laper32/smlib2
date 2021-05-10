@@ -25,11 +25,11 @@
  */
 
 
-#if defined _cvar_included
+#if defined _smlib2_cvar_included
     #endinput
 #endif
 
-#define _cvar_included
+#define _smlib2_cvar_included
 
 /**
  * Cvar hook callback.

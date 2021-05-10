@@ -24,13 +24,13 @@
  * ============================================================================
  */
 
-#if defined _matrix_included
+#if defined _smlib2_matrix_included
     #endinput
 #endif
 
-#define _matrix_included
+#define _smlib2_matrix_included
 
-inline void Matrix3x4Identity(float[16] matrix)
+inline void Matrix3x4Identity(float matrix[16])
 {
     matrix[ 0] = 1.0;        matrix[ 1] = 0.0;        matrix[ 2] = 0.0;        matrix[ 3] = 0.0;
     matrix[ 4] = 0.0;        matrix[ 5] = 1.0;        matrix[ 6] = 0.0;        matrix[ 7] = 0.0;

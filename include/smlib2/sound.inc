@@ -24,11 +24,11 @@
  * ============================================================================
  */
 
-#if defined _sound_included
+#if defined _smlib2_sound_included
     #endinput
 #endif
 
-#define _sound_included
+#define _smlib2_sound_included
 
 inline void EmitSoundEx(
     const int[] clients,                int numClients,                         const char[] sample, 

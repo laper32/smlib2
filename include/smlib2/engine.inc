@@ -24,11 +24,11 @@
  * ============================================================================
  */
 
-#if defined _engine_included
+#if defined _smlib2_engine_included
     #endinput
 #endif
 
-#define _engine_included
+#define _smlib2_engine_included
 
 /**
  * @brief Returns an offset value from a given config.

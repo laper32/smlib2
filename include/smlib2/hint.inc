@@ -24,11 +24,11 @@
  * ============================================================================
  */
 
-#if defined _hint_included
+#if defined _smlib2_hint_included
     #endinput
 #endif
 
-#define _hint_included
+#define _smlib2_hint_included
 
 /**
  * @section Instructor HUD Icon indexes.

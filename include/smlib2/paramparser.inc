@@ -24,11 +24,11 @@
  * ============================================================================
  */
 
-#if defined _paramparser_included
+#if defined _smlib2_paramparser_included
     #endinput
 #endif
 
-#define _paramparser_included
+#define _smlib2_paramparser_included
 
 /**
  * Provides functions for parsing single line strings, and parameters in key = "value" format.

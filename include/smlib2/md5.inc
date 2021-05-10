@@ -24,11 +24,11 @@
  * ============================================================================
  */
 
-#if defined _md5_included
+#if defined _smlib2_md5_included
     #endinput
 #endif
 
-#define _md5_included
+#define _smlib2_md5_included
 
 /**
  * Calculate the md5 hash of a string.

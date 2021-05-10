@@ -24,10 +24,10 @@
  * ============================================================================
  */
 
-#if defined _tools_included
+#if defined _smlib2_tools_included
 #endinput
 #endif
-#define _tools_included
+#define _smlib2_tools_included
 
 /**
  * @brief Gets or sets the velocity of a entity.

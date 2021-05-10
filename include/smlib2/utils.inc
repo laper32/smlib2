@@ -24,10 +24,10 @@
  * ============================================================================
  */
 
-#if defined _utils_included
+#if defined _smlib2_utils_included
 #endinput
 #endif
-#define _utils_included
+#define _smlib2_utils_included
 
 /**
  * @brief Create a train entity.

@@ -24,11 +24,11 @@
  * ============================================================================
  */
 
-#if defined _const_included
+#if defined _smlib2_const_included
     #endinput
 #endif
 
-#define _const_included
+#define _smlib2_const_included
 
 // version info
 #define SMLIB2_NAME             "SourceMod Library 2"

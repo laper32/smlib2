@@ -24,10 +24,10 @@
  * ============================================================================
  */
 
-#if defined _math_included
+#if defined _smlib2_math_included
     #endinput
 #endif
-#define _math_included
+#define _smlib2_math_included
 
 /**
  * @brief Returns the positive integer of the value.

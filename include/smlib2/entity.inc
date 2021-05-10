@@ -24,11 +24,11 @@
  * ============================================================================
  */
 
-#if defined _entity_included
+#if defined _smlib2_entity_included
     #endinput
 #endif
 
-#define _entity_included
+#define _smlib2_entity_included
 
 inline bool EntitySetParent(int parent, int child)
 {

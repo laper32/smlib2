@@ -24,11 +24,11 @@
  * ============================================================================
  */
 
-#if defined _base64_included
+#if defined _smlib2_base64_included
     #endinput
 #endif
 
-#define _base64_included
+#define _smlib2_base64_included
 
 /**********************************************************************************
  *

@@ -24,10 +24,10 @@
  * ============================================================================
  */
 
-#if defined _playermgr_included
+#if defined _smlib2_playermgr_included
 #endinput
 #endif
-#define _playermgr_included
+#define _smlib2_playermgr_included
 
 /**
  * @brief Returns true if the player is connected and alive, false if not.

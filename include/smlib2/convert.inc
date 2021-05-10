@@ -24,11 +24,11 @@
  * ============================================================================
  */
 
-#if defined _convert_included
+#if defined _smlib2_convert_included
     #endinput
 #endif
 
-#define _convert_included
+#define _smlib2_convert_included
 
 /**
  * @brief Converts string of "yes/on", "no/off", "false/true", "1/0" to a boolean value.

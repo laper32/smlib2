@@ -24,11 +24,11 @@
  * ============================================================================
  */
 
-#if defined _mem_included
+#if defined _smlib2_mem_included
     #endinput
 #endif
 
-#define _mem_included
+#define _smlib2_mem_included
 
 /**
  * @brief Create a memory for the custom convention call.
