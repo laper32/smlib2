@@ -53,13 +53,12 @@ enum InstructorHud_Icon
     Icon_arrow_right,
     Icon_fire,
     Icon_present, 
-    InstructorHud_Icon_Size
 };
 
 /**
  * @section Instructor HUD icon name.
  */
-static char InstructorHud_Icon_String[InstructorHud_Icon_Size][32] =
+static char InstructorHud_Icon_String[][] =
 {
     "icon_bulb",
     "icon_caution",
@@ -78,8 +77,7 @@ static char InstructorHud_Icon_String[InstructorHud_Icon_Size][32] =
     "icon_arrow_up",
     "icon_arrow_right",
     "icon_fire",
-    "icon_present",
-    ""
+    "icon_present"
 };
 
 /**
