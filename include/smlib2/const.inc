@@ -30,14 +30,6 @@
 
 #define _smlib2_const_included
 
-// version info
-#define SMLIB2_NAME             "SourceMod Library 2"
-#define SMLIB2_AUTHOR           "laper32"
-#define SMLIB2_DESCRIPTION      "Useful functions for sourcemod."
-#define SMLIB2_VERSION          "<Major>.<Minor>.<GitCommit>"
-#define SMLIB2_DATE             "<Date>"
-#define SMLIB2_LINK             "https://www.laper32.net"
-
 // Useful constant macros
 #define SMALL_LINE_LENGTH       32
 #define NORMAL_LINE_LENGTH      64

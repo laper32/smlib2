@@ -24,10 +24,23 @@
  * ============================================================================
  */
 
-#if defined _smlib2_playermgr_included
+#if defined _smlib2_player_included
 #endinput
 #endif
-#define _smlib2_playermgr_included
+#define _smlib2_player_included
+
+/**
+ * @brief Gets whether the player is human.
+ *
+ * @param client            The client index.
+ * @param bAlive            (Optional) Set to true to validate that the client is alive, false to ignore.
+ *
+ * @return                  T/F.
+ */
+inline bool IsPlayerHuman(int client, bool bAlive = true)
+{
+    return (IsPlayerExist(client, bAlive) && !IsFakeClient(client));
+}
 
 /**
  * @brief Returns true if the player is connected and alive, false if not.

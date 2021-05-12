@@ -48,9 +48,10 @@
 #include <smlib2/tools>
 #include <smlib2/utils>
 #include <smlib2/text>
-#include <smlib2/playermgr>
+#include <smlib2/player>
 #include <smlib2/hint>
 #include <smlib2/md5>
 #include <smlib2/base64>
 #include <smlib2/sound>
 #include <smlib2/matrix>
+#include <smlib2/version>

@@ -1,9 +1,6 @@
 #!/bin/bash
 # bash build.sh <version>
 
-# IMPORTANT: 
-# Zombie Escape MUST ONLY RUNS ON LINUX SERVER
-
 git fetch --unshallow
 
 # 
@@ -38,21 +35,17 @@ echo ""
 echo "Retrieving dependencies"
 echo ""
 
-# SMLib2
-echo "SourceMod Library 2"
 
 # PTaH
 echo "PTaH"
 wget "https://github.com/komashchenko/PTaH/raw/master/PTaH.inc" -q -O include/PTaH.inc
-echo ""
 
 # DHook
 echo "DHook"
 wget "https://raw.githubusercontent.com/peace-maker/DHooks2/dynhooks/sourcemod_files/scripting/include/dhooks.inc" -q -O include/dhooks.inc
-echo ""
 
 echo "Version info"
-for file in include/smlib2/const.inc
+for file in include/smlib2/version.inc
 do
     sed -i "s%<Major>.<Minor>.<GitCommit>%$MAJOR.$MINOR.$COUNT%g" $file > output.txt
     sed -i "s%<Date>%$DATE%g" $file > output.txt
