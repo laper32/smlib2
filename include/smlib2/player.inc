@@ -29,6 +29,143 @@
 #endif
 #define _smlib2_player_included
 
+
+/**
+ * A warpper for object-oriented programming for a player.
+ *
+ * @note You can treat it as something like: CBasePlayer/IGamePlayer/etc.
+ */
+methodmap Player < Entity {
+    public Player(int client) {
+        return view_as<Player>(client);
+    }
+
+    property int UserId {
+        public get() {
+            return GetClientUserId(this.Index);
+        }
+    }
+
+    property bool InBound {
+        public get() {
+            return (this.Index > 0 && this.Index <= MaxClients);
+        }
+    }
+
+    property bool Connected {
+        public get() {
+            return IsClientConnected(this.Index);
+        }
+    }
+
+    property bool InGame {
+        public get() {
+            return IsClientInGame(this.Index);
+        }
+    }
+
+    property bool InKickQueue {
+        public get() {
+            return IsClientInKickQueue(this.Index);
+        }
+    }
+
+    property bool SourceTV {
+        public get() {
+            return IsClientSourceTV(this.Index);
+        }
+    }
+
+    property bool Alive {
+        public get() {
+            return IsPlayerAlive(this.Index);
+        }
+    }
+
+    property bool Fake {
+        public get() {
+            return IsFakeClient(this.Index);
+        }
+    }
+
+    property int Serial {
+        public get() {
+            return GetClientSerial(this.Index);
+        }
+    }
+
+    public int GetFromSerial(int serial) {
+        return GetClientFromSerial(serial);
+    }
+
+    public int GetFromUserId(int userid) {
+        return GetClientOfUserId(userid);
+    }
+
+    public bool IsExist(bool alive=true) {
+        if (!this.InBound) {
+            return false;
+        }
+
+        if (!this.Connected) {
+            return false;
+        }
+
+        if (!this.InGame || this.InKickQueue) {
+            return false;
+        }
+
+        if (this.SourceTV) {
+            return false;
+        }
+
+        if (alive && !this.Alive) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool IsHuman(bool alive=true) {
+        if (this.IsExist(alive)) {
+            if (!this.Fake) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void Kick(const char[] buffer="", any ...) {
+        char message[512];
+        VFormat(message, sizeof(message), buffer, 2);
+        KickClient(this.Index, message);
+    }
+
+    public void KickEx(const char[] buffer="", any ...) {
+        char message[512];
+        VFormat(message, sizeof(message), buffer, 2);
+        KickClientEx(this.Index, message);
+    }
+
+    property int m_iTeamNum {
+        public set(int val) {
+            // <= TEAM_SPECTATOR
+            if (this.m_iTeamNum <= TEAM_SPECTATOR) {
+                ChangeClientTeam(this.Index, val);
+            } else {
+                #if defined _cstrike_included
+                    CS_SwitchTeam(this.Index, val);
+                #elseif defined _tf2_stocks_included
+                    TF2_ChangeClientTeam(this.Index, view_as<TFTeam>(val));
+                #else
+                    PrintToServer("No game-specific library found.");
+                    PrintToServer("You must include game-specific library to let this setter works.");
+                #endif
+            }
+        }
+    }
+}
+
 /**
  * @brief Gets whether the player is human.
  *
