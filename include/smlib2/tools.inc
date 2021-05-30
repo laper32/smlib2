@@ -299,8 +299,12 @@ inline void ToolsSetTeam(int entity, int iValue)
     }
     else
     {
-        // Switch team of the entity
-        CS_SwitchTeam(entity, iValue); 
+        #if defined _cstrike_included
+            // Switch team of the entity
+            CS_SwitchTeam(entity, iValue);
+        #else
+            LogMessage("This function is game-specified. Please include specific game library to let it works.");
+        #endif 
     }
 }
 

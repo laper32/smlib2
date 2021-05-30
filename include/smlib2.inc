@@ -35,11 +35,32 @@
 #define extern native
 
 // Must include sourcemod, SDKTools, SDKHooks
+#if !defined _sourcemod_included
+    #include <sourcemod>
+#endif
+
+#if !defined _sdktools_included
+    #include <sdktools>
+#endif
+
+#if !defined _sdkhooks_included
+    #include <sdkhooks>
+#endif
+
+#if !defined _PTaH_included
+    #tryinclude <PTaH>
+#endif
+
+#if !defined _dhooks_included
+    #tryinclude <dhooks>
+#endif
+
 // Optional include CStrike, PTaH, DHooks
 
 #include <smlib2/const>
 #include <smlib2/cvar>
 #include <smlib2/convert>
+#include <smlib2/entity>
 #include <smlib2/engine>
 #include <smlib2/math>
 #include <smlib2/mem>
