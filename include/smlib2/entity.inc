@@ -30,7 +30,6 @@
 
 #define _smlib2_entity_included
 
-
 /**
  * A wrapper for object oriented programming of an entity.
  *
@@ -91,19 +90,43 @@ methodmap Entity __nullable__ {
     }
 
     /**
-     * 
-     */
+    * Marks an entity for deletion.
+    *
+    * @error                    Invalid entity index.
+    */
     public void Remove() {
         RemoveEntity(this.Index);
     }
 
+    /**
+     * Sets the parent of the entity
+     *
+     * @param parent            Parent entity object.
+     *
+     * @return                  True on succes, false otherwise.
+     */
     public bool SetParent(int parent) {
         SetVariantString("!activator");
         return AcceptEntityInput(this.Index, "SetParent", parent, this.Index, 0);
     }
 
-    // You have been warning that: This is only used for the entity only.
-    // If you have other purpose, use AcceptEntityInput() directly
+    /**
+     * Invokes a named input method on an entity.
+     *
+     * After completion (successful or not), the current global variant is re-initialized.
+     *
+     * @note You have been warning that:
+     * - This is only used for this entity object what we are manipulating.
+     * - This is only a warpper for easily handling the input.
+     * - If you have other purposeing of handing the entity, you should use AcceptEntityInput() directly.
+     *
+     * @param input             Input action.
+     * @param activator         Entity index which initiated the sequence of actions (-1 for a NULL entity).
+     * @param caller            Entity index from which this event is sent (-1 for a NULL entity).
+     * @param outputid          Unknown.
+     * @return                  True if successful otherwise false.
+     * @error                   Invalid entity index or no mod support.
+     */
     public bool AcceptInput(const char[] input, int activator=-1, int caller=-1, int outputid=0)
     {
         #if defined _sdktools_included
@@ -111,133 +134,477 @@ methodmap Entity __nullable__ {
         #else
             PrintToServer("<sdktools> not included. this function will not work.");
             PrintToServer("Include <sdktools> to let this function works.")
-            return 0;
+            return false;
         #endif
     }
 
+    /**
+     * @section Entity offset functions
+     *
+     * Offsets should be specified in byte distance from the CBaseEntity
+     * structure, not short (double byte) or integer (four byte) multiples.
+     * It is somewhat common practice to use offsets aligned to their final
+     * type, and thus make sure you are not falling to this error in SourceMod.
+     * For example, if your "integer-aligned" offset was 119, your byte-aligned
+     * offset is 119*4, or 476.
+     * 
+     * Specifying incorrect offsets or the incorrect data type for an offset
+     * can have fatal consequences.  If you are hardcoding offsets, and the
+     * layout of CBaseEntity does not match, you can easily crash the server.
+     *
+     * The reasonable bounds for offsets is greater than or equal to 0 and
+     * below 32768.  Offsets out of these bounds will throw an error.  However,
+     * this does not represent any real range, it is simply a sanity check for
+     * illegal values.  Any range outside of the CBaseEntity structure's private
+     * size will cause undefined behavior or even crash.
+     */
+
+    /**
+     * Peeks into an entity's object data and retrieves the integer value at
+     * the given offset.
+     *
+     * @param offset            Offset to use.
+     * @param size              Number of bytes to read (valid values are 1, 2, or 4).
+     * @return                  Value at the given memory location.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public int GetDataInt(int offset, int size=4) {
         return GetEntData(this.Index, offset, size);
     }
 
+    /**
+     * Peeks into an entity's object data and sets the integer value at
+     * the given offset.
+     *
+     * @param offset            Offset to use.
+     * @param value             Value to set.
+     * @param size              Number of bytes to write (valid values are 1, 2, or 4).
+     * @param changeState       If true, change will be sent over the network.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public void SetDataInt(int offset, any value, int size=4, bool changeState=false) {
         SetEntData(this.Index, offset, value, size, changeState);
     }
 
+    /**
+     * Peeks into an entity's object data and retrieves the float value at
+     * the given offset.
+     *
+     * @param offset            Offset to use.
+     * @return                  Value at the given memory location.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public float GetDataFloat(int offset) {
         return GetEntDataFloat(this.Index, offset);
     }
 
+    /**
+     * Peeks into an entity's object data and sets the float value at
+     * the given offset.
+     *
+     * @param offset            Offset to use.
+     * @param value             Value to set.
+     * @param changeState       If true, change will be sent over the network.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public void SetDataFloat(int offset, float value, bool changeState=false) {
         SetEntDataFloat(this.Index, offset, value, changeState);
     }
-
+    /**
+     * Peeks into an entity's object data and retrieves the entity index
+     * at the given offset.
+     *
+     * Note: This will only work on offsets that are stored as "entity
+     * handles" (which usually looks like m_h* in properties).  These
+     * are not SourceMod Handles, but internal Source structures.
+     *
+     * @param offset            Offset to use.
+     * @return                  Entity index at the given location.  If there is no entity,
+     *                          or the stored entity is invalid, then -1 is returned.
+     * @error                   Invalid input entity, or offset out of reasonable bounds.
+     */
     public int GetDataEnt(int offset) {
         return GetEntDataEnt2(this.Index, offset);
     }
-
+    
+    /**
+     * Peeks into an entity's object data and sets the entity index at the
+     * given offset.
+     *
+     * Note: This will only work on offsets that are stored as "entity
+     * handles" (which usually looks like m_h* in properties).  These
+     * are not SourceMod Handles, but internal Source structures.
+     *
+     * @param offset            Offset to use.
+     * @param other             Entity index to set, or -1 to clear.
+     * @param changeState       If true, change will be sent over the network.
+     * @error                   Invalid input entity, or offset out of reasonable bounds.
+     */
     public void SetDataEnt(int offset, int other, bool changeState=false) {
         SetEntDataEnt2(this.Index, offset, other, changeState);
     }
 
+    /**
+     * Peeks into an entity's object data and retrieves the vector at the
+     * given offset.
+     * @note Both a Vector and a QAngle are three floats.  This is a
+     *       convenience function and will work with both types.
+     *
+     * @param offset            Offset to use.
+     * @param vec               Vector buffer to store data in.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public void GetDataVector(int offset, float vec[3]) {
         GetEntDataVector(this.Index, offset, vec);
     }
 
+    /**
+     * Peeks into an entity's object data and sets the vector at the given
+     * offset.
+     * @note Both a Vector and a QAngle are three floats.  This is a
+     *       convenience function and will work with both types.
+     *
+     * @param offset            Offset to use.
+     * @param vec               Vector to set.
+     * @param changeState       If true, change will be sent over the network.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public void SetDataVector(int offset, const float vec[3], bool changeState=false) {
         SetEntDataVector(this.Index, offset, vec, changeState);
     }
 
+    /**
+     * Peeks into an entity's object data and retrieves the string at
+     * the given offset.
+     *
+     * @param offset            Offset to use.
+     * @param buffer            Destination string buffer.
+     * @param maxlen            Maximum length of output string buffer.
+     * @return                  Number of non-null bytes written.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public int GetDataString(int offset, char[] buffer, int maxlen) {
         return GetEntDataString(this.Index, offset, buffer, maxlen);
     }
 
+    /**
+     * Peeks into an entity's object data and sets the string at
+     * the given offset.
+     *
+     * @param offset            Offset to use.
+     * @param buffer            String to set.
+     * @param maxlen            Maximum length of bytes to write.
+     * @param changeState       If true, change will be sent over the network.
+     * @return                  Number of non-null bytes written.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public int SetDataString(int offset, const char[] buffer, int maxlen, bool changeState=false) {
         return SetEntDataString(this.Index, offset, buffer, maxlen, changeState);
     }
 
+    /**
+     * @endsection
+     */
+
+    /**
+     * Copies an array of cells from an entity at a given offset.
+     *
+     * @param offset            Offset to use.
+     * @param array             Array to read into.
+     * @param arraySize         Number of values to read.
+     * @param dataSize          Size of each value in bytes (1, 2, or 4).
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public void GetDataIntArray(int offset, int[] array, int arraySize, int dataSize=4) {
         for (int i = 0; i < arraySize; i++) {
             array[i] = this.GetDataInt(offset + i*dataSize, dataSize);
         }
     }
 
+    /**
+     * Copies an array of cells to an entity at a given offset.
+     *
+     * @param offset            Offset to use.
+     * @param array             Array of values to copy.
+     * @param arraySize         Number of values to copy.
+     * @param dataSize          Size of each value in bytes (1, 2, or 4).
+     * @param changeState       True to set the network state as changed; false otherwise.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public void SetDataIntArray(int offset, const int[] array, int arraySize, int dataSize=4, bool changeState=false) {
         for (int i = 0; i < arraySize; i++) {
             this.SetDataInt(offset+i*dataSize, array[i], dataSize, changeState);
         }
     }
 
+    /**
+     * Given an entity, finds a nested datamap property offset.
+     * This information is cached for future calls.
+     *
+     * @param prop              Property name.
+     * @param type              Optional parameter to store the type.
+     * @param num_bits          Optional parameter to store the number of bits the field
+     *                          uses.  The bit count will either be 1 (for boolean) or
+     *                          divisible by 8 (including 0 if unknown).
+     * @param local_offset      Optional parameter to store the local offset, as
+     *                          FindDataMapOffs() would return.
+     * @return                  An offset, or -1 on failure.
+     */
     public int GetDataMapInfo(const char[] prop, PropFieldType &type=view_as<PropFieldType>(0), int &num_bits=0, int &local_offset=0) {
         return FindDataMapInfo(this.Index, prop, type, num_bits, local_offset);
     }
 
+    /**
+     * Wrapper function for finding a send property for a particular entity.
+     *
+     * @param prop              Property name.
+     * @param actual            Defaults to false for backwards compatibility.
+     *                          If true, the newer FindSendPropInfo() function
+     *                          is used instead.
+     * @return                  An offset, or -1 on failure.
+     */
     public int GetSendPropOffset(const char[] prop, bool actual=false) {
         return GetEntSendPropOffs(this.Index, prop, actual);
     }
 
-    public bool hasProp(PropType type, const char[] prop) {
+    /**
+     * Checks if an entity property exists on an entity.
+     *
+     * @param type              Property type.
+     * @param prop              Property name.
+     * @return                  Whether the property exists on the entity.
+     * @error                   Invalid entity.
+     */
+    public bool HasProp(PropType type, const char[] prop) {
         return HasEntProp(this.Index, type, prop);
     }
 
-    // I know, we have bool
-    // But dont forget that bool=stdbool.h=
-    // #define true     1
-    // #define false    0
-    // We treating them as int.
+    /**
+     * Retrieves an integer value from an entity's property.
+     *
+     * This function is considered safer and more robust over GetEntData,
+     * because it performs strict offset checking and typing rules.
+     *
+     * Note: Yes, I know, we need to consider bool.
+     * But you need to remember that: Accoring to <stdbool.h>, the bool is the fact of:
+     * - false: 0
+     * - true: 1
+     * So that we cast bool as int.
+     * But this means that once you need to get something what requires bool, you must static_cast (What sourcemod called it
+     * as view_as) to boolean.
+     *
+     * @param type              Property type.
+     * @param prop              Property name.
+     * @param size              Number of bytes to write (valid values are 1, 2, or 4).
+     *                          This value is auto-detected, and the size parameter is
+     *                          only used as a fallback in case detection fails.
+     * @param element           Element # (starting from 0) if property is an array.
+     * @return                  Value at the given property offset.
+     * @error                   Invalid entity or property not found.
+    */
     public int GetPropInt(PropType type, const char[] prop, int size=4, int element=0) {
         return GetEntProp(this.Index, type, prop, size, element);
     }
 
+    /**
+     * Sets an integer value in an entity's property.
+     *
+     * This function is considered safer and more robust over SetEntData,
+     * because it performs strict offset checking and typing rules.
+     *
+     * @param type              Property type.
+     * @param prop              Property name.
+     * @param value             Value to set.
+     * @param size              Number of bytes to write (valid values are 1, 2, or 4).
+     *                          This value is auto-detected, and the size parameter is
+     *                          only used as a fallback in case detection fails.
+     * @param element           Element # (starting from 0) if property is an array.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public void SetPropInt(PropType type, const char[] prop, any val, int size=4, int element=0) {
         SetEntProp(this.Index, type, prop, val, size, element);
     }
 
+    /**
+     * Retrieves a float value from an entity's property.
+     *
+     * This function is considered safer and more robust over GetEntDataFloat,
+     * because it performs strict offset checking and typing rules.
+     *
+     * @param type              Property type.
+     * @param prop              Property name.
+     * @param element           Element # (starting from 0) if property is an array.
+     * @return                  Value at the given property offset.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public float GetPropFloat(PropType type, const char[] prop, int element=0) {
         return GetEntPropFloat(this.Index, type, prop, element);
     }
 
+    /**
+     * Sets a float value in an entity's property.
+     *
+     * This function is considered safer and more robust over SetEntDataFloat,
+     * because it performs strict offset checking and typing rules.
+     *
+     * @param type              Property type.
+     * @param prop              Property name.
+     * @param value             Value to set.
+     * @param element           Element # (starting from 0) if property is an array.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public void SetPropFloat(PropType type, const char[] prop, float val, int element=0) {
         SetEntPropFloat(this.Index, type, prop, val, element);
     }
 
+    /**
+     * Retrieves an entity index from an entity's property.
+     *
+     * This function is considered safer and more robust over GetEntDataEnt*,
+     * because it performs strict offset checking and typing rules.
+     *
+     * @param type              Property type.
+     * @param prop              Property name.
+     * @param element           Element # (starting from 0) if property is an array.
+     * @return                  Entity index at the given property.
+     *                          If there is no entity, or the entity is not valid,
+     *                          then -1 is returned.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public int GetPropEnt(PropType type, const char[] prop, int element=0) {
         return GetEntPropEnt(this.Index, type, prop, element);
     }
 
+    /**
+     * Sets an entity index in an entity's property.
+     *
+     * This function is considered safer and more robust over SetEntDataEnt*,
+     * because it performs strict offset checking and typing rules.
+     *
+     * @param type              Property type.
+     * @param prop              Property name.
+     * @param other             Entity index to set, or -1 to unset.
+     * @param element           Element # (starting from 0) if property is an array.
+     * @error                   Invalid entity or offset out of reasonable bounds.
+     */
     public void SetPropEnt(PropType type, const char[] prop, int other, int element=0) {
         SetEntPropEnt(this.Index, type, prop, other, element);
     }
 
+    /**
+     * Retrieves a vector of floats from an entity, given a named network property.
+     *
+     * This function is considered safer and more robust over GetEntDataVector,
+     * because it performs strict offset checking and typing rules.
+     *
+     * @param type              Property type.
+     * @param prop              Property name.
+     * @param vec               Vector buffer to store data in.
+     * @param element           Element # (starting from 0) if property is an array.
+     * @error                   Invalid entity, property not found, or property not
+     *                          actually a vector data type.
+     */
     public void GetPropVector(PropType type, const char[] prop, float vec[3], int element=0) {
         GetEntPropVector(this.Index, type, prop, vec, element);
     }
 
+    /**
+     * Sets a vector of floats in an entity, given a named network property.
+     *
+     * This function is considered safer and more robust over SetEntDataVector,
+     * because it performs strict offset checking and typing rules.
+     *
+     * @param type              Property type.
+     * @param prop              Property name.
+     * @param vec               Vector to set.
+     * @param element           Element # (starting from 0) if property is an array.
+     * @error                   Invalid entity, property not found, or property not
+     *                          actually a vector data type.
+     */
     public void SetPropVector(PropType type, const char[] prop, float vec[3], int element=0) {
         SetEntPropVector(this.Index, type, prop, vec, element);
     }
 
+    /**
+     * Gets a network property as a string.
+     *
+     * @param type              Property type.
+     * @param prop              Property to use.
+     * @param buffer            Destination string buffer.
+     * @param maxlen            Maximum length of output string buffer.
+     * @param element           Element # (starting from 0) if property is an array.
+     * @return                  Number of non-null bytes written.
+     * @error                   Invalid entity, offset out of reasonable bounds, or property is not a valid string.
+     */
     public int GetPropString(PropType type, const char[] prop, char[] buffer, int maxlen, int element=0) {
         return GetEntPropString(this.Index, type, prop, buffer, maxlen, element);
     }
 
+    /**
+     * Sets a network property as a string.
+     *
+     * @param type              Property type.
+     * @param prop              Property to use.
+     * @param buffer            String to set.
+     * @param element           Element # (starting from 0) if property is an array.
+     * @return                  Number of non-null bytes written.
+     * @error                   Invalid entity, offset out of reasonable bounds, or property is not a valid string.
+     */
     public int SetPropString(PropType type, const char[] prop, const char[] buffer, int element=0) {
         return SetEntPropString(this.Index, type, prop, buffer, element);
     }
 
+    /**
+     * Retrieves the count of values that an entity property's array can store.
+     *
+     * @param type              Property type.
+     * @param prop              Property name.
+     * @return                  Size of array (in elements) or 1 if property is not an array.
+     * @error                   Invalid entity or property not found.
+     */
     public int GetPropArraySize(PropType type, const char[] prop) {
         return GetEntPropArraySize(this.Index, type, prop);
     }
 
+    /**
+     * Memory address.
+     * The another name what you should be fimilar with: Pointer.
+     */
     property Address Addr {
+        /**
+         * Gets the memory address of an entity.
+         *
+         * @return              Address of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return GetEntityAddress(this.Index);
         }
     }
 
+    /**
+     * Retrieves the classname of an entity.
+     * This is like GetEdictClassname(), except it works for ALL
+     * entities, not just edicts.
+     *
+     * @param clsname           Buffer to store the classname.
+     * @param maxlength         Maximum length of the buffer.
+     * @return                  True on success, false if there is no classname set.
+     */
     public bool GetClassname(char[] clsname, int maxlen) {
         return !!this.GetPropString(Prop_Data, "m_iClassname", clsname, maxlen);
     }
 
+    /**
+     * Teleports an entity.
+     *
+     * WARNING: You must include sdktools for letting this function works. Otherwise it will not WORK!
+     *
+     * @param origin            New origin, or NULL_VECTOR for no change.
+     * @param angles            New angles, or NULL_VECTOR for no change.
+     * @param velocity          New velocity, or NULL_VECTOR for no change.
+     * @error                   Invalid entity or client not in game, or lack of mod support.
+     */
     public void Teleport(const float origin[3], const float angles[3], const float velocity[3]) {
         #if defined _sdktools_included
             TeleportEntity(this.Index, origin, angles, velocity);
@@ -247,10 +614,39 @@ methodmap Entity __nullable__ {
         #endif
     }
 
+    /**
+     * From this part begins, you have been warning that:
+     * 
+     * 1. These functions, and properties below, are imported from tools.inc.
+     * 2. These functions, and properties below, are only based on projects what I have
+     * used, or problems what I've met. This means that: Not everything will be covered.
+     * 3. These functions, and properties below, are only tested in games what I have been
+     * instructed in readme.md, and you should read it already.
+     * 4. If you have found something that can make an improvement, or modify, please make 
+     * your own PR, or send message to me, to let me know.
+     * 
+     * Once you are using these functions and properties below, means that you have already
+     * read the instructions, and already known that these functions and properties may cause
+     * some unexpected circumstances in your own projects.
+     */
+
+    /**
+     * Gets the velocity of the entity.
+     *
+     * @param vel               Velocity buffer.
+     */
     public void GetVelocity(float vel[3]) {
         this.GetPropVector(Prop_Data, "m_vecVelocity", vel);
     }
 
+    /**
+     * Sets the velocity of the entity.
+     *
+     * @param vel               Velocity input
+     * @param apply             True to get velocity, false to set
+     * @param stack             If modifying velocity, then true will stack new velocity onto the entity of the
+     *                          current velocity, false will reset it.
+     */
     public void SetVelocity(float vel[3], bool apply=true, bool stack=true) {
         if (!apply) {
             this.GetVelocity(vel);
@@ -267,8 +663,16 @@ methodmap Entity __nullable__ {
         this.Teleport(NULL_VECTOR, NULL_VECTOR, vel);
     }
 
-    // magnitude of the velocity
+    /**
+     * Magnitude of the velocity, what we call it as speed.
+     */
     property float Speed {
+        /**
+         * Gets the speed of an entity.
+         *
+         * @return              Speed of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             float vel[3];
             this.GetVelocity(vel);
@@ -277,289 +681,801 @@ methodmap Entity __nullable__ {
         }
     }
 
+    /**
+     * Gets the absolute origin of the entity.
+     *
+     * @param vel               Absolute origin buffer.
+     */
     public void GetAbsOrigin(float pos[3]) {
         this.GetPropVector(Prop_Data, "m_vecAbsOrigin", pos);
     }
 
+    /**
+     * Gets the absolute angle rotation of the entity.
+     *
+     * @param vel               Absolute angle rotation buffer.
+     */
     public void GetAbsAngles(float ang[3]) {
         this.GetPropVector(Prop_Data, "m_angAbsRotation", ang);
     }
 
+    /**
+     * Gets the max size of the entity.
+     *
+     * @param vel               Maxs buffer.
+     */
     public void GetMaxs(float maxs[3]) {
         this.GetPropVector(Prop_Data, "m_vecMaxs", maxs);
     }
 
+    /**
+     * Gets the min size of the entity.
+     *
+     * @param vel               Mins buffer.
+     */
     public void GetMins(float mins[3]) {
         this.GetPropVector(Prop_Data, "m_vecMins", mins);
     }
 
+    /**
+     * CBaseEntity::m_iHealth
+     */
     property int m_iHealth {
+        /**
+         * Gets the health of an entity.
+         *
+         * @return              Health of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Data, "m_iHealth");
         }
+
+        /**
+         * Sets the health of an entity.
+         *
+         * @param val           Value to modify.
+         * 
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Data, "m_iHealth", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_iMaxHealth
+     */
     property int m_iMaxHealth {
+        /**
+         * Gets the health of an entity.
+         *
+         * @return              Max health of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Data, "m_iMaxHealth");
         }
+
+        /**
+         * Sets the max health of an entity.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Data, "m_iMaxHealth", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_hOwnerEntity
+     */
     property int m_hOwnerEntity {
+        /**
+         * Gets the owner of an entity.
+         *
+         * @return              The owner of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropEnt(Prop_Data, "m_hOwnerEntity");
         }
+
+        /**
+         * Sets the owner of an entity.
+         *
+         * @param               Owner entity index.
+         *
+         * @error               Invalid entity.
+         */
         public set(int owner) {
             this.SetPropEnt(Prop_Data, "m_hOwnerEntity", owner);
         }
     }
 
+    /**
+     * CBaseEntity::m_pParent
+     */
     property int m_pParent {
+        /**
+         * Gets the parent of an entity.
+         *
+         * @return              Parent of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropEnt(Prop_Data, "m_pParent");
         }
+
+        /**
+         * Sets the parent of an entity.
+         *
+         * @param parent        Parent entity index.
+         *
+         * @error               Invalid entity.
+         */
         public set(int parent) {
             this.SetPropEnt(Prop_Data, "m_pParent", parent);
         }
     }
 
+    /**
+     * CBaseEntity::m_hRagdoll
+     */
     property int m_hRagdoll {
+        /**
+         * Gets the ragdoll of an entity.
+         *
+         * @return              Max health of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropEnt(Prop_Data, "m_hRagdoll");
         }
     }
 
+    /**
+     * CBaseEntity::m_pActivator
+     */
     property int m_pActivator {
+        /**
+         * Gets the activator of an entity.
+         *
+         * @return              The activator of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropEnt(Prop_Data, "m_pActivator");
         }
     }
-
+    
+    /**
+     * CBaseEntity::m_hMyWeapons
+     */
     property int m_hMyWeapons {
+        /**
+         * Gets the weapons count of an entity.
+         *
+         * @return              The weapons count of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropArraySize(Prop_Data, "m_hMyWeapons");
         }
     }
 
+    /**
+     * Get the weapon at the specific position.
+     *
+     * @param pos               The position what we want to get.
+     *
+     * @return                  The weapon index.
+     */
     public int GetWeapon(int pos) {
         return this.GetPropEnt(Prop_Data, "m_hMyWeapons", pos);
     }
 
+    /**
+     * CBaseEntity::m_flLaggedMovementValue
+     */
     property float m_flLaggedMovementValue {
+        /**
+         * Gets the LMV of an entity.
+         *
+         * @return              The LMV of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropFloat(Prop_Data, "m_flLaggedMovementValue");
         }
+
+        /**
+         * Sets the LMV of an entity.
+         *
+         * @param val           The LMV value.
+         *
+         * @error               Invalid entity.
+         */
         public set(float val) {
             this.SetPropFloat(Prop_Data, "m_flLaggedMovementValue", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_ArmorValue
+     */
     property int m_ArmorValue {
+        /**
+         * Gets the armor value of an entity.
+         *
+         * @return              The armor value of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Data, "m_ArmorValue");
         }
+
+        /**
+         * Sets the armor value of an entity.
+         *
+         * @param val           Value to modify.
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Data, "m_ArmorValue", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_iTeamNum
+     * 
+     * WARNING: You need to implement setter by your own. This property only provides getter.
+     */
     property int m_iTeamNum {
+        /**
+         * Gets the team of an entity.
+         *
+         * @return              The team of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Data, "m_iTeamNum");
         }
     }
     
+    /**
+     * CBaseEntity::m_bHasNightVision
+     */
     property bool m_bHasNightVision {
+        /**
+         * Gets the whether has night vision of an entity.
+         *
+         * @return              True if has the night vision, false otherwise.
+         * @error               Invalid entity.
+         */
         public get() {
             return view_as<bool>(this.GetPropInt(Prop_Send, "m_bHasNightVision"));
         }
+
+        /**
+         * Sets whether could have the night vision.
+         *
+         * @param val           Value to set.
+         *
+         * @error               Invalid entity.
+         */
         public set(bool val) {
             this.SetPropInt(Prop_Send, "m_bHasNightVision", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_bNightVision
+     */
     property bool m_bNightVisionOn {
+        /**
+         * Gets whether the night vision has enabled.
+         *
+         * @return              The night vision enable status of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return view_as<bool>(this.GetPropInt(Prop_Send, "m_bNightVisionOn"));
         }
+
+        /**
+         * Sets the night vision enable status of the entity.
+         *
+         * @param val           The value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(bool val) {
             this.SetPropInt(Prop_Send, "m_bNightVisionOn", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_bHasDefuser
+     */
     property bool m_bHasDefuser {
+        /**
+         * Gets whether owns defuser.
+         *
+         * @return              True if owns defuser, false otherwise.
+         * @error               Invalid entity.
+         */
         public get() {
             return view_as<bool>(this.GetPropInt(Prop_Send, "m_bHasDefuser"));
         }
+
+        /**
+         * Sets the defuser owning status.
+         *
+         * @param val           Value to modify. 
+         *
+         * @error               Invalid entity.
+         */
         public set(bool val) {
             this.SetPropInt(Prop_Send, "m_bHasDefuser", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_bHasHelmet
+     */
     property bool m_bHasHelmet {
+        /**
+         * Gets whether owns helmet.
+         *
+         * @return              True if owns helmet, false otherwise.
+         * @error               Invalid entity.
+         */
         public get() {
             return view_as<bool>(this.GetPropInt(Prop_Send, "m_bHasHelmet"));
         }
+        
+        /**
+         * Sets whether own defuser.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(bool val) {
             this.SetPropInt(Prop_Send, "m_bHasHelmet", val);
         }
     }
     
+    /**
+     * CBaseEntity::m_bHasHeavyArmor
+     */
     property bool m_bHasHeavyArmor {
+        /**
+         * Gets whether has heavy armor.
+         *
+         * @return              True if owns heavy armor, false otherwise.
+         * @error               Invalid entity.
+         */
         public get() {
             return view_as<bool>(this.GetPropInt(Prop_Send, "m_bHasHeavyArmor"));
         }
+
+        /**
+         * Sets the ownership of the heavy armor.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(bool val) {
             this.SetPropInt(Prop_Send, "m_bHasHeavyArmor", val);
         }
     }
     
+    /**
+     * CBaseEntity::m_hActiveWeapon
+     */
     property int m_hActiveWeapon {
+        /**
+         * Gets the active weapon.
+         *
+         * @return              Current active weapon index.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Send, "m_hActiveWeapon");
         }
     }
 
+    /**
+     * CBaseEntity::m_iAddonBits
+     */
     property int m_iAddonBits {
+        /**
+         * Gets the addon bits.
+         *
+         * @return              Addon bits.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Send, "m_iAddonBits");
         }
+
+        /**
+         * Sets the addon bits.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Send, "m_iAddonBits", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_iObserverMode
+     */
     property int m_iObserverMode {
+        /**
+         * Gets the observer mode.
+         *
+         * @return              Observer mode value.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Data, "m_iObserverMode");
         }
     }
 
+    /**
+     * CBaseEntity::m_hObserverTarget
+     */
     property int m_hObserverTarget {
+        /**
+         * Gets the observer target.
+         *
+         * @return              Observer target.
+         * @error               Invalid entity. If target is nullptr, may crash the server.
+         */
         public get() {
             return this.GetPropInt(Prop_Data, "m_hObserverTarget");
         }
     }
     
+    /**
+     * CBaseEntity::m_LastHitGroup
+     */
     property int m_LastHitGroup {
+        /**
+         * Gets the last hit group.
+         *
+         * @return              Last hit group.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Send, "m_LastHitGroup");
         }
     }
 
+    /**
+     * CBaseEntity::m_iFrags
+     */
     property int m_iFrags {
+        /**
+         * Gets the score.
+         *
+         * @return              Score value.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Data, "m_iFrags");
         }
+
+        /**
+         * Sets the score.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Data, "m_iFrags", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_iDeaths
+     */
     property int m_iDeaths {
+        /**
+         * Gets the death.
+         *
+         * @return              Death value.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Data, "m_iDeaths");
         }
+
+        /**
+         * Sets the death.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Data, "m_iDeaths", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_flGravity
+     */
     property float m_flGravity {
+        /**
+         * Gets the gravity.
+         *
+         * @return              Gravity value.
+         * @error               Invalid entity.
+         */
         public get() {
             this.GetPropFloat(Prop_Data, "m_flGravity");
         }
+
+        /**
+         * Sets the gravity.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(float val) {
             this.SetPropFloat(Prop_Data, "m_flGravity", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_iAccount
+     */
     property int m_iAccount {
+        /**
+         * Gets the money.
+         *
+         * @return              Money value.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Data, "m_iAccount");
         }
+
+        /**
+         * Sets the money.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Data, "m_iAccount", val);
         }
     }
 
+    /**
+     * Sets the arm model.
+     *
+     * @param path              The path buffer.
+     */
     public void SetArmsModel(const char[] path) {
         this.SetPropString(Prop_Send, "m_szArmsModel", path);
     }
 
+    /**
+     * CBaseEntity::m_flNextAttack
+     */
     property float m_flNextAttack {
+        /**
+         * Gets the next attack.
+         *
+         * @return              Next attack value.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropFloat(Prop_Send, "m_flNextAttack");
         }
+
+        /**
+         * Sets the next attack.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(float val) {
             this.SetPropFloat(Prop_Send, "m_flNextAttack", val);
         }
     }
     
+    /**
+     * CBaseEntity::m_iFOV
+     */
     property int m_iFOV {
+        /**
+         * Gets the FOV.
+         *
+         * @return              The FOV value.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Send, "m_iFOV");
         }
+
+        /**
+         * Sets the FOV.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Send, "m_iFOV", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_iDefaultFOV
+     */
     property int m_iDefaultFOV {
+        /**
+         * Gets the default FOV.
+         *
+         * @return              The default FOV value.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Send, "m_iDefaultFOV");
         }
+
+        /**
+         * Sets the default FOV.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Send, "m_iDefaultFOV", val);
         }
     }
     
+    /**
+     * CBaseEntity::m_nBody
+     */
     property int m_nBody {
+        /**
+         * Gets the body index.
+         *
+         * @return              The body index.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Send, "m_nBody");
         }
+
+        /**
+         * Sets the body index.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Send, "m_nBody", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_nSkin
+     */
     property int m_nSkin {
+        /**
+         * Gets the skin index.
+         *
+         * @return              The skin index.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Send, "m_nSkin");
         }
+
+        /**
+         * Sets the skin index.
+         *
+         * @param val           Value to modify.
+         *
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Send, "m_nSkin", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_fEffects
+     */
     property int m_fEffects {
+        /**
+         * Gets the effects of an entity.
+         *
+         * @return              The owner of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Send, "m_fEffects");
         }
+        
+        /**
+         * Sets the effects of an entity.
+         *
+         * @param val           Value to modify. 
+         *
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Send, "m_fEffects", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_nModelIndex
+     */
     property int m_nModelIndex {
+        /**
+         * Gets the model index of an entity.
+         *
+         * @return              The owner of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Send, "m_nModelIndex");
         }
+
+        /**
+         * Gets the owner of an entity.
+         *
+         * @return              The owner of the entity.
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Send, "m_nModelIndex", val);
         }
     }
 
+    /**
+     * CBaseEntity::m_CollisionGroup
+     */
     property int m_CollisionGroup {
+        /**
+         * Gets the collision group of an entity.
+         *
+         * @return              The collision group of the entity.
+         * @error               Invalid entity.
+         */
         public get() {
             return this.GetPropInt(Prop_Data, "m_CollisionGroup");
         }
+
+        /**
+         * Sets the collision group of an entity.
+         *
+         * @param val           Value to modify. 
+         *
+         * @error               Invalid entity.
+         */
         public set(int val) {
             this.SetPropInt(Prop_Data, "m_CollisionGroup", val);
         }

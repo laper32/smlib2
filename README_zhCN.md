@@ -1,8 +1,6 @@
-# smlib2
+# SourceMod Library 2
 
 ## 简介
-SourceMod Library 2
-
 该库旨在于简化SM插件开发流程
 
 本库两点

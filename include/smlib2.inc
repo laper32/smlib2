@@ -34,28 +34,22 @@
 #define inline stock
 #define extern native
 
-// Must include sourcemod, SDKTools, SDKHooks
-#if !defined _sourcemod_included
-    #include <sourcemod>
-#endif
+// To let most of these functions works, you must include following parts:
+// - sourcemod
+// - sdktools
+// - sdkhooks
 
-#if !defined _sdktools_included
-    #include <sdktools>
-#endif
+// Additionally, I recommend you include:
+// - dhooks
 
-#if !defined _sdkhooks_included
-    #include <sdkhooks>
-#endif
+// These are game-specific. You should determine whether you actually needed:
+// - PTaH
+// - cstrike
+// - tf2
+// - ...(Any other game-specifics)
 
-#if !defined _PTaH_included
-    #tryinclude <PTaH>
-#endif
-
-#if !defined _dhooks_included
-    #tryinclude <dhooks>
-#endif
-
-// Optional include CStrike, PTaH, DHooks
+// I recommend you include these libraries above before you include <smlib2> to let it fully works, as 
+// I have said before.
 
 #include <smlib2/const>
 #include <smlib2/cvar>
