@@ -52,18 +52,19 @@
 // I have said before.
 
 #include <smlib2/const>
+
 #include <smlib2/cvar>
 #include <smlib2/convert>
 #include <smlib2/entity>
+#include <smlib2/player>
 #include <smlib2/engine>
 #include <smlib2/math>
-#include <smlib2/mem>
+#include <smlib2/memory>
+#include <smlib2/message>
 #include <smlib2/paramparser>
 #include <smlib2/fileparser>
 #include <smlib2/tools>
 #include <smlib2/utils>
-#include <smlib2/text>
-#include <smlib2/player>
 #include <smlib2/hint>
 #include <smlib2/md5>
 #include <smlib2/base64>

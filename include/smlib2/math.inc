@@ -28,6 +28,48 @@
     #endinput
 #endif
 #define _smlib2_math_included
+methodmap Math {
+    public static int abs(int i1) {
+        return abs(i1);
+    }
+
+    public static float fabs(float i1) {
+        return FloatAbs(i1);
+    }
+
+    public static any min(any i1, any i2) {
+        return min(i1, i2);
+    }
+
+    public static any max(any i1, any i2) {
+        return max(i1, i2);
+    }
+
+    public static any clamp(any val, any i1, any i2) {
+        return clamp(val, i1, i2);
+    }
+    
+    public static any overflow(any value, any i1, any i2) {
+        overflow(value, i1, i2);
+    }
+
+    public static float sqrt(any val) {
+        sqrt(val);
+    }
+
+    public static int GetPercentageInt(int value, int all) {
+        GetPercentageInt(value, all);
+    }
+
+    public static float GetPercentageFloat(float value, float all) {
+        GetPercentageFloat(value, all);
+    }
+
+    public static any mean(any[] _array) {
+        mean(_array);
+    }
+
+}
 
 /**
  * @brief Returns the positive integer of the value.

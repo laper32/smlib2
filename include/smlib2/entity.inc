@@ -33,7 +33,9 @@
 /**
  * A wrapper for object oriented programming of an entity.
  *
- * @note You can treat it as CBaseEntity*
+ * Note: This is only used for manipulating a single entity.
+ * If you want to manipulating arbitrary entities, you should 
+ * use EntityEx rather than this warpper.
  */
 methodmap Entity __nullable__ {
     /**
@@ -1479,5 +1481,103 @@ methodmap Entity __nullable__ {
         public set(int val) {
             this.SetPropInt(Prop_Data, "m_CollisionGroup", val);
         }
+    }
+}
+
+/**
+ * An Object-entity warpper for manipulating entities.
+ *
+ * @note This is same as Entity, but this is aimed for manipulating arbitrary entities.
+ */
+methodmap EntityEx {
+    /**
+     * @brief Gets the health of a entity.
+     *
+     * @param entity            The entity index.
+     * @param bMax              True to get maximum value, false to get health.  
+     * @return                  The health value.
+     */
+    public static int GetHealth(int entity, bool bMax = false) {
+        return GetEntProp(entity, Prop_Data, bMax ? "m_iMaxHealth" : "m_iHealth");
+    }
+
+    /**
+     * @brief Sets the health of a entity.
+     *
+     * @param entity            The entity index.
+     * @param iValue            The health value.
+     * @param bSet              True to set maximum value, false to modify health.  
+     */
+    public static void SetHealth(int entity, int iValue, bool bSet=false) {
+        SetEntProp(entity, Prop_Send, "m_iHealth", iValue);
+    
+        // If set is true, then set max health
+        if (bSet) 
+        {
+            // Sets max health of the entity
+            SetEntProp(entity, Prop_Data, "m_iMaxHealth", iValue);
+        }
+    }
+
+    /**
+     * @brief Gets or sets the velocity of a entity.
+     *
+     * @param entity            The entity index.
+     * @param vVelocity         The velocity output, or velocity to set on entity.
+     * @param bApply            True to get entity velocity, false to set it.
+     * @param bStack            If modifying velocity, then true will stack new velocity onto the entity.
+     *                          current velocity, false will reset it.
+     */
+    public static void SetVelocity(int entity, float vVelocity[3], bool bApply = true, bool bStack = true) {
+        // If retrieve if true, then get entity velocity
+        if (!bApply)
+        {
+            // Gets entity velocity
+            ToolsGetVelocity(entity, vVelocity);
+            
+            // Stop here
+            return;
+        }
+        
+        // If stack is true, then add entity velocity
+        if (bStack)
+        {
+            // Gets entity velocity
+            static float vSpeed[3];
+            ToolsGetVelocity(entity, vSpeed);
+            
+            // Add to the current
+            AddVectors(vSpeed, vVelocity, vVelocity);
+        }
+        
+        // Apply velocity on entity
+        TeleportEntity(entity, NULL_VECTOR, NULL_VECTOR, vVelocity);
+    }
+
+    /**
+     * @brief Gets the velocity of a entity.
+     *
+     * @param entity            The entity index.
+     * @param vVelocity         The velocity output.
+     */
+    public static void GetVelocity(int entity, float vVelocity[3]) {
+        // Gets origin of the entity
+        GetEntPropVector(entity, Prop_Data, "m_vecVelocity", vVelocity);
+    }
+
+    public static void GetAbsOrigin(int entity, float vOrigin[3]) {
+
+    }
+
+    /**
+     * @brief Gets the speed of a entity.
+     *
+     * @param entity            The entity index.
+     */
+    public static float GetSpeed(int entity) {
+        static float vVeclocity[3];
+        EntityEx.GetVelocity(entity, vVeclocity);
+
+        return GetVectorLength(vVeclocity);
     }
 }

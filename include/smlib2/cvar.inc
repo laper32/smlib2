@@ -31,76 +31,72 @@
 
 #define _smlib2_cvar_included
 
-/**
- * Cvar hook callback.
- * @brief Prevents changes of default cvars.
- * 
- * @param hConVar           The cvar handle.
- * @param oldValue          The value before the attempted change.
- * @param newValue          The new value.
- **/
-public void CvarLockOnCvarHook(ConVar hConVar, char[] oldValue, char[] newValue)
-{
-    // Revert to locked value
-    hConVar.IntValue = 0;
-}
+methodmap Cvar {
+    /**
+     * @brief Sets the integer value of a cvar variable. (sv_cheat 1)
+     *
+     * @param hConVar           Handle to the convar.
+     * @param iValue            New integer value.
+     */
+    public static void OnCheatSet(ConVar hConVar, int iValue) 
+    {
+        // Revert to locked value
+        hConVar.Flags = (hConVar.Flags & ~FCVAR_CHEAT);
+        hConVar.IntValue = iValue;
+        //hConVar.Flags = hConVar.Flags | FCVAR_CHEAT;  -> Sent errors to console!
+    }
 
-/**
- * Cvar hook callback.
- * @brief Prevents changes of default cvars.
- * 
- * @param hConVar           The cvar handle.
- * @param oldValue          The value before the attempted change.
- * @param newValue          The new value.
- **/
-public void CvarUnlockOnCvarHook(ConVar hConVar, char[] oldValue, char[] newValue)
-{
-    // Revert to locked value
-    hConVar.IntValue = 1;
-}
+    /**
+     * Cvar hook callback.
+     * @brief Prevents changes of default cvars.
+     * 
+     * @param hConVar           The cvar handle.
+     * @param oldValue          The value before the attempted change.
+     * @param newValue          The new value.
+     */
+    public static void LockOnCvarHook(ConVar hConVar, char[] oldValue, char[] newValue) {
+        hConVar.IntValue = 0;
+    }
 
-/**
- * Cvar hook callback.
- * @brief Prevents changes of cheat cvars.
- * 
- * @param hConVar           The cvar handle.
- * @param oldValue          The value before the attempted change.
- * @param newValue          The new value.
- **/
-public void CvarLockOnCvarHook2(ConVar hConVar, char[] oldValue, char[] newValue)
-{
-    // Revert to locked value
-    CvarOnCheatSet(hConVar, 0);
-}
+    /**
+     * Cvar hook callback.
+     * @brief Prevents changes of default cvars.
+     * 
+     * @param hConVar           The cvar handle.
+     * @param oldValue          The value before the attempted change.
+     * @param newValue          The new value.
+     */
+    public static void UnlockOnCvarHook(ConVar hConVar, char[] oldValue, char[] newValue)
+    {
+        // Revert to locked value
+        hConVar.IntValue = 1;
+    }
 
-/**
- * Cvar hook callback.
- * @brief Prevents changes of default cvars.
- * 
- * @param hConVar           The cvar handle.
- * @param oldValue          The value before the attempted change.
- * @param newValue          The new value.
- **/
-public void CvarLockOnCvarHook3(ConVar hConVar, char[] oldValue, char[] newValue)
-{
-    // Revert to locked value
-    hConVar.SetString("");
-}
+    /**
+     * Cvar hook callback.
+     * @brief Prevents changes of cheat cvars.
+     * 
+     * @param hConVar           The cvar handle.
+     * @param oldValue          The value before the attempted change.
+     * @param newValue          The new value.
+     */
+    public static void LockOnCvarHook2(ConVar hConVar, char[] oldValue, char[] newValue)
+    {
+        // Revert to locked value
+        Cvar.OnCheatSet(hConVar, 0);
+    }
 
-/*
- * Stocks cvars API.
- */
-
-/**
- * @brief Sets the integer value of a cvar variable. (sv_cheat 1)
- *
- * @param hConVar           Handle to the convar.
- * @param iValue            New integer value.
- **/
-inline void CvarOnCheatSet(ConVar hConVar, int iValue) 
-{
-    // Revert to locked value
-    hConVar.Flags = (hConVar.Flags & ~FCVAR_CHEAT);
-    hConVar.IntValue = iValue;
-    //hConVar.Flags = hConVar.Flags | FCVAR_CHEAT;  -> Sent errors to console!
+    /**
+     * Cvar hook callback.
+     * @brief Prevents changes of default cvars.
+     * 
+     * @param hConVar           The cvar handle.
+     * @param oldValue          The value before the attempted change.
+     * @param newValue          The new value.
+     */
+    public static void LockOnCvarHook3(ConVar hConVar, char[] oldValue, char[] newValue)
+    {
+        // Revert to locked value
+        hConVar.SetString("");
+    }
 }

@@ -24,6 +24,9 @@
  * ============================================================================
  */
 
+// WARNING: This module is deprecated.
+// It will be removed in future releases.
+
 #if defined _smlib2_tools_included
 #endinput
 #endif
