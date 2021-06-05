@@ -85,6 +85,63 @@ static const char mime_chars[]       = "+/=";
 static const char url_chars[]        = "-_.";
 
 /**
+ * An Object-oriented warpper for Base 64 algorithm.
+ */
+methodmap Base64 {
+    /**
+     * Encodes a string or binary data into Base64
+     *
+     * @param sSource		The input string or binary data to be encoded.
+     * @param sResult		The storage buffer for the Base64-encoded result.
+     * @param len			The maximum length of the storage buffer, in characters/bytes.
+     * @param sourcelen 	(optional): The number of characters or length in bytes to be read from the input source.
+     *						This is not needed for a text string, but is important for binary data since there is no end-of-line character.
+     * @return				The length of the written Base64 string, in bytes.
+     */
+    public static int Encode(const char[] sSource, char[] sResult, int len, int sourcelen = 0) {
+        return encode(sSource, sResult, len, sourcelen);
+    }
+
+    /**
+     * Decodes a Base64 string.
+     *
+     * @param sSource		The input string in compliant Base64 format to be decoded.
+     * @param sResult		The storage buffer for the decoded text strihg or binary data.
+     * @param len			The maximum length of the storage buffer, in characters/bytes.
+     * @return				The length of the decoded data, in bytes.
+     */
+    public static int Decode(const char[] sSource, char[] sResult, int len) {
+        return decode(sSource, sResult, len);
+    }
+
+    /**
+     * Converts a standards-compliant Base64 string to the commonly accepted URL-compliant alternative.
+     * Note: The result will be the same length as the input string as long as the output buffer is large enough.
+     *
+     * @param sSource		The standards-compliant Base64 input string to converted.
+     * @param sResult		The storage buffer for the URL-compliant result.
+     * @param len			The maximum length of the storage buffer in characters/bytes.
+     * @return				Number of cells written.
+     */
+    public static int MimeToURL(const char[] sSource, char[] sResult, int len) {
+        return mime2url(sSource, sResult, len);
+    }
+
+    /**
+     * Converts a URL-compliant Base64 string to the standards-compliant version.
+     * Note: The result will be the same length as the input string as long as the output buffer is large enough.
+     *
+     * @param sSource		The URL-compliant Base64 input string to converted.
+     * @param sResult		The storage buffer for the standards-compliant result.
+     * @param len			The maximum length of the storage buffer in characters/bytes.
+     * @return				Number of cells written.
+     */
+    public static int URLToMime(const char[] sSource, char[] sResult, int len) {
+        return url2mime(sSource, sResult, len);
+    }
+}
+
+/**
  * Encodes a string or binary data into Base64
  *
  * @param sSource		The input string or binary data to be encoded.

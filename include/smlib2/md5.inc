@@ -31,6 +31,23 @@
 #define _smlib2_md5_included
 
 /**
+ * An Object-oriented warpper for MD5 algorithm.
+ */
+methodmap MD5 {
+    /**
+    * Calculate the md5 hash of a string.
+    *
+    * @param str			Input String
+    * @param output		Output String Buffer
+    * @param maxlen		Size of the Output String Buffer
+    * @noreturn
+    */
+    public static void Digest(const char[] str, char[] output, int maxlen) {
+        md5sum(str, output, maxlen);
+    }
+}
+
+/**
  * Calculate the md5 hash of a string.
  *
  * @param str			Input String

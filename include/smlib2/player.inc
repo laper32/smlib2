@@ -164,6 +164,10 @@ methodmap Player < Entity {
             }
         }
     }
+
+    public static int GetPlayers(bool aliveOnly, bool teamOnly, int teamNum)
+        GetPlayers(aliveOnly, teamOnly, teamNum);
+    }
 }
 
 /**
