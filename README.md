@@ -89,3 +89,10 @@ Yes, you are welcomed for contributing the library, but you need to keep the aut
 |[@bcserv](https://github.com/bcserv)|[smlib](https://github.com/bcserv/smlib)|
 
 And any other libraries what have collected for referencing.
+
+## Version
+- 1.1
+  - Warning: This is destructive update. Most of these functions will be converted into methodmap-based (aka: OOP). This means that most of these functions what you are using will be removed immediately.
+
+- 1.0
+  - Current main version
