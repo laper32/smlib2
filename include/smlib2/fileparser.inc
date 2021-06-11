@@ -30,6 +30,18 @@
 
 #define _smlib2_fileparser_included
 
+/**
+ * File parser for precaching files and relevant resources.
+ *
+ * Note: You just need to consider following functions what have been listed below:
+ *  - FileParser.PrecacheModel()
+ *  - FileParser.PrecacheWeapon()
+ *  - FileParser.PrecacheTexture()
+ *  - FileParser.PrecacheSound()
+ *  - FileParser.PrecacheParticle()
+ *
+ * The params what required to input, which has been shown at the declaration of the function name.
+ */
 methodmap FileParser {
     /**
      * @brief Reads the current material and precache its textures.

@@ -55,19 +55,44 @@
 
 #include <smlib2/cvar>
 #include <smlib2/convert>
-#include <smlib2/entity>
-#include <smlib2/player>
 #include <smlib2/engine>
 #include <smlib2/math>
 #include <smlib2/memory>
-#include <smlib2/message>
 #include <smlib2/paramparser>
 #include <smlib2/fileparser>
+#include <smlib2/matrix>
+
+#include <smlib2/entity>
+#include <smlib2/player>
+#include <smlib2/message>
 #include <smlib2/tools>
 #include <smlib2/utils>
 #include <smlib2/hint>
-#include <smlib2/md5>
-#include <smlib2/base64>
 #include <smlib2/sound>
-#include <smlib2/matrix>
+
+#if defined USE_DLL
+    #include <smlib2/hashlib>
+#else
+    #include <smlib2/md5>
+    #include <smlib2/base64>
+#endif
+
 #include <smlib2/version>
+
+#if defined USE_DLL
+    public Extension __ext_smlib2 =
+    {
+        name = "smlib2",
+        file = "smlib2.ext",
+    #if defined AUTOLOAD_EXTENSIONS
+        autoload = 1,
+    #else
+        autoload = 0,
+    #endif
+    #if defined REQUIRE_EXTENSIONS
+        required = 1,
+    #else
+        required = 0,
+    #endif
+    };
+#endif

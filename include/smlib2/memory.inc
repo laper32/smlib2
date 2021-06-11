@@ -30,6 +30,9 @@
 
 #define _smlib2_mem_included
 
+#define Pointer Address
+#define nullptr Address_Null
+
 methodmap Memory {
     /**
      * @brief Create a memory for the custom convention call.

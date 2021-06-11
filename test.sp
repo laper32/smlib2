@@ -25,4 +25,15 @@ public void OnPluginStart()
     Cvar.LockOnCvarHook2(cvar, "1", "1");
     Cvar.LockOnCvarHook3(cvar, "1", "1");
     Cvar.OnCheatSet(cvar, 1);
+
+    GameData gd; int offset=0; Pointer ptr = nullptr;
+    Engine.InitGameConfOffset(gd, offset, "");
+    Engine.InitGameConfAddress(gd, ptr, "")
+    Engine.InitGameConfKey(gd, "", "", 0)
+    Engine.InitSendPropOffset(offset, "", "")
+    Engine.InitDataPropOffset(offset, 0, "")
+    Engine.CreateEngineInterface(gd, "", "", ptr)
+
+    float mat[16];
+    Matrix3x4.Identity(mat);
 }
