@@ -11,7 +11,7 @@ methodmap String {
      * @param sBuffer           The string buffer.
      * @param iMaxlen           The string maxlen.
      */
-    public static RandomOut(char[] sBuffer, int iMaxlen) {
+    public static void RandomOut(char[] sBuffer, int iMaxlen) {
         // Terminator
         iMaxlen--;
 
