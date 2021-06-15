@@ -1573,7 +1573,7 @@ methodmap EntityEx {
         if (!bApply)
         {
             // Gets entity velocity
-            ToolsGetVelocity(entity, vVelocity);
+            GetVelocity(entity, vVelocity);
             
             // Stop here
             return;
@@ -1584,7 +1584,7 @@ methodmap EntityEx {
         {
             // Gets entity velocity
             static float vSpeed[3];
-            ToolsGetVelocity(entity, vSpeed);
+            GetVelocity(entity, vSpeed);
             
             // Add to the current
             AddVectors(vSpeed, vVelocity, vVelocity);
@@ -1605,10 +1605,6 @@ methodmap EntityEx {
         GetEntPropVector(entity, Prop_Data, "m_vecVelocity", vVelocity);
     }
 
-    public static void GetAbsOrigin(int entity, float vOrigin[3]) {
-
-    }
-
     /**
      * @brief Gets the speed of a entity.
      *
@@ -1619,5 +1615,643 @@ methodmap EntityEx {
         EntityEx.GetVelocity(entity, vVeclocity);
 
         return GetVectorLength(vVeclocity);
+    }
+
+    
+    /**
+     * @brief Gets the abs origin of a entity.
+     *
+     * @param entity            The entity index.
+     * @param vPosition         The origin output.
+     */
+    public static void GetAbsOrigin(int entity, float vPosition[3])
+    {
+        // Gets origin of the entity
+        GetEntPropVector(entity, Prop_Data, "m_vecAbsOrigin", vPosition);
+    }
+
+    /**
+    * @brief Gets the abs angle of a entity.
+    *
+    * @param entity            The entity index.
+    * @param vAngle            The angle output.
+    */
+    public static void GetAbsAngles(int entity, float vAngle[3])
+    {
+        // Gets angles of the entity
+        GetEntPropVector(entity, Prop_Data, "m_angAbsRotation", vAngle);
+    }
+
+    /**
+     * @brief Gets the max size vector of a entity.
+     *
+     * @param entity            The entity index.
+     * @param vMaxs            The max size vector output.
+     */
+    public static void GetMaxs(int entity, float vMaxs[3])
+    {
+        // Gets the max size vector of the entity.
+        GetEntPropVector(entity, Prop_Data, "m_vecMaxs", vMaxs);
+    }
+
+    /**
+     * @brief Gets the max weapons of a entity.
+     *
+     * @param entity            The entity index.
+     * @return                  The max weapon amount.
+     */
+    public static int GetMyWeapons(int entity)
+    {
+        // Gets weapons of the entity
+        return GetEntPropArraySize(entity, Prop_Data, "m_hMyWeapons");
+    }
+
+    /**
+    * @brief Gets weapon on the position of a entity.
+    *
+    * @param entity            The entity index.
+    * @param iPosition         The weapon position.
+    * @return                  The weapon index.
+    */
+    public static int GetWeapon(int entity, int iPosition)
+    {
+        // Gets weapon of the entity
+        return GetEntPropEnt(entity, Prop_Data, "m_hMyWeapons", iPosition);
+    }
+
+    /**
+     * @brief Gets the speed of a entity.
+     *
+     * @param entity            The entity index.
+     * @return                  The LMV value.
+     */
+    public static float GetLMV(int entity)
+    {
+        // Gets lagged movement value of the entity
+        return GetEntPropFloat(entity, Prop_Data, "m_flLaggedMovementValue");
+    }
+
+    /**
+     * @brief Sets the speed of a entity.
+     *
+     * @param entity            The entity index.
+     * @param flValue           The LMV value.
+     */
+    public static void SetLMV(int entity, float flValue)
+    {
+        // Sets lagged movement value of the entity
+        SetEntPropFloat(entity, Prop_Data, "m_flLaggedMovementValue", flValue);
+    }
+
+    /**
+     * @brief Gets the armor of a entity.
+     *
+     * @param entity            The entity index.
+     * @return                  The armor value.
+     */
+    public static int GetArmor(int entity)
+    {
+        // Gets armor of the entity
+        return GetEntProp(entity, Prop_Send, "m_ArmorValue");
+    }
+
+    /**
+     * @brief Sets the armor of a entity.
+     *
+     * @param entity            The entity index.
+     * @param iValue            The armor value.
+     */
+    public static void SetArmor(int entity, int iValue)
+    {
+        // Sets armor of the entity
+        SetEntProp(entity, Prop_Send, "m_ArmorValue", iValue);
+    }
+
+    /**
+     * @brief Gets the team of an entity.
+     * 
+     * @param entity            The entity index.
+     * @return                  The team index.
+     */
+    public static int GetTeam(int entity)
+    {
+        // Gets team on the entity
+        return GetEntProp(entity, Prop_Data, "m_iTeamNum");
+    }
+
+    /**
+     * @brief Sets the team of a entity.
+     *
+     * @param entity            The entity index.
+     * @param iValue            The team index.
+     */
+    public static void SetTeam(int entity, int iValue)
+    {
+        // Validate team
+        if (EntityEx.GetTeam(entity) <= TEAM_SPECTATOR) /// Fix, thanks to inklesspen!
+        {
+            // Sets team of the entity
+            ChangeClientTeam(entity, iValue);
+        }
+        else
+        {
+            #if defined _cstrike_included
+                // Switch team of the entity
+                CS_SwitchTeam(entity, iValue);
+            #else
+                #warning 'This function is game-specified. Please help us to update this part for manipulating specific game to let it works.'
+            #endif 
+        }
+    }
+
+    
+    /**
+     * @brief Gets nightvision values on a entity.
+     *
+     * @param entity            The entity index.
+     * @param ownership         If true, function will return the value of the entity ownership of nightvision.
+     *                          If false, function will return the value of the entity on/off state of the nightvision.
+     * @return                  True if aspect of nightvision is enabled on the entity, false if not.
+     */
+    public static bool GetNightVision(int entity, bool bOwnership = false)
+    {
+        // If ownership is true, then gets the ownership of nightvision on entity
+        return view_as<bool>(GetEntProp(entity, Prop_Send, bOwnership ? "m_bHasNightVision" : "m_bNightVisionOn"));
+    }
+
+    /**
+     * @brief Controls nightvision values on a entity.
+     *
+     * @param entity            The entity index.
+     * @param bEnable           Enable or disable an aspect of nightvision. (see ownership parameter)
+     * @param bOwnership        If true, enable will toggle the entity ownership of nightvision.
+     *                          If false, enable will toggle the entity on/off state of the nightvision.
+     */
+    public static void SetNightVision(int entity, bool bEnable, bool bOwnership = false)
+    {
+        // If ownership is true, then toggle the ownership of nightvision on entity
+        SetEntProp(entity, Prop_Send, bOwnership ? "m_bHasNightVision" : "m_bNightVisionOn", bEnable);
+    }
+
+    /**
+    * @brief Gets defuser value on a entity.
+    *
+    * @param entity            The entity index.
+    * @return                  The aspect of the entity defuser.
+    */
+    public static bool GetDefuser(int entity)
+    {
+        // Gets defuser on the entity
+        return view_as<bool>(GetEntProp(entity, Prop_Send, "m_bHasDefuser"));
+    }
+
+    /**
+     * @brief Controls defuser value on a entity.
+     *
+     * @param entity            The entity index.
+     * @param bEnable           Enable or disable an aspect of defuser.
+     */
+    public static void SetDefuser(int entity, bool bEnable)
+    {
+        // Sets defuser on the entity
+        SetEntProp(entity, Prop_Send, "m_bHasDefuser", bEnable);
+    }
+
+    /**
+     * @brief Gets helmet value on a entity.
+     *
+     * @param entity            The entity index.
+     * @return                  The aspect of the entity helmet.
+     */
+    public static bool GetHelmet(int entity)
+    {
+        // Gets helmet on the entity
+        return view_as<bool>(GetEntProp(entity, Prop_Send, "m_bHasHelmet"));
+    }
+
+    /**
+     * @brief Controls helmet value on a entity.
+     *
+     * @param entity            The entity index.
+     * @param bEnable           Enable or disable an aspect of helmet.
+     */
+    public static void SetHelmet(int entity, bool bEnable)
+    {
+        // Sets helmet on the entity
+        SetEntProp(entity, Prop_Send, "m_bHasHelmet", bEnable);
+    }
+
+    /**
+     * @brief Gets suit value on a entity.
+     *
+     * @param entity            The entity index.
+     * @return                  The aspect of the entity suit.
+     */
+    public static bool GetHeavySuit(int entity)
+    {
+        // Gets suit on the entity
+        return view_as<bool>(GetEntProp(entity, Prop_Send, "m_bHasHeavyArmor"));
+    }
+
+    /**
+     * @brief Controls suit value on a entity.
+     *
+     * @param entity            The entity index.
+     * @param bEnable           Enable or disable an aspect of suit.
+     */
+    public static void SetHeavySuit(int entity, bool bEnable)
+    {
+        // Sets suit on the entity
+        SetEntProp(entity, Prop_Send, "m_bHasHeavyArmor", bEnable);
+    }
+
+    /**
+     * @brief Gets the active weapon index of a entity.
+     *
+     * @param entity            The entity index.
+     * @return                  The weapon index.
+     */
+    public static int GetActiveWeapon(int entity)
+    {
+        // Gets weapon on the entity
+        return GetEntPropEnt(entity, Prop_Send, "m_hActiveWeapon");
+    }
+
+    /**
+     * @brief Sets the active weapon index of a entity.
+     *
+     * @param entity            The entity index.
+     * @param weapon            The weapon index.
+     */
+    /*void SetActiveWeapon(int entity, int weapon)
+    {
+        // Sets weapon on the entity    
+        SetEntPropEnt(entity, Prop_Send, "m_hActiveWeapon", weapon);
+    }*/
+
+    /**
+     * @brief Gets the addon bits of a entity.
+     *
+     * @param entity            The entity index.
+     * @return                  The addon bits.
+     */
+    public static int GetAddonBits(int entity)
+    {
+        // Gets addon value on the entity    
+        return GetEntProp(entity, Prop_Send, "m_iAddonBits");
+    }
+
+    /**
+     * @brief Sets the addon bits index of a entity.
+     *
+     * @param entity            The entity index.
+     * @param iValue            The addon bits.
+     */
+    public static void SetAddonBits(int entity, int iValue)
+    {
+        // Sets addon value on the entity    
+        SetEntProp(entity, Prop_Send, "m_iAddonBits", iValue);
+    }
+
+    /**
+     * @brief Gets the observer mode of a entity.
+     *
+     * @param entity            The entity index.
+     * @return                  The mode index.
+     */
+    public static int GetObserverMode(int entity)
+    {
+        // Gets obs mode on the entity    
+        return GetEntProp(entity, Prop_Data, "m_iObserverMode");
+    }
+
+    /**
+     * @brief Gets the observer target of a entity.
+     *
+     * @param entity            The entity index.
+     * @return                  The target index.
+     */
+    public static int GetObserverTarget(int entity)
+    {
+        // Gets obs mode on the entity    
+        return GetEntPropEnt(entity, Prop_Data, "m_hObserverTarget");
+    }
+
+    /**
+     * @brief Gets hitgroup value on a entity.
+     *
+     * @param entity            The entity index.
+     * @return                  The hitgroup index.
+     */
+    public static int GetHitGroup(int entity)
+    {
+        // Gets hitgroup on the entity    
+        return GetEntProp(entity, Prop_Send, "m_LastHitGroup");
+    }
+
+    /**
+     * @brief Gets or sets a entity score or deaths.
+     * 
+     * @param entity            The entity index.
+     * @param bScore            True to look at score, false to look at deaths.  
+     * @return                  The score or death count of the entity.
+     */
+    public static int GetScore(int entity, bool bScore = true)
+    {
+        // If score is true, then return entity score, otherwise return entity deaths
+        return GetEntProp(entity, Prop_Data, bScore ? "m_iFrags" : "m_iDeaths");
+    }
+
+    /**
+     * @brief Sets a entity score or deaths.
+     * 
+     * @param entity            The entity index.
+     * @param bScore            True to look at score, false to look at deaths.  
+     * @param iValue            The score/death amount.
+     */
+    public static void SetScore(int entity, bool bScore = true, int iValue = 0)
+    {
+        // If score is true, then set entity score, otherwise set entity deaths
+        SetEntProp(entity, Prop_Data, bScore ? "m_iFrags" : "m_iDeaths", iValue);
+    }
+
+    /**
+     * @brief Sets the gravity of a entity.
+     * 
+     * @param entity            The entity index.
+     * @param flValue           The gravity amount.
+     */
+    public static void SetGravity(int entity, float flValue)
+    {
+        // Sets gravity on the entity
+        SetEntPropFloat(entity, Prop_Data, "m_flGravity", flValue);
+    }
+
+    /**
+     * @brief Gets the money of an entity.
+     *
+     * @param entity            The entity index.
+     * 
+     * @return                  The money amount.
+     */
+    public static int GetMoney(int entity)
+    {
+        return GetEntProp(entity, Prop_Send, "m_iAccount");
+    }
+
+    /**
+     * @brief Sets the money of an entity.
+     *
+     * @param entity            The entity index.
+     * @param amount            The money value.
+     */
+    public static void SetMoney(int entity, int amount)
+    {
+        SetEntProp(entity, Prop_Send, "m_iAccount", amount);
+    }
+
+    /**
+     * @brief Sets the spotting of a entity.
+     * 
+     * @param entity            The entity index.
+     * @param bEnable           Enable or disable an aspect of spotting.
+     */
+    /* void SetSpot(int entity, bool bEnable)
+    {
+        // If retrieve if true, then reset variables
+        if (!bEnable)
+        {
+            // Sets value on the entity
+            SetEntData(entity, Player_Spotted, false, 1, true);
+            SetEntData(entity, Player_SpottedByMask, false, _, true);
+            SetEntData(entity, Player_SpottedByMask + 4, false, _, true); /// That is table
+            SetEntData(entity, Player_Spotted - 4, 0, _, true);
+        }
+        else
+        {
+            // Sets value on the entity
+            SetEntData(entity, Player_Spotted - 4, 9, _, true);
+        }
+    } */
+
+    /**
+     * @brief Sets the detecting of a entity.
+     * 
+     * @param entity            The entity index.
+     * @param bEnable           Enable or disable an aspect of detection.
+     */
+    public static void SetDetecting(int entity, bool bEnable)
+    {
+        // Sets glow on the entity
+        SetEntPropFloat(entity, Prop_Send, "m_flDetectedByEnemySensorTime", bEnable ? (GetGameTime() + 9999.0) : 0.0);
+    }
+
+    /**
+     * @brief Sets the hud of a entity.
+     * 
+     * @param entity            The entity index.
+     * @param bEnable           Enable or disable an aspect of hud.
+     */
+    public static void SetHud(int entity, bool bEnable, int iFlag)
+    {   
+        // bEnable ? (GetEntProp(entity, Prop_Send, "m_iHideHUD") & ~HIDEHUD_CROSSHAIR) : (GetEntProp(entity, Prop_Send, "m_iHideHUD") | HIDEHUD_CROSSHAIR)
+        // Sets hud type on the entity
+        SetEntProp(
+            entity, 
+            Prop_Send, 
+            "m_iHideHUD", 
+            bEnable ? (GetEntProp(entity, Prop_Send, "m_iHideHUD") & ~iFlag) : (GetEntProp(entity, Prop_Send, "m_iHideHUD") | iFlag)
+            );
+    }
+
+    /**
+     * @brief Sets the arms of a entity.
+     * 
+     * @param entity            The entity index.
+     * @param sModel            The model path.
+     */
+    public static void SetArm(int entity, char[] sModel)
+    {
+        // Sets arm on the entity
+        SetEntPropString(entity, Prop_Send, "m_szArmsModel", sModel);
+    }
+
+    /**
+     * @brief Sets the attack delay of a entity.
+     * 
+     * @param entity            The entity index.
+     * @param flValue           The speed amount.
+     */
+    public static void SetAttack(int entity, float flValue)
+    {
+        // Sets next attack on the entity
+        SetEntPropFloat(entity, Prop_Send, "m_flNextAttack", flValue);
+    }
+    
+    /**
+     * @brief Gets the effect of an entity.
+     * 
+     * @param entity            The entity index.
+     * @return                  The effect value.
+     */
+    public static int GetEffect(int entity)
+    {
+        // Gets effect on the entity    
+        return GetEntProp(entity, Prop_Send, "m_fEffects");
+    }
+
+    /**
+     * @brief Sets the effect of an entity.
+     * 
+     * @param entity            The entity index.
+     * @param iValue            The effect value.
+     */
+    public static void SetEffect(int entity, int iValue)
+    {
+        // Sets effect on the entity
+        SetEntProp(entity, Prop_Send, "m_fEffects", iValue);
+    }
+
+    /**
+     * @brief Sets the flashlight of a entity.
+     * 
+     * @param entity            The entity index.
+     * @param bEnable           Enable or disable an aspect of flashlight.
+     */
+    public static void SetFlashLight(int entity, bool bEnable)
+    {
+        // Sets flashlight on the entity
+        SetEffect(entity, bEnable ? (EntityEx.GetEffect(entity) ^ EF_DIMLIGHT) : 0);
+    }
+
+    /**
+     * @brief Sets the fov of a entity.
+     * 
+     * @param entity            The entity index.
+     * @param iValue            (Optional) The fov amount.
+     */
+    public static void SetFov(int entity, int iValue = 90)
+    {
+        // Sets fov on the entity
+        SetEntProp(entity, Prop_Send, "m_iFOV", iValue);
+        SetEntProp(entity, Prop_Send, "m_iDefaultFOV", iValue);
+    }
+
+    /**
+     * @brief Sets body/skin for the entity.
+     *
+     * @param entity            The entity index.
+     * @param iBody             (Optional) The body index.
+     * @param iSkin             (Optional) The skin index.
+     */
+    public static void SetTextures(int entity, int iBody = -1, int iSkin = -1)
+    {
+        if (iBody != -1) SetEntProp(entity, Prop_Send, "m_nBody", iBody);
+        if (iSkin != -1) SetEntProp(entity, Prop_Send, "m_nSkin", iSkin);
+    }
+
+    /**
+     * @brief Gets the activator of an entity.
+     *
+     * @param entity            The entity index.
+     * @return                  The activator index.
+     */
+    public static int GetActivator(int entity)
+    {
+        // Gets activator on the entity
+        return GetEntPropEnt(entity, Prop_Data, "m_pActivator");
+    }
+
+    /**
+     * @brief Sets the model of an entity.
+     * 
+     * @param entity            The entity index.
+     * @param iModel            The model index.
+     */
+    public static void SetModelIndex(int entity, int iModel)
+    {
+        // Sets index on the entity
+        SetEntProp(entity, Prop_Send, "m_nModelIndex", iModel);
+    }
+
+    /**
+     * @brief Gets the owner of an entity.
+     * 
+     * @param entity            The entity index.
+     * @return                  The owner index.
+     */
+    public static int GetOwner(int entity)
+    {
+        // Gets owner on the entity
+        return GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+    }
+
+    /**
+     * @brief Sets the owner of an entity.
+     * 
+     * @param entity            The entity index.
+     * @param owner             The owner index.
+     */
+    public static void SetOwner(int entity, int owner)
+    {
+        // Sets owner on the entity
+        SetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity", owner);
+    }
+
+    /**
+     * @brief Gets the parent of an entity.
+     * 
+     * @param entity            The entity index.
+     * @return                  The parent index.
+     */
+    public static int GetParent(int entity)
+    {
+        // Gets owner on the entity
+        return GetEntPropEnt(entity, Prop_Data, "m_pParent");
+    }
+
+    /**
+     * @brief Sets the parent of an entity.
+     * 
+     * @param entity            The entity index.
+     * @param parent            The parent index.
+     */
+    public static void SetParent(int entity, int parent)
+    {
+        // Sets parent on the entity
+        SetEntPropEnt(entity, Prop_Data, "m_pParent", parent);
+    }
+
+    /**
+     * @brief Gets the ragdoll index on a client.
+     *
+     * @param client            The client index.
+     * @return                  The ragdoll index.
+     */
+    public static int GetRagdollIndex(int client)
+    {
+        return GetEntPropEnt(client, Prop_Send, "m_hRagdoll");
+    }
+
+    /**
+     * @brief Gets the collision group on a client.
+     *
+     * @param client            The client index.
+     * @return                  The collision group on the client.
+     */
+    public static int GetCollisionGroup(int client)
+    {
+        return GetEntProp(client, Prop_Data, "m_CollisionGroup");
+    }
+
+    /**
+     * @brief Sets the collision group on a client.
+     *
+     * @param client            The client index.
+     * @param collisionGroup    The group flag.
+     */
+    public static void SetCollisionGroup(int client, int collisionGroup)
+    {
+        SetEntProp(client, Prop_Data, "m_CollisionGroup", collisionGroup);
     }
 }

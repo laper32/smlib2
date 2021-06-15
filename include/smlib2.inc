@@ -67,9 +67,9 @@
 #include <smlib2/player>
 #include <smlib2/message>
 #include <smlib2/tools>
-#include <smlib2/utility>
 #include <smlib2/hint>
 #include <smlib2/sound>
+#include <smlib2/utility>
 
 #if defined USE_DLL
     #include <smlib2/hashlib>

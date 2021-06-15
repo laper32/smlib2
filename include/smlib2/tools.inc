@@ -306,7 +306,7 @@ inline void ToolsSetTeam(int entity, int iValue)
             // Switch team of the entity
             CS_SwitchTeam(entity, iValue);
         #else
-            LogMessage("This function is game-specified. Please include specific game library to let it works.");
+            #warning 'This function is game-specified. Please help us to update this part for manipulating specific game to let it works.'
         #endif 
     }
 }

@@ -602,7 +602,7 @@ methodmap InstructorHud < Event
         char caption[256];
         for(int client = 1; client <= MaxClients; ++client)
         {
-            if(PlayerEx.IsExist(client))
+            if(PlayerEx.IsHuman(client))
             {
                 SetGlobalTransTarget(client);
                 VFormat(caption, 256, buffer, 2);
