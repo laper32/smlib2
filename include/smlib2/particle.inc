@@ -195,7 +195,9 @@ methodmap Particle < Effect {
     }
 
     /**
-     * @brief Precache the particle in the effect table. (for client)
+     * Precache the particle in the effect table. (for client)
+     *
+     * Note: This is considered as a more general method, for all Source Engine games.
      *
      * @param client            (Optional) The client index.
      * @param sEffect           The effect name.

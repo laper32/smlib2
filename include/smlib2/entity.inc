@@ -134,8 +134,7 @@ methodmap Entity __nullable__ {
         #if defined _sdktools_included
             return AcceptEntityInput(this.Index, input, activator, caller, outputid);
         #else
-            PrintToServer("<sdktools> not included. this function will not work.");
-            PrintToServer("Include <sdktools> to let this function works.")
+            #warning '<sdktools> is not included, this function will not work'
             return false;
         #endif
     }

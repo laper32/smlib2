@@ -109,7 +109,7 @@ methodmap Engine {
      */
     public static Address CreateEngineInterface(GameData gameConf, const char[] sConfigFile, char[] sKey, Address pAddress = Address_Null) {
         // Initialize intercace call
-        static Handle hInterface = null;
+        Handle hInterface = null;
         if (hInterface == null)  {
             // Starts the preparation of an SDK call
             StartPrepSDKCall(SDKCall_Static);
