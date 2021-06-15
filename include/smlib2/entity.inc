@@ -2120,7 +2120,7 @@ methodmap EntityEx {
     public static void SetFlashLight(int entity, bool bEnable)
     {
         // Sets flashlight on the entity
-        SetEffect(entity, bEnable ? (EntityEx.GetEffect(entity) ^ EF_DIMLIGHT) : 0);
+        EntityEx.SetEffect(entity, bEnable ? (EntityEx.GetEffect(entity) ^ EF_DIMLIGHT) : 0);
     }
 
     /**

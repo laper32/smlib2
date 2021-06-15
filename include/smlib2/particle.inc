@@ -161,7 +161,7 @@ methodmap Particle < Effect {
      * @param sEffect           The string to return effect in.
      * @param iMaxLen           The lenght of string.
      */
-    public static void GetParticleEffectName(int iIndex, char[] sEffect, int iMaxLen) {
+    public static void GetEffectName(int iIndex, char[] sEffect, int iMaxLen) {
         // Initialize the table index
         static int table = INVALID_STRING_TABLE;
         

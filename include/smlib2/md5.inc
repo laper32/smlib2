@@ -3,7 +3,7 @@
  *
  *  SourceMod Library 2
  *
- *  File:          MD5Impl.sp
+ *  File:          md5.sp
  *  Description:   MD5 algorithm.
  *
  *  Copyright (c) 2021 laper32.
