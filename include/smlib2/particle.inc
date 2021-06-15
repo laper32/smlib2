@@ -180,7 +180,7 @@ methodmap Particle < Effect {
      *
      * @return                  The table size.    
      */
-    public static int GetEffectCount(/*void*/) {
+    public static int GetEffectCount() {
         // Initialize the table index
         static int table = INVALID_STRING_TABLE;
         

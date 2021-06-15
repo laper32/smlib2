@@ -3,7 +3,7 @@
  *
  *  SourceMod Library 2
  *
- *  File:          md5.sp
+ *  File:          MD5Impl.sp
  *  Description:   MD5 algorithm.
  *
  *  Copyright (c) 2021 laper32.
@@ -30,7 +30,7 @@
 
 #define _smlib2_md5_included
 
-methodmap MD5 {
+methodmap MD5Impl {
     public static void FF(int &a, int &b, int &c, int &d, int x, int s, int ac)
     {
         a += (((b) & (c))  | ((~b) & (d))) + x + ac;
@@ -63,79 +63,82 @@ methodmap MD5 {
         // 4bytes.
         int a = _buffer[0], b = _buffer[1], c = _buffer[2], d = _buffer[3];
 
-        MD5.FF(a, b, c, d, _input[ 0],  7, 0xd76aa478);
-        MD5.FF(d, a, b, c, _input[ 1], 12, 0xe8c7b756);
-        MD5.FF(c, d, a, b, _input[ 2], 17, 0x242070db);
-        MD5.FF(b, c, d, a, _input[ 3], 22, 0xc1bdceee);
-        MD5.FF(a, b, c, d, _input[ 4],  7, 0xf57c0faf);
-        MD5.FF(d, a, b, c, _input[ 5], 12, 0x4787c62a);
-        MD5.FF(c, d, a, b, _input[ 6], 17, 0xa8304613);
-        MD5.FF(b, c, d, a, _input[ 7], 22, 0xfd469501);
-        MD5.FF(a, b, c, d, _input[ 8],  7, 0x698098d8);
-        MD5.FF(d, a, b, c, _input[ 9], 12, 0x8b44f7af);
-        MD5.FF(c, d, a, b, _input[10], 17, 0xffff5bb1);
-        MD5.FF(b, c, d, a, _input[11], 22, 0x895cd7be);
-        MD5.FF(a, b, c, d, _input[12],  7, 0x6b901122);
-        MD5.FF(d, a, b, c, _input[13], 12, 0xfd987193);
-        MD5.FF(c, d, a, b, _input[14], 17, 0xa679438e);
-        MD5.FF(b, c, d, a, _input[15], 22, 0x49b40821);
+        MD5Impl.FF(a, b, c, d, _input[ 0],  7, 0xd76aa478);
+        MD5Impl.FF(d, a, b, c, _input[ 1], 12, 0xe8c7b756);
+        MD5Impl.FF(c, d, a, b, _input[ 2], 17, 0x242070db);
+        MD5Impl.FF(b, c, d, a, _input[ 3], 22, 0xc1bdceee);
+        MD5Impl.FF(a, b, c, d, _input[ 4],  7, 0xf57c0faf);
+        MD5Impl.FF(d, a, b, c, _input[ 5], 12, 0x4787c62a);
+        MD5Impl.FF(c, d, a, b, _input[ 6], 17, 0xa8304613);
+        MD5Impl.FF(b, c, d, a, _input[ 7], 22, 0xfd469501);
+        MD5Impl.FF(a, b, c, d, _input[ 8],  7, 0x698098d8);
+        MD5Impl.FF(d, a, b, c, _input[ 9], 12, 0x8b44f7af);
+        MD5Impl.FF(c, d, a, b, _input[10], 17, 0xffff5bb1);
+        MD5Impl.FF(b, c, d, a, _input[11], 22, 0x895cd7be);
+        MD5Impl.FF(a, b, c, d, _input[12],  7, 0x6b901122);
+        MD5Impl.FF(d, a, b, c, _input[13], 12, 0xfd987193);
+        MD5Impl.FF(c, d, a, b, _input[14], 17, 0xa679438e);
+        MD5Impl.FF(b, c, d, a, _input[15], 22, 0x49b40821);
 
-        MD5.GG(a, b, c, d, _input[ 1],  5, 0xf61e2562);
-        MD5.GG(d, a, b, c, _input[ 6],  9, 0xc040b340);
-        MD5.GG(c, d, a, b, _input[11], 14, 0x265e5a51);
-        MD5.GG(b, c, d, a, _input[ 0], 20, 0xe9b6c7aa);
-        MD5.GG(a, b, c, d, _input[ 5],  5, 0xd62f105d);
-        MD5.GG(d, a, b, c, _input[10],  9, 0x02441453);
-        MD5.GG(c, d, a, b, _input[15], 14, 0xd8a1e681);
-        MD5.GG(b, c, d, a, _input[ 4], 20, 0xe7d3fbc8);
-        MD5.GG(a, b, c, d, _input[ 9],  5, 0x21e1cde6);
-        MD5.GG(d, a, b, c, _input[14],  9, 0xc33707d6);
-        MD5.GG(c, d, a, b, _input[ 3], 14, 0xf4d50d87);
-        MD5.GG(b, c, d, a, _input[ 8], 20, 0x455a14ed);
-        MD5.GG(a, b, c, d, _input[13],  5, 0xa9e3e905);
-        MD5.GG(d, a, b, c, _input[ 2],  9, 0xfcefa3f8);
-        MD5.GG(c, d, a, b, _input[ 7], 14, 0x676f02d9);
-        MD5.GG(b, c, d, a, _input[12], 20, 0x8d2a4c8a);
+        MD5Impl.GG(a, b, c, d, _input[ 1],  5, 0xf61e2562);
+        MD5Impl.GG(d, a, b, c, _input[ 6],  9, 0xc040b340);
+        MD5Impl.GG(c, d, a, b, _input[11], 14, 0x265e5a51);
+        MD5Impl.GG(b, c, d, a, _input[ 0], 20, 0xe9b6c7aa);
+        MD5Impl.GG(a, b, c, d, _input[ 5],  5, 0xd62f105d);
+        MD5Impl.GG(d, a, b, c, _input[10],  9, 0x02441453);
+        MD5Impl.GG(c, d, a, b, _input[15], 14, 0xd8a1e681);
+        MD5Impl.GG(b, c, d, a, _input[ 4], 20, 0xe7d3fbc8);
+        MD5Impl.GG(a, b, c, d, _input[ 9],  5, 0x21e1cde6);
+        MD5Impl.GG(d, a, b, c, _input[14],  9, 0xc33707d6);
+        MD5Impl.GG(c, d, a, b, _input[ 3], 14, 0xf4d50d87);
+        MD5Impl.GG(b, c, d, a, _input[ 8], 20, 0x455a14ed);
+        MD5Impl.GG(a, b, c, d, _input[13],  5, 0xa9e3e905);
+        MD5Impl.GG(d, a, b, c, _input[ 2],  9, 0xfcefa3f8);
+        MD5Impl.GG(c, d, a, b, _input[ 7], 14, 0x676f02d9);
+        MD5Impl.GG(b, c, d, a, _input[12], 20, 0x8d2a4c8a);
 
-        MD5.HH(a, b, c, d, _input[ 5],  4, 0xfffa3942);
-        MD5.HH(d, a, b, c, _input[ 8], 11, 0x8771f681);
-        MD5.HH(c, d, a, b, _input[11], 16, 0x6d9d6122);
-        MD5.HH(b, c, d, a, _input[14], 23, 0xfde5380c);
-        MD5.HH(a, b, c, d, _input[ 1],  4, 0xa4beea44);
-        MD5.HH(d, a, b, c, _input[ 4], 11, 0x4bdecfa9);
-        MD5.HH(c, d, a, b, _input[ 7], 16, 0xf6bb4b60);
-        MD5.HH(b, c, d, a, _input[10], 23, 0xbebfbc70);
-        MD5.HH(a, b, c, d, _input[13],  4, 0x289b7ec6);
-        MD5.HH(d, a, b, c, _input[ 0], 11, 0xeaa127fa);
-        MD5.HH(c, d, a, b, _input[ 3], 16, 0xd4ef3085);
-        MD5.HH(b, c, d, a, _input[ 6], 23, 0x04881d05);
-        MD5.HH(a, b, c, d, _input[ 9],  4, 0xd9d4d039);
-        MD5.HH(d, a, b, c, _input[12], 11, 0xe6db99e5);
-        MD5.HH(c, d, a, b, _input[15], 16, 0x1fa27cf8);
-        MD5.HH(b, c, d, a, _input[ 2], 23, 0xc4ac5665);
+        MD5Impl.HH(a, b, c, d, _input[ 5],  4, 0xfffa3942);
+        MD5Impl.HH(d, a, b, c, _input[ 8], 11, 0x8771f681);
+        MD5Impl.HH(c, d, a, b, _input[11], 16, 0x6d9d6122);
+        MD5Impl.HH(b, c, d, a, _input[14], 23, 0xfde5380c);
+        MD5Impl.HH(a, b, c, d, _input[ 1],  4, 0xa4beea44);
+        MD5Impl.HH(d, a, b, c, _input[ 4], 11, 0x4bdecfa9);
+        MD5Impl.HH(c, d, a, b, _input[ 7], 16, 0xf6bb4b60);
+        MD5Impl.HH(b, c, d, a, _input[10], 23, 0xbebfbc70);
+        MD5Impl.HH(a, b, c, d, _input[13],  4, 0x289b7ec6);
+        MD5Impl.HH(d, a, b, c, _input[ 0], 11, 0xeaa127fa);
+        MD5Impl.HH(c, d, a, b, _input[ 3], 16, 0xd4ef3085);
+        MD5Impl.HH(b, c, d, a, _input[ 6], 23, 0x04881d05);
+        MD5Impl.HH(a, b, c, d, _input[ 9],  4, 0xd9d4d039);
+        MD5Impl.HH(d, a, b, c, _input[12], 11, 0xe6db99e5);
+        MD5Impl.HH(c, d, a, b, _input[15], 16, 0x1fa27cf8);
+        MD5Impl.HH(b, c, d, a, _input[ 2], 23, 0xc4ac5665);
 
-        MD5.II(a, b, c, d, _input[ 0],  6, 0xf4292244);
-        MD5.II(d, a, b, c, _input[ 7], 10, 0x432aff97);
-        MD5.II(c, d, a, b, _input[14], 15, 0xab9423a7);
-        MD5.II(b, c, d, a, _input[ 5], 21, 0xfc93a039);
-        MD5.II(a, b, c, d, _input[12],  6, 0x655b59c3);
-        MD5.II(d, a, b, c, _input[ 3], 10, 0x8f0ccc92);
-        MD5.II(c, d, a, b, _input[10], 15, 0xffeff47d);
-        MD5.II(b, c, d, a, _input[ 1], 21, 0x85845dd1);
-        MD5.II(a, b, c, d, _input[ 8],  6, 0x6fa87e4f);
-        MD5.II(d, a, b, c, _input[15], 10, 0xfe2ce6e0);
-        MD5.II(c, d, a, b, _input[ 6], 15, 0xa3014314);
-        MD5.II(b, c, d, a, _input[13], 21, 0x4e0811a1);
-        MD5.II(a, b, c, d, _input[ 4],  6, 0xf7537e82);
-        MD5.II(d, a, b, c, _input[11], 10, 0xbd3af235);
-        MD5.II(c, d, a, b, _input[ 2], 15, 0x2ad7d2bb);
-        MD5.II(b, c, d, a, _input[ 9], 21, 0xeb86d391);
+        MD5Impl.II(a, b, c, d, _input[ 0],  6, 0xf4292244);
+        MD5Impl.II(d, a, b, c, _input[ 7], 10, 0x432aff97);
+        MD5Impl.II(c, d, a, b, _input[14], 15, 0xab9423a7);
+        MD5Impl.II(b, c, d, a, _input[ 5], 21, 0xfc93a039);
+        MD5Impl.II(a, b, c, d, _input[12],  6, 0x655b59c3);
+        MD5Impl.II(d, a, b, c, _input[ 3], 10, 0x8f0ccc92);
+        MD5Impl.II(c, d, a, b, _input[10], 15, 0xffeff47d);
+        MD5Impl.II(b, c, d, a, _input[ 1], 21, 0x85845dd1);
+        MD5Impl.II(a, b, c, d, _input[ 8],  6, 0x6fa87e4f);
+        MD5Impl.II(d, a, b, c, _input[15], 10, 0xfe2ce6e0);
+        MD5Impl.II(c, d, a, b, _input[ 6], 15, 0xa3014314);
+        MD5Impl.II(b, c, d, a, _input[13], 21, 0x4e0811a1);
+        MD5Impl.II(a, b, c, d, _input[ 4],  6, 0xf7537e82);
+        MD5Impl.II(d, a, b, c, _input[11], 10, 0xbd3af235);
+        MD5Impl.II(c, d, a, b, _input[ 2], 15, 0x2ad7d2bb);
+        MD5Impl.II(b, c, d, a, _input[ 9], 21, 0xeb86d391);
 
         _buffer[0] += a;
         _buffer[1] += b;
         _buffer[2] += c;
         _buffer[3] += d;
     }
+}
+
+methodmap MD5 < MD5Impl {
     /**
     * Calculate the md5 hash of a string.
     *
@@ -188,7 +191,7 @@ methodmap MD5 {
                                 (input[ii    ]      );
                 }
                 // Transform
-                MD5.Transform(buf, update);
+                MD5Impl.Transform(buf, update);
                 mdi = 0;
             }
         }
@@ -241,7 +244,7 @@ methodmap MD5 {
                 }
 
                 // Transform
-                MD5.Transform(buf, update);
+                MD5Impl.Transform(buf, update);
 
                 mdi = 0;
             }
@@ -255,7 +258,7 @@ methodmap MD5 {
                         (input[ii    ]      ) ;
         }
 
-        MD5.Transform(buf, inx);
+        MD5Impl.Transform(buf, inx);
 
         int digest[16];
         for (i = 0, ii = 0; i < 4; ++i, ii += 4) 

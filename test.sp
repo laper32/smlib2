@@ -16,7 +16,7 @@ public void OnPluginStart()
     Base64.Decode("123", string(str));
     Base64.Decode("123", string(str));
     Base64.Decode("123", string(str));
-
+    MD5.Digest("", "", 0)
     Convert.SettingToBool("yes");
 
     ConVar cvar;
@@ -36,4 +36,11 @@ public void OnPluginStart()
 
     float mat[16];
     Matrix3x4.Identity(mat);
+    
+    Shake.Create(0, 0.0, 0.0, 0.0);
+
+    PlayerEx.CreateDeathIcon(0, 0, "")
+
+    ArrayList _arr;
+    ParamParseString(_arr, "", 0, ' ')
 }

@@ -3,8 +3,8 @@
  *
  *  SourceMod Library 2
  *
- *  File:          playermgr.sp
- *  Description:   Player Manager
+ *  File:          player.sp
+ *  Description:   Player.
  *
  *  Copyright (c) 2021 laper32.
  *
@@ -173,18 +173,6 @@ methodmap Player < Entity {
  */
 methodmap PlayerEx {
     /**
-     * @brief Gets whether the player is human.
-     *
-     * @param client            The client index.
-     * @param bAlive            (Optional) Set to true to validate that the client is alive, false to ignore.
-     *
-     * @return                  T/F.
-     */
-    public static bool IsPlayerHuman(int client, bool bAlive = true) {
-        return (PlayerEx.IsExist(client, bAlive) && !IsFakeClient(client));
-    }
-
-    /**
     * @brief Returns true if the player is connected and alive, false if not.
     *
     * @param client            The client index.
@@ -226,6 +214,18 @@ methodmap PlayerEx {
 
         // If client exist
         return true;
+    }
+
+    /**
+     * @brief Gets whether the player is human.
+     *
+     * @param client            The client index.
+     * @param bAlive            (Optional) Set to true to validate that the client is alive, false to ignore.
+     *
+     * @return                  T/F.
+     */
+    public static bool IsHuman(int client, bool bAlive = true) {
+        return (PlayerEx.IsExist(client, bAlive) && !IsFakeClient(client));
     }
 
     /**
@@ -327,5 +327,47 @@ methodmap PlayerEx {
             }
         }
         return iPlayer;
+    }
+
+    /**
+     * @brief Create a death icon.
+     * 
+     * @param userID            The user id who victim.
+     * @param attackerID        The user id who killed.
+     * @param sIcon             The icon name.
+     * @param bHead             (Optional) States the additional headshot icon.
+     * @param bPenetrated       (Optional) Number of objects shot penetrated before killing target.
+     * @param bRevenge          (Optional) Killer get revenge on victim with this kill.
+     * @param bDominated        (Optional) Did killer dominate victim with this kill.
+     * @param assisterID        (Optional) The user id who assisted in the kill.
+     */
+    public static void CreateDeathIcon(
+        int userID,                 int attackerID,         char[] sIcon,               bool bHead = false, 
+        bool bPenetrated = false,   bool bRevenge = false,  bool bDominated = false,    int assisterID = 0)
+    {
+        // Creates and send custom death icon
+        Event hEvent = CreateEvent("player_death");
+        if (hEvent != null)
+        {
+            // Sets event properties
+            hEvent.SetInt("userid", userID);
+            hEvent.SetInt("attacker", attackerID);
+            hEvent.SetInt("assister", assisterID);
+            hEvent.SetString("weapon", sIcon);
+            hEvent.SetBool("headshot", bHead);
+            hEvent.SetBool("penetrated", bPenetrated);
+            hEvent.SetBool("revenge", bRevenge);
+            hEvent.SetBool("dominated", bDominated);
+
+            // i = client index
+            for (int i = 1; i <= MaxClients; i++)
+            {
+                // Send fake event
+                if (PlayerEx.IsHuman(i, false)) hEvent.FireToClient(i);
+            }
+            
+            // Close it
+            hEvent.Cancel();
+        }
     }
 }

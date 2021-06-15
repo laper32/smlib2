@@ -677,3 +677,62 @@ methodmap HudMsg < Message {
         HudMsg.ToMultiple(clients, total, channel, message);
     }
 }
+
+methodmap Shake {
+    /**
+     * @brief Shake a client screen with specific parameters.
+     * 
+     * @param client            The client index.
+     * @param flAmplitude       The amplitude of shake.
+     * @param flFrequency       The frequency of shake.
+     * @param flDurationTime    The duration of shake in the seconds.
+     */
+    public static void Create(int client, float flAmplitude, float flFrequency, float flDurationTime)
+    {
+        // Create message
+        Protobuf hShake = view_as<Protobuf>(StartMessageOne("Shake", client));
+
+        // Validate message
+        if (hShake != null)
+        {
+            // Write shake information to message handle
+            hShake.SetInt("command", 0);
+            hShake.SetFloat("local_amplitude", flAmplitude);
+            hShake.SetFloat("frequency", flFrequency);
+            hShake.SetFloat("duration", flDurationTime);
+
+            // End usermsg and send to the client
+            EndMessage();
+        }
+    }
+}
+
+methodmap Fade {
+    /**
+     * @brief Fade a client screen with specific parameters.
+     * 
+     * @param client            The client index.
+     * @param flDuration        The duration of fade in the seconds.
+     * @param flHoldTime        The holding time of fade in the seconds.
+     * @param iFlags            The bits with some flags.
+     * @param vColor            The array with RGB color.
+     */
+    public static void Create(int client, float flDuration, float flHoldTime, int iFlags, int vColor[4])
+    {
+        // Create message
+        Protobuf hFade = view_as<Protobuf>(StartMessageOne("Fade", client));
+
+        // Validate message
+        if (hFade != null)
+        {
+            // Write shake information to message handle
+            hFade.SetInt("duration", RoundToNearest(flDuration * 1000.0)); 
+            hFade.SetInt("hold_time", RoundToNearest(flHoldTime * 1000.0)); 
+            hFade.SetInt("flags", iFlags); 
+            hFade.SetColor("clr", vColor); 
+
+            // End usermsg and send to the client
+            EndMessage();
+        }
+    }
+}

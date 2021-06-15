@@ -160,7 +160,7 @@ inline int ParamParseString(ArrayList &arrayBuffer, char[] sParamString, int iMa
     }
 
     // Checks if string has incorrect quotes
-    int iQuotes = CountCharInString(sParamString, '"');
+    int iQuotes = StringEx.CountOccurence(sParamString, '"');
     if (iQuotes & 1) /// Is odd ?
     {
         strcopy(sParamString, iMaxLen, sParamError[PARAM_ERROR_MISSING_QUOTES]);
@@ -188,7 +188,7 @@ inline int ParamParseString(ArrayList &arrayBuffer, char[] sParamString, int iMa
             TrimString(sValue[i]);
             
             // Checks if string has incorrect quotes
-            iQuotes = CountCharInString(sValue[i], '"');
+            iQuotes = StringEx.CountOccurence(sValue[i], '"');
             if (iQuotes & 1) /// Is odd ?
             {
                 strcopy(sParamString, iMaxLen, sParamError[PARAM_ERROR_MISSING_QUOTES]);
@@ -276,50 +276,6 @@ inline bool StrContain(char[] sBuffer, char[] sSource, char cSeparator)
     
     // Return on unsuccess
     return false;
-}
-
-/**
- * @brief Finds the amount of all occurrences of a character in a string.
- *
- * @param sBuffer           Input string buffer.
- * @param cSymbol           The character to search for.
- * @return                  The amount of characters in the string, or -1 if the characters were not found.
- */
-inline int CountCharInString(char[] sBuffer, char cSymbol)
-{
-    // Initialize index
-    int iCount;
-    
-    // i = char index
-    int iLen = strlen(sBuffer);
-    for (int i = 0; i < iLen; i++) 
-    {
-        // Validate char
-        if (sBuffer[i] == cSymbol)
-        {
-            // Increment amount
-            iCount++;
-        }
-    }
-
-    // Return amount
-    return iCount ? iCount : -1;
-}
-
-/**
- * @brief Converts uppercase chars in the string to lowercase chars.
- *
- * @param sBuffer           Input string buffer.
- */
-inline void StringToLower(char[] sBuffer)
-{
-    // i = char index
-    int iLen = strlen(sBuffer);
-    for (int i = 0; i < iLen; i++) 
-    {
-        // Character to convert
-        sBuffer[i] = CharToLower(sBuffer[i]);
-    }
 }
 
 /**

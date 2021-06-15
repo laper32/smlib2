@@ -1491,6 +1491,46 @@ methodmap Entity __nullable__ {
  */
 methodmap EntityEx {
     /**
+     * @brief Ignites the entity on a fire.
+     * 
+     * @param entity            The entity index. 
+     * @param flDurationTime    The number of seconds to set on a fire.
+     */
+    public static void Ignite(int entity, float flDurationTime)
+    {
+        // Validate duration
+        if (flDurationTime > 0.0) 
+        {
+            // Put fire on it
+            IgniteEntity(entity, flDurationTime);
+        }
+    }
+
+    /**
+     * @brief Extinguishes the entity that is on a fire.
+     * 
+     * @param entity            The entity index. 
+     */
+    public static void Extinguish(int entity)
+    {
+        // Validate fire entity
+        int iFire = GetEntPropEnt(entity, Prop_Data, "m_hEffectEntity");
+        if (IsValidEdict(iFire))
+        {
+            // Make sure the entity is a flame, so we can extinguish it
+            static char sClassname[SMALL_LINE_LENGTH];
+            GetEdictClassname(iFire, sClassname, sizeof(sClassname));
+            
+            // Validate classname
+            if (!strcmp(sClassname, "entityflame", false))
+            {
+                // Reduce entity's lifetime 
+                SetEntPropFloat(iFire, Prop_Data, "m_flLifetime", 0.0);
+            }
+        }
+    }
+
+    /**
      * @brief Gets the health of a entity.
      *
      * @param entity            The entity index.

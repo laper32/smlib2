@@ -3,7 +3,7 @@
  *
  *  SourceMod Library 2
  *
- *  File:          utils.sp
+ *  File:          utility.sp
  *  Description:   Utilities, used for storing non-classfied functions.
  *
  *  Copyright (c) 2021 laper32.
@@ -31,6 +31,23 @@
 
 methodmap UTIL {
     /**
+     * @brief Remove the entity from a world after some delay.
+     * 
+     * @param entity            The entity index. 
+     * @param flDelayTime       The number of seconds to kill an entity.
+     */
+    public static void RemoveEntity(int entity, float flDelayTime) {
+        // Initialize flags char
+        char sFlags[SMALL_LINE_LENGTH];
+        FormatEx(sFlags, sizeof(sFlags), "OnUser1 !self:Kill::%f:1", flDelayTime);
+        
+        // Sets modified flags on the entity
+        SetVariantString(sFlags);
+        AcceptEntityInput(entity, "AddOutput");
+        AcceptEntityInput(entity, "FireUser1");
+    }
+
+    /**
      * @brief Create a train entity.
      * 
      * @param sClassname        The classname string.
@@ -43,7 +60,9 @@ methodmap UTIL {
      *
      * @return                  The entity index.                       
      */
-    public static int CreateTrain(char[] sClassname, float vPosition[3], float vAngle[3], char[] sPath, char[] sSpeed, char[] sSound = "", int iFlags = 0) {
+    public static int CreateTrain(
+        char[] sClassname,  float vPosition[3],     float vAngle[3],  char[] sPath,
+        char[] sSpeed,      char[] sSound = "",     int iFlags = 0) {
         // Create a train entity
         int entity = CreateEntityByName("func_tracktrain"); 
         
@@ -51,7 +70,7 @@ methodmap UTIL {
         if (entity != -1)
         {
             // Initialize flag char
-            static char sFlags[SMALL_LINE_LENGTH];
+            char sFlags[SMALL_LINE_LENGTH];
             IntToString(iFlags, sFlags, sizeof(sFlags));
 
             // Dispatch main values of the entity
@@ -97,7 +116,7 @@ methodmap UTIL {
         if (entity != -1)
         {
             // Initialize flag char
-            static char sFlags[SMALL_LINE_LENGTH];
+            char sFlags[SMALL_LINE_LENGTH];
             IntToString(iFlags, sFlags, sizeof(sFlags));
 
             // Dispatch main values of the entity
@@ -137,7 +156,7 @@ methodmap UTIL {
         if (entity != -1)
         {
             // Initialize flag char
-            static char sFlags[SMALL_LINE_LENGTH];
+            char sFlags[SMALL_LINE_LENGTH];
             IntToString(iFlags, sFlags, sizeof(sFlags));
 
             // Dispatch main values of the entity
@@ -177,7 +196,7 @@ methodmap UTIL {
         if (entity != -1)
         {
             // Initialize flag char
-            static char sFlags[SMALL_LINE_LENGTH];
+            char sFlags[SMALL_LINE_LENGTH];
             IntToString(iFlags, sFlags, sizeof(sFlags));
         
             // Dispatch main values of the entity
@@ -221,7 +240,7 @@ methodmap UTIL {
         if (entity != -1)
         {
             // Initialize flag char
-            static char sFlags[SMALL_LINE_LENGTH];
+            char sFlags[SMALL_LINE_LENGTH];
             IntToString(iFlags, sFlags, sizeof(sFlags));
 
             // Dispatch main values of the entity
@@ -293,12 +312,12 @@ methodmap UTIL {
      *
      * @return                  The entity index.
      */
-    public static int CreateSmoke(  int parent = -1, float vPosition[3] = NULL_VECTOR, float vAngle[3] = NULL_VECTOR, 
-                                    char[] sAttach = "", char[] sSpreadBase = "100", char[] sSpreadSpeed = "70", 
-                                    char[] sSpeed = "80", char[] sStartSize = "200", char[] sEndSize = "2", 
-                                    char[] sDensity = "30", char[] sLength = "400", char[] sTwist = "20", 
-                                    char[] sColor, char[] sTransparency, char[] sSpriteName, 
-                                    float flRemoveTime = 0.0, float flDurationTime = 0.0) {
+    public static int CreateSmoke(  int parent = -1,            float vPosition[3] = NULL_VECTOR,   float vAngle[3] = NULL_VECTOR, 
+                                    char[] sAttach = "",        char[] sSpreadBase = "100",         char[] sSpreadSpeed = "70", 
+                                    char[] sSpeed = "80",       char[] sStartSize = "200",          char[] sEndSize = "2", 
+                                    char[] sDensity = "30",     char[] sLength = "400",             char[] sTwist = "20", 
+                                    char[] sColor,              char[] sTransparency,               char[] sSpriteName, 
+                                    float flRemoveTime = 0.0,   float flDurationTime = 0.0) {
         // Create a smokestack entity
         int entity = CreateEntityByName("env_smokestack");
 
@@ -346,7 +365,7 @@ methodmap UTIL {
             if (flDurationTime > 0.0 && flRemoveTime > 0.0)
             {
                 // Initialize flags char
-                static char sFlags[SMALL_LINE_LENGTH];
+                char sFlags[SMALL_LINE_LENGTH];
                 FormatEx(sFlags, sizeof(sFlags), "OnUser2 !self:TurnOff::%f:1", flRemoveTime);
                 
                 // Sets modified flags on the entity
@@ -355,7 +374,7 @@ methodmap UTIL {
                 AcceptEntityInput(entity, "FireUser2");
                 
                 // Kill entity after delay
-                UTIL_RemoveEntity(entity, flDurationTime);
+                UTIL.RemoveEntity(entity, flDurationTime);
             }
         }
         
@@ -375,7 +394,9 @@ methodmap UTIL {
      *
      * @return                  The entity index.
      */
-    public static int CreateParticle(int parent = -1, float vPosition[3] = NULL_VECTOR, float vAngle[3] = NULL_VECTOR, char[] sAttach = "", char[] sEffect, float flDurationTime = 0.0) {
+    public static int CreateParticle(
+        int parent = -1,        float vPosition[3] = NULL_VECTOR,   float vAngle[3] = NULL_VECTOR, 
+        char[] sAttach = "",    char[] sEffect,                     float flDurationTime = 0.0) {
         // Create an attach particle entity
         int entity = CreateEntityByName("info_particle_system");
         
@@ -415,7 +436,7 @@ methodmap UTIL {
             if (flDurationTime > 0.0)
             {
                 // Kill entity after delay
-                UTIL_RemoveEntity(entity, flDurationTime);
+                UTIL.RemoveEntity(entity, flDurationTime);
             }
         }
         
@@ -440,9 +461,9 @@ methodmap UTIL {
      * @return                  The entity index.
      */
     public static int CreateExplosion(
-        float vPosition[3]/*,                                       float vAngle[3] = NULL_VECTOR*/, int iFlags = 0, 
-        char[] sSpriteName = "materials/sprites/xfireball3.vmt",    float flDamage = 0.0,           float flRadius = 0.0, 
-        char[] sWeapon = "",                                        int attacker = -1,              int inflictor = -1, 
+        float vPosition[3]/*,                                       float vAngle[3] = NULL_VECTOR*/,    int iFlags = 0, 
+        char[] sSpriteName = "materials/sprites/xfireball3.vmt",    float flDamage = 0.0,               float flRadius = 0.0, 
+        char[] sWeapon = "",                                        int attacker = -1,                  int inflictor = -1, 
         char[] sIgnore = "") {
         // Create an explosion entity
         int entity = CreateEntityByName("env_explosion");
@@ -451,7 +472,7 @@ methodmap UTIL {
         if (entity != -1)
         {
             // Initialize flag char
-            static char sFlags[SMALL_LINE_LENGTH];
+            char sFlags[SMALL_LINE_LENGTH];
             IntToString(iFlags, sFlags, sizeof(sFlags));
             
             // Dispatch main values of the entity
@@ -519,7 +540,7 @@ methodmap UTIL {
         if (entity != -1)
         {
             // Initialize variables
-            static char sDamage[SMALL_LINE_LENGTH];
+            char sDamage[SMALL_LINE_LENGTH];
             
             /*
             * The specified amount of damage will be halved. 
@@ -623,7 +644,7 @@ methodmap UTIL {
             if (flDurationTime > 0.0)
             {
                 // Kill entity after delay
-                UTIL_RemoveEntity(entity, flDurationTime);
+                UTIL.RemoveEntity(entity, flDurationTime);
             }
         }
 
@@ -748,7 +769,7 @@ methodmap UTIL {
             if (flDurationTime > 0.0)
             {
                 // Kill entity after delay
-                UTIL_RemoveEntity(entity, flDurationTime);
+                UTIL.RemoveEntity(entity, flDurationTime);
             }
         }
 
@@ -780,7 +801,7 @@ methodmap UTIL {
         int parent,     char[] sAttach,         char[] sRender = "5",           char[] sSound = "-1", 
         int iSkin = 0,  char[] sTextureName,    float vAngle[3] = NULL_VECTOR,  float vGibAngle[3] = NULL_VECTOR, 
         float iGibs,    float flDelay,          float flVelocity,               float flVariance, 
-        float flLife, float flDurationTime) {
+        float flLife,   float flDurationTime) {
         // Create a shooter entity
         int entity = CreateEntityByName("env_shooter");
 
@@ -788,7 +809,7 @@ methodmap UTIL {
         if (entity != -1)
         {
             // Initialize skin char
-            static char sSkin[SMALL_LINE_LENGTH];
+            char sSkin[SMALL_LINE_LENGTH];
             IntToString(iSkin, sSkin, sizeof(sSkin));
             
             // Dispatch main values of the entity
@@ -827,7 +848,7 @@ methodmap UTIL {
             }
 
             // Kill entity after delay
-            UTIL_RemoveEntity(entity, flDurationTime);
+            UTIL.RemoveEntity(entity, flDurationTime);
         }
         
         // Return on the success
@@ -876,11 +897,11 @@ methodmap UTIL {
         if (entity != -1)
         {
             // Initialize name char
-            static char sClassname[SMALL_LINE_LENGTH];
+            char sClassname[SMALL_LINE_LENGTH];
             FormatEx(sClassname, sizeof(sClassname), "%s%i", sName, entity);
 
             // Initialize flag char
-            static char sFlags[SMALL_LINE_LENGTH];
+            char sFlags[SMALL_LINE_LENGTH];
             IntToString(iFlags, sFlags, sizeof(sFlags));
             
             // Dispatch main values of the entity
@@ -925,7 +946,7 @@ methodmap UTIL {
             if (flDurationTime > 0.0)
             {
                 // Kill entity after delay
-                UTIL_RemoveEntity(entity, flDurationTime);
+                UTIL.RemoveEntity(entity, flDurationTime);
             }
             
             // Validate delay
@@ -988,7 +1009,7 @@ methodmap UTIL {
         if (entity != -1)
         {
             // Initialize flag char
-            static char sFlags[SMALL_LINE_LENGTH];
+            char sFlags[SMALL_LINE_LENGTH];
             IntToString(iFlags, sFlags, sizeof(sFlags));
 
             // Dispatch main values of the entity
@@ -1029,7 +1050,7 @@ methodmap UTIL {
             if (flDurationTime > 0.0)
             {
                 // Kill entity after delay
-                UTIL_RemoveEntity(entity, flDurationTime);
+                UTIL.RemoveEntity(entity, flDurationTime);
             }
         }
         
@@ -1061,7 +1082,7 @@ methodmap UTIL {
 
             if (flRemoveTime > 0.0)
             {
-                UTIL_RemoveEntity(entity, flRemoveTime);
+                UTIL.RemoveEntity(entity, flRemoveTime);
             }
         }
 
@@ -1079,7 +1100,9 @@ methodmap UTIL {
      * @param iBlue             (Optional) Amount of a blue (0-255)
      * @param iAlpha            (Optional) Amount of an alpha (0-255)
      */
-    public static void CreateGlowing(int entity, bool enableState, int iType = 0, int iRed = 255, int iGreen = 255, int iBlue = 255, int iAlpha = 255) {
+    public static void CreateGlowing(
+        int entity,         bool enableState,   int iType = 0, int iRed = 255, 
+        int iGreen = 255,   int iBlue = 255,    int iAlpha = 255) {
         // Validate offset
         static int iGlowOffset;
         if (!iGlowOffset && (iGlowOffset = GetEntSendPropOffs(entity, "m_clrGlow")) == -1)
@@ -1161,7 +1184,7 @@ methodmap UTIL {
 
 
         // Initialize name char
-        static char sClassname[SMALL_LINE_LENGTH];
+        char sClassname[SMALL_LINE_LENGTH];
 
         // Create an attach particle entity
         static int entity[2];
@@ -1172,7 +1195,7 @@ methodmap UTIL {
         if (entity[StaticEnd] != -1) /// Check the last entity ;)
         {
             // Gets the entity angle
-            static float vAngle[3]; static float vEmpty[3];
+            float vAngle[3], vEmpty[3];
             GetEntPropVector(parent, Prop_Data, "m_angAbsRotation", vAngle); 
             
             // Teleport the entity
@@ -1211,395 +1234,169 @@ methodmap UTIL {
             AcceptEntityInput(entity[StaticEnd], "Start");
 
             // Kill entities after delay
-            UTIL_RemoveEntity(entity[StaticEnd], flDurationTime);
-            UTIL_RemoveEntity(entity[StaticSrt], flDurationTime);
+            UTIL.RemoveEntity(entity[StaticEnd], flDurationTime);
+            UTIL.RemoveEntity(entity[StaticSrt], flDurationTime);
         }
     }
-}
 
-/**
- * @brief Shake a client screen with specific parameters.
- * 
- * @param client            The client index.
- * @param flAmplitude       The amplitude of shake.
- * @param flFrequency       The frequency of shake.
- * @param flDurationTime    The duration of shake in the seconds.
- **/
-inline void UTIL_CreateShakeScreen(int client, float flAmplitude, float flFrequency, float flDurationTime)
-{
-    // Create message
-    Protobuf hShake = view_as<Protobuf>(StartMessageOne("Shake", client));
-
-    // Validate message
-    if (hShake != null)
+    /**
+     * @brief Push a client with specific parameters.
+     * 
+     * @param client            The client index.
+     * @param vPosition         The force origin.
+     * @param vOrigin           The client origin.
+     * @param flDistance        The distance amount.
+     * @param flForce           The force amount.
+     * @param flRadius          The radius amount.
+     */
+    public static void CreatePhysForce(int client, float vPosition[3], float vOrigin[3], float flDistance, float flForce, float flRadius)
     {
-        // Write shake information to message handle
-        hShake.SetInt("command", 0);
-        hShake.SetFloat("local_amplitude", flAmplitude);
-        hShake.SetFloat("frequency", flFrequency);
-        hShake.SetFloat("duration", flDurationTime);
-
-        // End usermsg and send to the client
-        EndMessage();
-    }
-}
-
-/**
- * @brief Fade a client screen with specific parameters.
- * 
- * @param client            The client index.
- * @param flDuration        The duration of fade in the seconds.
- * @param flHoldTime        The holding time of fade in the seconds.
- * @param iFlags            The bits with some flags.
- * @param vColor            The array with RGB color.
- **/
-inline void UTIL_CreateFadeScreen(int client, float flDuration, float flHoldTime, int iFlags, int vColor[4])
-{
-    // Create message
-    Protobuf hFade = view_as<Protobuf>(StartMessageOne("Fade", client));
-
-    // Validate message
-    if (hFade != null)
-    {
-        // Write shake information to message handle
-        hFade.SetInt("duration", RoundToNearest(flDuration * 1000.0)); 
-        hFade.SetInt("hold_time", RoundToNearest(flHoldTime * 1000.0)); 
-        hFade.SetInt("flags", iFlags); 
-        hFade.SetColor("clr", vColor); 
-
-        // End usermsg and send to the client
-        EndMessage();
-    }
-}
-
-/**
- * @brief Push a client with specific parameters.
- * 
- * @param client            The client index.
- * @param vPosition         The force origin.
- * @param vOrigin           The client origin.
- * @param flDistance        The distance amount.
- * @param flForce           The force amount.
- * @param flRadius          The radius amount.
-**/
-inline void UTIL_CreatePhysForce(int client, float vPosition[3], float vOrigin[3], float flDistance, float flForce, float flRadius)
-{
-    // Calculate the velocity vector
-    static float vVelocity[3];
-    MakeVectorFromPoints(vPosition, vOrigin, vVelocity);
-    
-    // Calculate the push power
-    float flKnockBack = flForce * (1.0 - (flDistance / flRadius));
-
-    // Normalize the vector (equal magnitude at varying distances)
-    NormalizeVector(vVelocity, vVelocity);
-
-    // Apply the magnitude by scaling the vector
-    ScaleVector(vVelocity, SquareRoot((flKnockBack * flKnockBack) / ((vVelocity[0] * vVelocity[0]) + (vVelocity[1] * vVelocity[1]) + (vVelocity[2] * vVelocity[2])))); vVelocity[2] * flForce;
-
-    // Push the client
-    TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, vVelocity);
-}
-
-/**
- * @brief Send a hud message to the client screen with specific parameters.
- * 
- * @param hSync             New HUD synchronization object.
- * @param client            The client index.
- * @param x                 x coordinate, from 0 to 1. -1.0 is the center.
- * @param y                 y coordinate, from 0 to 1. -1.0 is the center.
- * @param holdTime          Number of seconds to hold the text.
- * @param r                 Red color value.
- * @param g                 Green color value.
- * @param b                 Blue color value.
- * @param a                 Alpha transparency value.
- * @param effect            0/1 causes the text to fade in and fade out. 2 causes the text to flash[?].
- * @param fxTime            Duration of chosen effect (may not apply to all effects).
- * @param fadeIn            Number of seconds to spend fading in.
- * @param fadeOut           Number of seconds to spend fading out.
- * @param sMessage          The message to send.
- **/
-#pragma deprecated 'Use \'HudMsg\' class instead.'
-inline void UTIL_CreateClientHud(Handle hSync, int client, float x, float y, float holdTime, int r, int g, int b, int a, int effect, float fxTime, float fadeIn, float fadeOut, char[] sMessage)
-{
-    // Sets HUD parameters for drawing text
-    SetHudTextParams(x, y, holdTime, r, g, b, a, effect, fxTime, fadeIn, fadeOut);
-    
-    // Print translated phrase to the client screen
-    ShowSyncHudText(client, hSync, sMessage);
-}
-
-/*_____________________________________________________________________________________________________________*/
-
-/**
- * @brief Precache models and also adding them into the downloading table.
- * 
- * @param sModel            The model path.
- *
- * @return                  The model index.
- **/
-inline int UTIL_PrecacheModel(char[] sModel)
-{
-    // Precache main model
-    int iModel = PrecacheModel(sModel, true);
-    
-    // Adding main model to the download list
-    AddFileToDownloadsTable(sModel);
-
-    // Initialize path char
-    static char sPath[PLATFORM_MAX_PATH];
-    static const char sType[3][SMALL_LINE_LENGTH] = { ".dx90.vtx", ".phy", ".vvd" };
-
-    // i = type index
-    for (int i = 0; i < sizeof(sType); i++)
-    {
-        // Adding other parts to download list
-        FormatEx(sPath, sizeof(sPath), "%s", sModel);
-        ReplaceString(sPath, sizeof(sPath), ".mdl", sType[i]);
-        if (!FileExists(sPath)) continue;
-        AddFileToDownloadsTable(sPath);
-    }
-    
-    // Return model index
-    return iModel;
-}
-
-/**
- * @brief Ignites the entity on a fire.
- * 
- * @param entity            The entity index. 
- * @param flDurationTime    The number of seconds to set on a fire.
- **/
-inline void UTIL_IgniteEntity(int entity, float flDurationTime)
-{
-    // Validate duration
-    if (flDurationTime > 0.0) 
-    {
-        // Put fire on it
-        IgniteEntity(entity, flDurationTime);
-    }
-}
-
-/**
- * @brief Extinguishes the entity that is on a fire.
- * 
- * @param entity            The entity index. 
- **/
-inline void UTIL_ExtinguishEntity(int entity)
-{
-    // Validate fire entity
-    int iFire = GetEntPropEnt(entity, Prop_Data, "m_hEffectEntity");
-    if (IsValidEdict(iFire))
-    {
-        // Make sure the entity is a flame, so we can extinguish it
-        static char sClassname[SMALL_LINE_LENGTH];
-        GetEdictClassname(iFire, sClassname, sizeof(sClassname));
+        // Calculate the velocity vector
+        float vVelocity[3];
+        MakeVectorFromPoints(vPosition, vOrigin, vVelocity);
         
-        // Validate classname
-        if (!strcmp(sClassname, "entityflame", false))
+        // Calculate the push power
+        float flKnockBack = flForce * (1.0 - (flDistance / flRadius));
+
+        // Normalize the vector (equal magnitude at varying distances)
+        NormalizeVector(vVelocity, vVelocity);
+
+        // Apply the magnitude by scaling the vector
+        ScaleVector(vVelocity, SquareRoot((flKnockBack * flKnockBack) / ((vVelocity[0] * vVelocity[0]) + (vVelocity[1] * vVelocity[1]) + (vVelocity[2] * vVelocity[2])))); vVelocity[2] * flForce;
+
+        // Push the client
+        TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, vVelocity);
+    }
+
+    /**
+     * Precache models and also adding them into the downloading table.
+     *
+     * Note: This is considered as a more general case, for all Source Engine games.
+     * 
+     * @param sModel            The model path.
+     *
+     * @return                  The model index.
+     */
+    public static int PrecacheModel(char[] sModel)
+    {
+        // Precache main model
+        int iModel = PrecacheModel(sModel, true);
+        
+        // Adding main model to the download list
+        AddFileToDownloadsTable(sModel);
+
+        // Initialize path char
+        char sPath[PLATFORM_MAX_PATH];
+        static const char sType[3][SMALL_LINE_LENGTH] = { ".dx90.vtx", ".phy", ".vvd" };
+
+        // i = type index
+        for (int i = 0; i < sizeof(sType); i++)
         {
-            // Reduce entity's lifetime 
-            SetEntPropFloat(iFire, Prop_Data, "m_flLifetime", 0.0);
+            // Adding other parts to download list
+            FormatEx(sPath, sizeof(sPath), "%s", sModel);
+            ReplaceString(sPath, sizeof(sPath), ".mdl", sType[i]);
+            if (!FileExists(sPath)) continue;
+            AddFileToDownloadsTable(sPath);
         }
-    }
-}
-
-/**
- * @brief Remove the entity from a world after some delay.
- * 
- * @param entity            The entity index. 
- * @param flDelayTime       The number of seconds to kill an entity.
- **/
-inline void UTIL_RemoveEntity(int entity, float flDelayTime)
-{
-    // Initialize flags char
-    static char sFlags[SMALL_LINE_LENGTH];
-    FormatEx(sFlags, sizeof(sFlags), "OnUser1 !self:Kill::%f:1", flDelayTime);
-    
-    // Sets modified flags on the entity
-    SetVariantString(sFlags);
-    AcceptEntityInput(entity, "AddOutput");
-    AcceptEntityInput(entity, "FireUser1");
-}
-
-/**
- * @brief Precache decals and also adding them into the downloading table.
- * 
- * @param sDecal            The decal path.
- *
- * @return                  The decal index.
- **/
-inline int UTIL_PrecacheDecal(char[] sDecal)
-{
-    // Precache main decal
-    int iDecal = PrecacheDecal(sDecal, true);
-    
-    // Adding main decal to the download list
-    AddFileToDownloadsTable(sDecal);
-
-    // Initialize path char
-    static char sPath[PLATFORM_MAX_PATH];
-    
-    // Adding other parts to download list
-    FormatEx(sPath, sizeof(sPath), "%s", sDecal);
-    ReplaceString(sPath, sizeof(sPath), ".vtf", ".vmt");
-    if (FileExists(sPath)) AddFileToDownloadsTable(sPath);
-    
-    // Return decal index
-    return iDecal;
-}
-
-/**
- * @brief Precache sounds and also adding them into the downloading table.
- * 
- * @param soundPath         The sound path.
- **/
-inline void UTIL_PrecacheSound(char[] sSound)
-{
-    // Initialize path char
-    static char sPath[PLATFORM_MAX_PATH];
-    
-    // Adding sound to the download list
-    FormatEx(sPath, sizeof(sPath), "sound/%s", sSound);
-    if (!FileExists(sPath)) return;
-    AddFileToDownloadsTable(sPath);
-    
-    // Initialize the table index
-    static int table = INVALID_STRING_TABLE;
-
-    // Validate table
-    if (table == INVALID_STRING_TABLE)
-    {
-        // Searches for a string table
-        table = FindStringTable("soundprecache");
+        
+        // Return model index
+        return iModel;
     }
 
-    // Precache sound
-    bool bSave = LockStringTables(false);
-    FormatEx(sPath, sizeof(sPath), "*/%s", sSound);
-    AddToStringTable(table, sPath);
-    LockStringTables(bSave);
-}
-
-/*_____________________________________________________________________________________________________________*/
-
-/**
- * @brief Find the trace hull intersection.
- *
- * @param hTrace            The trace handle.
- * @param vPosition         The entity position. 
- * @param vMins             The mins vector.
- * @param vMaxs             The maxs vector.
- * @param filter            The function to use as a filter.
- * @param data              The data value to pass through to the filter function.
- **/
-inline void UTIL_FindHullIntersection(Handle &hTrace, float vPosition[3], const float vMins[3], const float vMaxs[3], TraceEntityFilter filter, any data)
-{
-    // Initialize vectors
-    static float vEndPosition[3]; static float vHullPosition[3]; static float vHullEnd[3]; static float vHullBox[2][3];
-
-    // Returns the collision position of a trace result
-    TR_GetEndPosition(vHullEnd, hTrace);
-
-    // Gets vector from the given starting and ending positions
-    MakeVectorFromPoints(vPosition, vHullEnd, vHullEnd);
-    
-    // Apply the magnitude by scaling the vector
-    ScaleVector(vHullEnd, 2.0);
-    
-    // Adds two vectors
-    AddVectors(vHullEnd, vPosition, vHullEnd);
-    
-    // Create the end-point trace
-    Handle hTemp = TR_TraceRayFilterEx(vPosition, vHullEnd, (MASK_SHOT|CONTENTS_GRATE), RayType_EndPoint, filter, data);
-    
-    // Validate collisions
-    if (TR_DidHit(hTemp))
+    /**
+     * Precache decals and also adding them into the downloading table.
+     *
+     * Note: This is considered as a more general case, for all Source Engine games.
+     * 
+     * @param sDecal            The decal path.
+     *
+     * @return                  The decal index.
+     */
+    public static int PrecacheDecal(char[] sDecal)
     {
-        // Close and clone trace
-        delete hTrace;
-        hTrace = hTemp;
-        return;
+        // Precache main decal
+        int iDecal = PrecacheDecal(sDecal, true);
+        
+        // Adding main decal to the download list
+        AddFileToDownloadsTable(sDecal);
+
+        // Initialize path char
+        char sPath[PLATFORM_MAX_PATH];
+        
+        // Adding other parts to download list
+        FormatEx(sPath, sizeof(sPath), "%s", sDecal);
+        ReplaceString(sPath, sizeof(sPath), ".vtf", ".vmt");
+        if (FileExists(sPath)) AddFileToDownloadsTable(sPath);
+        
+        // Return decal index
+        return iDecal;
     }
 
-    // Unrolled loop for copy vectors
-    vHullBox[0] = vMins;
-    vHullBox[1] = vMaxs;
-    
-    // Initialize some variables
-    float flDistance = MAX_FLOAT; float flLength;
-    
-    // i, j, k = dimentions
-    for (int i, j, k = 0; i < 2; i++)
+    /**
+     * Precache sounds and also adding them into the downloading table.
+     * 
+     * Note: This is considered as a more general case, for all Source Engine games.
+     *
+     * @param soundPath         The sound path.
+     */
+    public static void PrecacheSound(char[] sSound)
     {
-        for (j = 0; j < 2; j++)
+        // Initialize path char
+        char sPath[PLATFORM_MAX_PATH];
+        
+        // Adding sound to the download list
+        FormatEx(sPath, sizeof(sPath), "sound/%s", sSound);
+        if (!FileExists(sPath)) return;
+        AddFileToDownloadsTable(sPath);
+        
+        // Initialize the table index
+        static int table = INVALID_STRING_TABLE;
+
+        // Validate table
+        if (table == INVALID_STRING_TABLE)
         {
-            for (k = 0; k < 2; k++)
-            {
-                // Calculate a hull position 
-                vHullPosition[0] = vHullEnd[0] + vHullBox[i][0];
-                vHullPosition[1] = vHullEnd[1] + vHullBox[j][1];
-                vHullPosition[2] = vHullEnd[2] + vHullBox[k][2];
-
-                // Create the end-point trace
-                delete hTemp;
-                hTemp = TR_TraceRayFilterEx(vPosition, vHullPosition, (MASK_SHOT|CONTENTS_GRATE), RayType_EndPoint, filter, data);
-                
-                // Validate collisions
-                if (TR_DidHit(hTemp))
-                {
-                    // Returns the collision position of a trace result
-                    TR_GetEndPosition(vEndPosition, hTemp);
-                    
-                    // Gets vector from the given starting and ending positions
-                    MakeVectorFromPoints(vPosition, vEndPosition, vEndPosition);
-
-                    // Store smallest length
-                    if ((flLength = GetVectorLength(vEndPosition)) < flDistance)
-                    {
-                        // Close and clone trace
-                        delete hTrace;
-                        hTrace = CloneHandle(hTemp);
-                        flDistance = flLength;
-                    }
-                }
-            }
+            // Searches for a string table
+            table = FindStringTable("soundprecache");
         }
+
+        // Precache sound
+        bool bSave = LockStringTables(false);
+        FormatEx(sPath, sizeof(sPath), "*/%s", sSound);
+        AddToStringTable(table, sPath);
+        LockStringTables(bSave);
     }
-    
-    // Close trace
-    delete hTemp;
-}
 
-/**
- * @brief Gets the velocity and it's angle from the two vectors.
- * 
- * @param vStartPosition    The starting position.
- * @param vEndPosition      The ending position.     
- * @param vAngle            The calculated angle's vector output.
- * @param vVelocity         The calculated velocity's vector output.
- * @param flSpeedScale      (Optional) The speed scale value.
- * @param verticalScale     (Optional) Set to true for reversing vertical velocity's value, false to reset.
- **/
-inline void UTIL_GetVelocityByAim(float vStartPosition[3], float vEndPosition[3], float vAngle[3], float vVelocity[3], float flSpeedScale = 1.0, bool verticalScale = false)
-{
-    // Calculate the velocity's vector
-    MakeVectorFromPoints(vStartPosition, vEndPosition, vVelocity);
-    
-    // Sets vertical scale
-    vVelocity[2] = verticalScale ? -vVelocity[2] : 0.0;
+    /**
+     * @brief Gets the velocity and it's angle from the two vectors.
+     * 
+     * @param vStartPosition    The starting position.
+     * @param vEndPosition      The ending position.     
+     * @param vAngle            The calculated angle's vector output.
+     * @param vVelocity         The calculated velocity's vector output.
+     * @param flSpeedScale      (Optional) The speed scale value.
+     * @param verticalScale     (Optional) Set to true for reversing vertical velocity's value, false to reset.
+     */
+    public static void GetVelocityByAim(
+        float vStartPosition[3],    float vEndPosition[3],      float vAngle[3], 
+        float vVelocity[3],         float flSpeedScale = 1.0,   bool verticalScale = false) {
+        // Calculate the velocity's vector
+        MakeVectorFromPoints(vStartPosition, vEndPosition, vVelocity);
+        
+        // Sets vertical scale
+        vVelocity[2] = verticalScale ? -vVelocity[2] : 0.0;
 
-    // Gets the vector's angle
-    GetVectorAngles(vVelocity, vAngle);
-    
-    // Reset angle vectors
-    vAngle[0] = vAngle[2] = 0.0;
+        // Gets the vector's angle
+        GetVectorAngles(vVelocity, vAngle);
+        
+        // Reset angle vectors
+        vAngle[0] = vAngle[2] = 0.0;
 
-    // Normalize the vector (equal magnitude at varying distances)
-    NormalizeVector(vVelocity, vVelocity);
+        // Normalize the vector (equal magnitude at varying distances)
+        NormalizeVector(vVelocity, vVelocity);
 
-    // Apply the magnitude by scaling the vector
-    ScaleVector(vVelocity, flSpeedScale);
+        // Apply the magnitude by scaling the vector
+        ScaleVector(vVelocity, flSpeedScale);
+    }
 }
 
 /**
@@ -1621,7 +1418,7 @@ inline void UTIL_GetVelocityByAim(float vStartPosition[3], float vEndPosition[3]
 inline bool UTIL_IsOnSamePlane(int entity, int target, float vPosition[3], TraceEntityFilter filter)
 {
     // Initialize vectors
-    static float vOrigin[3]; static float vMaxs[3];
+    float vOrigin[3], vMaxs[3];
 
     // Gets the target's bottom position
     GetEntPropVector(target, Prop_Data, "m_vecAbsOrigin", vOrigin);
@@ -1725,7 +1522,7 @@ inline bool UTIL_TraceRay(int entity, int target, float vStartPosition[3], float
 inline float UTIL_GetDistanceBetween(int client, int entity)
 {
     // Initialize vectors
-    static float vPosition[3]; static float vEndPosition[3]; static float vMins[3]; static float vMaxs[3];
+    float vPosition[3], vEndPosition[3], vMins[3], vMaxs[3];
 
     // Gets positions
     GetEntPropVector(client, Prop_Data, "m_vecAbsOrigin", vPosition);
@@ -1758,48 +1555,6 @@ inline float UTIL_GetDistanceBetween(int client, int entity)
 }
 
 // ______________________________________________________________________________________________ //
-
-/**
- * @brief Create a death icon.
- * 
- * @param userID            The user id who victim.
- * @param attackerID        The user id who killed.
- * @param sIcon             The icon name.
- * @param bHead             (Optional) States the additional headshot icon.
- * @param bPenetrated       (Optional) Number of objects shot penetrated before killing target.
- * @param bRevenge          (Optional) Killer get revenge on victim with this kill.
- * @param bDominated        (Optional) Did killer dominate victim with this kill.
- * @param assisterID        (Optional) The user id who assisted in the kill.
- */
-inline void UTIL_CreateDeathIcon(int userID, int attackerID, char[] sIcon, bool bHead = false, bool bPenetrated = false, bool bRevenge = false, bool bDominated = false, int assisterID = 0)
-{
-    // Creates and send custom death icon
-    Event hEvent = CreateEvent("player_death");
-    if (hEvent != null)
-    {
-        // Sets event properties
-        hEvent.SetInt("userid", userID);
-        hEvent.SetInt("attacker", attackerID);
-        hEvent.SetInt("assister", assisterID);
-        hEvent.SetString("weapon", sIcon);
-        hEvent.SetBool("headshot", bHead);
-        hEvent.SetBool("penetrated", bPenetrated);
-        hEvent.SetBool("revenge", bRevenge);
-        hEvent.SetBool("dominated", bDominated);
-
-        // i = client index
-        for (int i = 1; i <= MaxClients; i++)
-        {
-            // Send fake event
-            if (IsPlayerExist(i, false) && !IsFakeClient(i)) hEvent.FireToClient(i);
-        }
-        
-        // Close it
-        hEvent.Cancel();
-    }
-}
-
-// ______________________________________________________________________________________________ ??
 
 inline bool PlayersFilter(int entity, int contentsMask)
 {

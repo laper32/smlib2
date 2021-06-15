@@ -57,10 +57,11 @@
 #include <smlib2/convert>
 #include <smlib2/engine>
 #include <smlib2/math>
+#include <smlib2/matrix>
 #include <smlib2/memory>
+#include <smlib2/string>
 #include <smlib2/paramparser>
 #include <smlib2/fileparser>
-#include <smlib2/matrix>
 
 #include <smlib2/entity>
 #include <smlib2/player>
