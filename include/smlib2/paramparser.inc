@@ -111,7 +111,7 @@ inline int ParamParseString(ArrayList &arrayBuffer, char[] sParamString, int iMa
     /*__________________________________________________________________________*/
 
     // Initialize char array
-    static char sValue[SMALL_LINE_LENGTH][PLATFORM_LINE_LENGTH];
+    char sValue[SMALL_LINE_LENGTH][PLATFORM_LINE_LENGTH];
 
     // Position of separator character
     int iSeparatorPos = FindCharInString(sParamString, cSeparator, false);
@@ -305,9 +305,8 @@ inline void ArrayShuffle(ArrayList hArrayList)
 public int Sort_ByLength(int iIndex1, int iIndex2, ArrayList hArrayList, Handle hCustom)
 {
     // Gets strings
-    static char sBuffer1[PLATFORM_LINE_LENGTH]; 
+    char sBuffer1[PLATFORM_LINE_LENGTH], sBuffer2[PLATFORM_LINE_LENGTH];
     hArrayList.GetString(iIndex1, sBuffer1, sizeof(sBuffer1));
-    static char sBuffer2[PLATFORM_LINE_LENGTH];
     hArrayList.GetString(iIndex2, sBuffer2, sizeof(sBuffer2));
     
     // Gets string lengths

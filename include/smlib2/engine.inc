@@ -128,7 +128,7 @@ methodmap Engine {
         }
 
         // Gets the value of a key from a config
-        static char sInterface[NORMAL_LINE_LENGTH];
+        char sInterface[NORMAL_LINE_LENGTH];
         Engine.InitGameConfKey(gameConf, sKey, sInterface, sizeof(sInterface));
 
         // Gets the address of a given interface and key

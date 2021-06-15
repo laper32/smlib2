@@ -39,7 +39,7 @@ public void OnPluginStart()
     
     Shake.Create(0, 0.0, 0.0, 0.0);
 
-    EntityEx.SetEffect(0, 0)
+    EntityEx.SetFlashlight(0, 0)
 
     PlayerEx.CreateDeathIcon(0, 0, "")
 

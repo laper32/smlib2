@@ -220,7 +220,7 @@ methodmap Particle < Effect {
             // i = string index
             int iCount = GetStringTableNumStrings(table);
             for (int i = 0; i < iCount; i++) {
-                static char iD[SMALL_LINE_LENGTH];
+                char iD[SMALL_LINE_LENGTH];
                 IntToString(client, iD, sizeof(iD));
                 SetStringTableData(table, i, iD, sizeof(iD));
             }

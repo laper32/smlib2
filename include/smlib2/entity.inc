@@ -1518,7 +1518,7 @@ methodmap EntityEx {
         if (IsValidEdict(iFire))
         {
             // Make sure the entity is a flame, so we can extinguish it
-            static char sClassname[SMALL_LINE_LENGTH];
+            char sClassname[SMALL_LINE_LENGTH];
             GetEdictClassname(iFire, sClassname, sizeof(sClassname));
             
             // Validate classname

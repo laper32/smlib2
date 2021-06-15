@@ -57,7 +57,7 @@ methodmap FileParser {
         if (iSlash == -1) iSlash = 0; else iSlash++; /// For the root directory to get correct name
         
         // Dublicate value string
-        static char sTexture[PLATFORM_LINE_LENGTH];
+        char sTexture[PLATFORM_LINE_LENGTH];
         strcopy(sTexture, sizeof(sTexture), sPath);
 
         // If doesn't exist stop
@@ -77,7 +77,7 @@ methodmap FileParser {
         AddFileToDownloadsTable(sTexture);
         
         // Initialize variables
-        static char sTypes[4][SMALL_LINE_LENGTH] = { "$baseTexture", "$bumpmap", "$lightwarptexture", "$REFRACTTINTtexture" };
+        char sTypes[4][SMALL_LINE_LENGTH] = { "$baseTexture", "$bumpmap", "$lightwarptexture", "$REFRACTTINTtexture" };
         bool bFound[sizeof(sTypes)];
         int iShift;
         
@@ -170,7 +170,7 @@ methodmap FileParser {
         }
         
         // Extract value string
-        static char sPath[PLATFORM_LINE_LENGTH];
+        char sPath[PLATFORM_LINE_LENGTH];
         StrExtract(sPath, sFileName, 0, iFormat);
 
         // Concatenates one string onto another
@@ -195,7 +195,7 @@ methodmap FileParser {
             }
             
             // Initialize variables
-            static char sMaterial[PLATFORM_LINE_LENGTH]; int iNumMat; int iChar;
+            char sMaterial[PLATFORM_LINE_LENGTH]; int iNumMat; int iChar;
 
             // Find the total materials amount
             hFile.Seek(204, SEEK_SET);
@@ -269,7 +269,7 @@ methodmap FileParser {
                     }
 
                     // Initialize variables
-                    static char sFile[PLATFORM_LINE_LENGTH]; FileType hType;
+                    char sFile[PLATFORM_LINE_LENGTH]; FileType hType;
                     
                     // Search files in the directory
                     while (hDirectory.GetNext(sFile, sizeof(sFile), hType)) {
@@ -362,8 +362,8 @@ methodmap FileParser {
         AddFileToDownloadsTable(sFileName);
 
         // Initialize variables
-        static char sResource[PLATFORM_LINE_LENGTH];
-        static char sTypes[3][SMALL_LINE_LENGTH] = { ".dx90.vtx", ".phy", ".vvd" };
+        char sResource[PLATFORM_LINE_LENGTH];
+        char sTypes[3][SMALL_LINE_LENGTH] = { ".dx90.vtx", ".phy", ".vvd" };
 
         // Finds the first occurrence of a character in a string
         int iFormat = FindCharInString(sFileName, '.', true);
@@ -407,7 +407,7 @@ methodmap FileParser {
         }
         
         // Dublicate value string
-        static char sSound[PLATFORM_LINE_LENGTH];
+        char sSound[PLATFORM_LINE_LENGTH];
         strcopy(sSound, sizeof(sSound), sPath);
 
         /// @link https://wiki.alliedmods.net/Csgo_quirks#Fake_precaching_and_EmitSound
@@ -457,7 +457,7 @@ methodmap FileParser {
         }
         
         // Extract value string
-        static char sPath[PLATFORM_LINE_LENGTH];
+        char sPath[PLATFORM_LINE_LENGTH];
         StrExtract(sPath, sFileName, 0, iFormat);
 
         // Concatenates one string onto another
@@ -584,7 +584,7 @@ methodmap FileParser {
         AddFileToDownloadsTable(sFileName);
 
         // Extract value string
-        static char sPath[PLATFORM_LINE_LENGTH];
+        char sPath[PLATFORM_LINE_LENGTH];
         StrExtract(sPath, sFileName, 0, iFormat);
 
         // Concatenates one string onto another
