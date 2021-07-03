@@ -82,4 +82,25 @@ methodmap StringEx {
 
         sBuffer[iMaxlen] = '\0';
     }
+    
+    public static bool StrContainsEx(const char[] sStr, const char[] sSubStr)
+    {
+        int iLen = strlen(sStr);
+        int iSubLen = strlen(sSubStr);
+
+        if(iLen < iSubLen)
+        {
+            return false;
+        }
+
+        for(int x = 0; x < iSubLen; x++)
+        {
+            if(sStr[x] != sSubStr[x])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

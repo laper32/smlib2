@@ -71,22 +71,22 @@ methodmap SayText2 < Message {
     {
         if(UMType == UM_Protobuf)
         {
-            Protobuf SayText2 = view_as<Protobuf>(StartMessageOne("SayText2", client, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
-            SayText2.SetInt("ent_idx", 0);
-            SayText2.SetBool("chat", SkipNextChatCS ? false : ChatConSnd);
-            SayText2.SetString("msg_name", msg);
-            SayText2.AddString("params", "");
-            SayText2.AddString("params", "");
-            SayText2.AddString("params", "");
-            SayText2.AddString("params", "");
+            Protobuf hSayText2 = view_as<Protobuf>(StartMessageOne("SayText2", client, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
+            hSayText2.SetInt("ent_idx", 0);
+            hSayText2.SetBool("chat", SkipNextChatCS ? false : ChatConSnd);
+            hSayText2.SetString("msg_name", msg);
+            hSayText2.AddString("params", "");
+            hSayText2.AddString("params", "");
+            hSayText2.AddString("params", "");
+            hSayText2.AddString("params", "");
             EndMessage();
         }
         else
         {
-            BfWrite SayText = view_as<BfWrite>(StartMessageOne("SayText", client, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
-            SayText.WriteByte(0);
-            SayText.WriteByte(true);
-            SayText.WriteString(msg);
+            BfWrite hSayText = view_as<BfWrite>(StartMessageOne("SayText", client, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
+            hSayText.WriteByte(0);
+            hSayText.WriteByte(true);
+            hSayText.WriteString(msg);
             EndMessage();
         }
     }
@@ -206,7 +206,7 @@ methodmap Chat < SayText2 {
         char msg[256];
         VFormat(msg, 256, buffer, 3);
         Format(msg, 256, "%s%s%s", !SkipNextPrefix ? ChatPrefix : "", ChatSpaces, msg);
-        ProcessColorString(msg, 256);
+        Chat.ProcessColorString(msg, 256);
         SayText2.Build(client, msg);
         SkipNextChatCS = false;
         SkipNextPrefix = false;
@@ -216,18 +216,18 @@ methodmap Chat < SayText2 {
         char msg[256];
         VFormat(msg, 256, buffer, 4);
         Format(msg, 256, "%s%s%s", !SkipNextPrefix ? ChatPrefix : "", ChatSpaces, msg);
-        ProcessColorString(msg, 256);
+        Chat.ProcessColorString(msg, 256);
         
         if(UMType == UM_Protobuf)
         {
-            Protobuf SayText2 = view_as<Protobuf>(StartMessage("SayText2", clients, numClients, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
-            SayText2.SetInt("ent_idx", 0);
-            SayText2.SetBool("chat", SkipNextChatCS ? false : ChatConSnd);
-            SayText2.SetString("msg_name", msg);
-            SayText2.AddString("params", "");
-            SayText2.AddString("params", "");
-            SayText2.AddString("params", "");
-            SayText2.AddString("params", "");
+            Protobuf hSayText2 = view_as<Protobuf>(StartMessage("SayText2", clients, numClients, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
+            hSayText2.SetInt("ent_idx", 0);
+            hSayText2.SetBool("chat", SkipNextChatCS ? false : ChatConSnd);
+            hSayText2.SetString("msg_name", msg);
+            hSayText2.AddString("params", "");
+            hSayText2.AddString("params", "");
+            hSayText2.AddString("params", "");
+            hSayText2.AddString("params", "");
             EndMessage();
         }
         else
@@ -317,14 +317,14 @@ methodmap Chat < SayText2 {
 
         if(UMType == UM_Protobuf)
         {
-            Protobuf SayText2 = view_as<Protobuf>(StartMessageAll("SayText2", USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
-            SayText2.SetInt("ent_idx", 0);
-            SayText2.SetBool("chat", SkipNextChatCS ? false : ChatConSnd);
-            SayText2.SetString("msg_name", msg);
-            SayText2.AddString("params", "");
-            SayText2.AddString("params", "");
-            SayText2.AddString("params", "");
-            SayText2.AddString("params", "");
+            Protobuf hSayText2 = view_as<Protobuf>(StartMessageAll("SayText2", USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
+            hSayText2.SetInt("ent_idx", 0);
+            hSayText2.SetBool("chat", SkipNextChatCS ? false : ChatConSnd);
+            hSayText2.SetString("msg_name", msg);
+            hSayText2.AddString("params", "");
+            hSayText2.AddString("params", "");
+            hSayText2.AddString("params", "");
+            hSayText2.AddString("params", "");
             EndMessage();
         }
         else
@@ -584,17 +584,17 @@ methodmap HudMsg < Message {
         char message[512];
         VFormat(string(message), buffer, 4);
 
-        Protobuf HudMsg = view_as<Protobuf>(StartMessageOne("HudMsg", client, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
-        HudMsg.SetInt("channel", channel);
-        HudMsg.SetVector2D("pos", hudMsg_pos);
-        HudMsg.SetColor("clr1", hudMsg_clr1);
-        HudMsg.SetColor("clr2", hudMsg_clr2);
-        HudMsg.SetInt("effect", hudMsg_effect);
-        HudMsg.SetFloat("fade_in_time", hudMsg_fadeIn);
-        HudMsg.SetFloat("fade_out_time", hudMsg_fadeOut);
-        HudMsg.SetFloat("fx_time", hudMsg_fxTime);
-        HudMsg.SetFloat("hold_time", hudMsg_hold);
-        HudMsg.SetString("text", message);
+        Protobuf hHudMsg = view_as<Protobuf>(StartMessageOne("HudMsg", client, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
+        hHudMsg.SetInt("channel", channel);
+        hHudMsg.SetVector2D("pos", hudMsg_pos);
+        hHudMsg.SetColor("clr1", hudMsg_clr1);
+        hHudMsg.SetColor("clr2", hudMsg_clr2);
+        hHudMsg.SetInt("effect", hudMsg_effect);
+        hHudMsg.SetFloat("fade_in_time", hudMsg_fadeIn);
+        hHudMsg.SetFloat("fade_out_time", hudMsg_fadeOut);
+        hHudMsg.SetFloat("fx_time", hudMsg_fxTime);
+        hHudMsg.SetFloat("hold_time", hudMsg_hold);
+        hHudMsg.SetString("text", message);
         EndMessage();
     }
 
@@ -605,17 +605,17 @@ methodmap HudMsg < Message {
         char message[512];
         VFormat(string(message), buffer, 11);
 
-        Protobuf HudMsg = view_as<Protobuf>(StartMessageOne("HudMsg", client, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
-        HudMsg.SetInt("channel", channel);
-        HudMsg.SetFloat("hold_time", hold);
-        HudMsg.SetVector2D("pos", pos);
-        HudMsg.SetColor("clr1", color);
-        HudMsg.SetColor("clr2", hudMsg_clr2);
-        HudMsg.SetInt("effect", effect);
-        HudMsg.SetFloat("fx_time", fxTime);
-        HudMsg.SetFloat("fade_in_time", fadeIn);
-        HudMsg.SetFloat("fade_out_time", fadeOut);
-        HudMsg.SetString("text", message);
+        Protobuf hHudMsg = view_as<Protobuf>(StartMessageOne("HudMsg", client, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
+        hHudMsg.SetInt("channel", channel);
+        hHudMsg.SetFloat("hold_time", hold);
+        hHudMsg.SetVector2D("pos", pos);
+        hHudMsg.SetColor("clr1", color);
+        hHudMsg.SetColor("clr2", hudMsg_clr2);
+        hHudMsg.SetInt("effect", effect);
+        hHudMsg.SetFloat("fx_time", fxTime);
+        hHudMsg.SetFloat("fade_in_time", fadeIn);
+        hHudMsg.SetFloat("fade_out_time", fadeOut);
+        hHudMsg.SetString("text", message);
         EndMessage();
     }
 
@@ -623,17 +623,17 @@ methodmap HudMsg < Message {
         char message[512];
         VFormat(string(message), buffer, 5);
 
-        Protobuf HudMsg = view_as<Protobuf>(StartMessage("HudMsg", clients, numClients, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
-        HudMsg.SetInt("channel", channel);
-        HudMsg.SetVector2D("pos", hudMsg_pos);
-        HudMsg.SetColor("clr1", hudMsg_clr1);
-        HudMsg.SetColor("clr2", hudMsg_clr2);
-        HudMsg.SetInt("effect", hudMsg_effect);
-        HudMsg.SetFloat("fade_in_time", hudMsg_fadeIn);
-        HudMsg.SetFloat("fade_out_time", hudMsg_fadeOut);
-        HudMsg.SetFloat("fx_time", hudMsg_fxTime);
-        HudMsg.SetFloat("hold_time", hudMsg_hold);
-        HudMsg.SetString("text", message);
+        Protobuf hHudMsg = view_as<Protobuf>(StartMessage("HudMsg", clients, numClients, USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
+        hHudMsg.SetInt("channel", channel);
+        hHudMsg.SetVector2D("pos", hudMsg_pos);
+        hHudMsg.SetColor("clr1", hudMsg_clr1);
+        hHudMsg.SetColor("clr2", hudMsg_clr2);
+        hHudMsg.SetInt("effect", hudMsg_effect);
+        hHudMsg.SetFloat("fade_in_time", hudMsg_fadeIn);
+        hHudMsg.SetFloat("fade_out_time", hudMsg_fadeOut);
+        hHudMsg.SetFloat("fx_time", hudMsg_fxTime);
+        hHudMsg.SetFloat("hold_time", hudMsg_hold);
+        hHudMsg.SetString("text", message);
         EndMessage();
     }
 
@@ -641,17 +641,17 @@ methodmap HudMsg < Message {
         char message[512];
         VFormat(string(message), buffer, 3);
 
-        Protobuf HudMsg = view_as<Protobuf>(StartMessageAll("HudMsg", USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
-        HudMsg.SetInt("channel", channel);
-        HudMsg.SetVector2D("pos", hudMsg_pos);
-        HudMsg.SetColor("clr1", hudMsg_clr1);
-        HudMsg.SetColor("clr2", hudMsg_clr2);
-        HudMsg.SetInt("effect", hudMsg_effect);
-        HudMsg.SetFloat("fade_in_time", hudMsg_fadeIn);
-        HudMsg.SetFloat("fade_out_time", hudMsg_fadeOut);
-        HudMsg.SetFloat("fx_time", hudMsg_fxTime);
-        HudMsg.SetFloat("hold_time", hudMsg_hold);
-        HudMsg.SetString("text", message);
+        Protobuf hHudMsg = view_as<Protobuf>(StartMessageAll("HudMsg", USERMSG_RELIABLE|USERMSG_BLOCKHOOKS));
+        hHudMsg.SetInt("channel", channel);
+        hHudMsg.SetVector2D("pos", hudMsg_pos);
+        hHudMsg.SetColor("clr1", hudMsg_clr1);
+        hHudMsg.SetColor("clr2", hudMsg_clr2);
+        hHudMsg.SetInt("effect", hudMsg_effect);
+        hHudMsg.SetFloat("fade_in_time", hudMsg_fadeIn);
+        hHudMsg.SetFloat("fade_out_time", hudMsg_fadeOut);
+        hHudMsg.SetFloat("fx_time", hudMsg_fxTime);
+        hHudMsg.SetFloat("hold_time", hudMsg_hold);
+        hHudMsg.SetString("text", message);
         EndMessage();
     }
 

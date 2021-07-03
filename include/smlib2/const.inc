@@ -588,3 +588,11 @@ enum /*BoxBound*/
 /**
  * @endsection
  **/
+
+enum OS {
+    OS_Unknown,
+
+    OS_Windows,
+    OS_Linux,
+    OS_Mac
+}
