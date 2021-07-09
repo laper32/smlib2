@@ -29,12 +29,6 @@
 #endif
 #define _smlib2_player_included
 
-
-/**
- * A warpper for object-oriented programming for a player.
- *
- * @note You can treat it as something like: CBasePlayer/IGamePlayer/etc.
- */
 methodmap Player < Entity {
     public Player(int client) {
         return view_as<Player>(client);
@@ -166,11 +160,6 @@ methodmap Player < Entity {
     }
 }
 
-/**
- * An object-oriented warpper for manipulating players.
- *
- * Note: This is same as Player, but this aims to manipulating arbitrary entities.
- */
 methodmap PlayerEx {
     /**
     * @brief Returns true if the player is connected and alive, false if not.

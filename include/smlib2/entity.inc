@@ -30,13 +30,6 @@
 
 #define _smlib2_entity_included
 
-/**
- * A wrapper for object oriented programming of an entity.
- *
- * Note: This is only used for manipulating a single entity.
- * If you want to manipulating arbitrary entities, you should 
- * use EntityEx rather than this warpper.
- */
 methodmap Entity __nullable__ {
     /**
      * Constructor of the entity object.
@@ -1483,11 +1476,6 @@ methodmap Entity __nullable__ {
     }
 }
 
-/**
- * An Object-entity warpper for manipulating entities.
- *
- * @note This is same as Entity, but this is aimed for manipulating arbitrary entities.
- */
 methodmap EntityEx {
     /**
      * @brief Ignites the entity on a fire.

@@ -28,6 +28,7 @@
     #endinput
 #endif
 #define _smlib2_math_included
+
 methodmap Math {
     /**
      * @brief Returns the positive integer of the value.

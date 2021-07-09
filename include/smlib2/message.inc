@@ -250,7 +250,7 @@ methodmap Chat < SayText2 {
         
         for(int client = 1; client <= MaxClients; client++) {
             if (PlayerEx.Exist(client, false)) {
-                iTeam = ToolsGetTeam(client); // modify it later
+                iTeam = EntityEx.GetTeam(client); // modify it later
 
                 if (iTeam == team || (spec && iTeam == 1)) {
                     clients[total++] = client;
