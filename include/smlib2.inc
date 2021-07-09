@@ -72,35 +72,35 @@
 
 #include <smlib2/entity>
 #include <smlib2/player>
-// #include <smlib2/message>
-// #include <smlib2/tools>
-// #include <smlib2/hint>
-// #include <smlib2/sound>
-// #include <smlib2/utility>
+#include <smlib2/message>
+#include <smlib2/tools>
+#include <smlib2/hint>
+#include <smlib2/sound>
+#include <smlib2/utility>
 
-// #if defined USE_DLL
-//     #include <smlib2/hashlib>
-// #else
-//     #include <smlib2/md5>
-//     #include <smlib2/base64>
-// #endif
+#if defined USE_DLL
+    #include <smlib2/hashlib>
+#else
+    #include <smlib2/md5>
+    #include <smlib2/base64>
+#endif
 
 
 
-// #if defined USE_DLL
-//     public Extension __ext_smlib2 =
-//     {
-//         name = "smlib2",
-//         file = "smlib2.ext",
-//     #if defined AUTOLOAD_EXTENSIONS
-//         autoload = 1,
-//     #else
-//         autoload = 0,
-//     #endif
-//     #if defined REQUIRE_EXTENSIONS
-//         required = 1,
-//     #else
-//         required = 0,
-//     #endif
-//     };
-// #endif
+#if defined USE_DLL
+    public Extension __ext_smlib2 =
+    {
+        name = "smlib2",
+        file = "smlib2.ext",
+    #if defined AUTOLOAD_EXTENSIONS
+        autoload = 1,
+    #else
+        autoload = 0,
+    #endif
+    #if defined REQUIRE_EXTENSIONS
+        required = 1,
+    #else
+        required = 0,
+    #endif
+    };
+#endif
