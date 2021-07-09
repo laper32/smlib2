@@ -133,6 +133,10 @@ public void OnPluginStart()
     PrintToServer("%d", ent.m_hRagdoll);
     PrintToServer("%d", ent.m_pActivator);
 
+    Base64.Encode("123", string(_str), 1);
+    Base64.Decode("123", string(_str));
+    MD5.Digest("", "", 0);
+
     // char str[16];
     // Base64.Encode("123", string(str), 1);
     // Base64.Decode("123", string(str));
