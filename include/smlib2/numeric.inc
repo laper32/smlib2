@@ -3,8 +3,8 @@
  *
  *  SourceMod Library 2
  *
- *  File:          convert.sp
- *  Description:   Convertion with specific requirements
+ *  File:          numeric.sp
+ *  Description:   Numeric related
  *
  *  Copyright (c) 2021 laper32.
  *
@@ -24,26 +24,34 @@
  * ============================================================================
  */
 
-#if defined _smlib2_convert_included
+#if defined _smlib2_numeric_included
     #endinput
 #endif
 
-#define _smlib2_convert_included
+#define _smlib2_numeric_included
 
-methodmap Convert {
-    /**
-     * @brief Converts string of "yes/on", "no/off", "false/true", "1/0" to a boolean value.
-     * Always uses english as main language.
-     * 
-     * @param sOption           The string to be converted.
-     * @return                  True if string is equivalent to "yes", false otherwise.
-     */
-    public static bool SettingToBool(char[] sOption) {
-        return (
-        !strcmp(sOption, "yes",     false)      || 
-        !strcmp(sOption, "on",      false)      || 
-        !strcmp(sOption, "true",    false)      || 
-        !strcmp(sOption, "1",       false)
-        ) ? true : false;
+methodmap Numeric {
+    public static int HexToDec(const char[] hex)
+    {
+        int i, result, value;
+        while((value = Numeric.IsHexSymbol(hex[i++])) != -1)
+        {
+            result = result * 16 + value;
+        }
+        return result;
+    }
+    public static int IsHexSymbol(int ch)
+    {
+        if(!ch)
+            return -1;
+        
+        if('0' <= ch && ch <= '9')
+            return ch - '0';
+        
+        ch &= ~0x20;
+        if('A' <= ch && ch <= 'F')
+            return ch - 'A' + 10;
+        
+        return -1;
     }
 }

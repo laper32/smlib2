@@ -24,6 +24,9 @@
  * ============================================================================
  */
 
+// WARNING: This module is deprecated.
+// It will be removed in future releases.
+
 #if defined _smlib2_tools_included
 #endinput
 #endif
@@ -299,8 +302,12 @@ inline void ToolsSetTeam(int entity, int iValue)
     }
     else
     {
-        // Switch team of the entity
-        CS_SwitchTeam(entity, iValue); 
+        #if defined _cstrike_included
+            // Switch team of the entity
+            CS_SwitchTeam(entity, iValue);
+        #else
+            #warning 'This function is game-specified. Please help us to update this part for manipulating specific game to let it works.'
+        #endif 
     }
 }
 

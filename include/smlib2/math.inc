@@ -29,6 +29,61 @@
 #endif
 #define _smlib2_math_included
 
+methodmap Math {
+    /**
+     * @brief Returns the positive integer of the value.
+     *
+     * @param i1                The input value.
+     * @return                  The positive integer.
+     */
+    public static int abs(int i1) {
+        return (i1 ^ (i1 >> 31)) - (i1 >> 31);
+    }
+
+    /**
+     * @brief Returns the positive float of the value.
+     *
+     * @param i1                The input value.
+     * @return                  The positive float.
+     */
+    public static float fabs(float i1) {
+        return FloatAbs(i1);
+    }
+
+    public static any min(any i1, any i2) {
+        return min(i1, i2);
+    }
+
+    public static any max(any i1, any i2) {
+        return max(i1, i2);
+    }
+
+    public static any clamp(any val, any i1, any i2) {
+        return clamp(val, i1, i2);
+    }
+    
+    public static any overflow(any value, any i1, any i2) {
+        overflow(value, i1, i2);
+    }
+
+    public static float sqrt(any val) {
+        sqrt(val);
+    }
+
+    public static int GetPercentageInt(int value, int all) {
+        GetPercentageInt(value, all);
+    }
+
+    public static float GetPercentageFloat(float value, float all) {
+        GetPercentageFloat(value, all);
+    }
+
+    public static any mean(any[] _array) {
+        mean(_array);
+    }
+
+}
+
 /**
  * @brief Returns the positive integer of the value.
  *
@@ -123,7 +178,7 @@ inline float sqrt(any val)
  * @param all           Integer value
  * @return              An Integer value between 0 and 100 (inclusive).
  */
-inline int GerPercentageInt(int value, int all)
+inline int GetPercentageInt(int value, int all)
 {
     return RoundToNearest(float(value) / float(all) * 100.0);
 }

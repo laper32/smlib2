@@ -3,8 +3,8 @@
  *
  *  SourceMod Library 2
  *
- *  File:          playermgr.sp
- *  Description:   Player Manager
+ *  File:          player.sp
+ *  Description:   Player.
  *
  *  Copyright (c) 2021 laper32.
  *
@@ -29,227 +29,334 @@
 #endif
 #define _smlib2_player_included
 
-/**
- * @brief Gets whether the player is human.
- *
- * @param client            The client index.
- * @param bAlive            (Optional) Set to true to validate that the client is alive, false to ignore.
- *
- * @return                  T/F.
- */
-inline bool IsPlayerHuman(int client, bool bAlive = true)
-{
-    return (IsPlayerExist(client, bAlive) && !IsFakeClient(client));
-}
-
-/**
- * @brief Returns true if the player is connected and alive, false if not.
- *
- * @param client            The client index.
- * @param bAlive            (Optional) Set to true to validate that the client is alive, false to ignore.
- *  
- * @return                  True or false.
- **/
-inline bool IsPlayerExist(int client, bool bAlive = true)
-{
-    // If client isn't valid, then stop
-    if (client <= 0 || client > MaxClients)
-    {
-        return false;
+methodmap Player < Entity {
+    public Player(int client) {
+        return view_as<Player>(client);
     }
 
-    // If client isn't connected, then stop
-    if (!IsClientConnected(client))
-    {
-        return false;
-    }
-
-    // If client isn't in game, then stop
-    if (!IsClientInGame(client) || IsClientInKickQueue(client))
-    {
-        return false;
-    }
-
-    // If client is TV, then stop
-    if (IsClientSourceTV(client))
-    {
-        return false;
-    }
-
-    // If client isn't alive, then stop
-    if (bAlive && !IsPlayerAlive(client))
-    {
-        return false;
-    }
-
-    // If client exist
-    return true;
-}
-
-/**
- * @brief Returns whether a player is in a spesific group or not.
- * 
- * @note This is only works in default SourceMod Admin.
- * If you have your own management system, DO NOT USE THIS FUNCTION, OR YOU WILL GET INTO TROUBLE!
- *
- * @param client            The client index.
- * @param sGroup            The SourceMod group name to check.
- *
- * @return                  True or false.
- **/
-inline bool IsPlayerInGroup(int client, char[] sGroup)
-{
-    // Validate client
-    if (!IsPlayerExist(client, false))
-    {
-        return false;
-    }
-
-    /*********************************
-     *                               *
-     *   FLAG GROUP AUTHENTICATION   *
-     *                               *
-     *********************************/
-
-    // Finds a group by name
-    GroupId nGroup = FindAdmGroup(sGroup);
-    
-    // Validate group
-    if (nGroup == INVALID_GROUP_ID)
-    {
-        return false;
-    }
-     
-    // Retrieves a client AdminId
-    AdminId iD = GetUserAdmin(client);
-    
-    // Validate id
-    if (iD == INVALID_ADMIN_ID)
-    {
-        return false;
-    }
-
-    // Initialize group char
-    static char sGroupName[SMALL_LINE_LENGTH];
-
-    // Gets immunity level
-    int iImmunity = GetAdmGroupImmunityLevel(nGroup);
-    
-    // i = group index
-    int iSize = GetAdminGroupCount(iD);
-    for (int i = 0; i < iSize; i++)
-    {
-        // Gets group name
-        nGroup = GetAdminGroup(iD, i, sGroupName, sizeof(sGroupName));
-
-        // Validate groups
-        if (!strcmp(sGroup, sGroupName, false) || iImmunity <= GetAdmGroupImmunityLevel(nGroup))
-        {
-            return true;
+    property int UserId {
+        public get() {
+            return GetClientUserId(this.Index);
         }
     }
-    
-    // No groups or no match
-    return false;
-}
 
-/**
- * @brief Get players in the game.
- *
- * @param aliveOnly             Sets true to count alive only.
- * @param teamOnly              Sets true to count team only.
- * @param teamNum               Team specified.
- *
- * @return                      Players what have been counted.
- */
-inline int GetPlayers(bool aliveOnly, bool teamOnly, int teamNum)
-{
-    if (aliveOnly)
-    {
-        return (teamOnly) ? GetTeamAlives(teamNum) : GetTotalAlives();
-    }
-    else
-    {
-        return (teamOnly) ? GetTeamPlayers(teamNum) : GetTotalPlayers();
-    }
-}
-
-/**
- * @brief Gets total players in the game.
- *
- * @return                      Total players in the game.
- */
-inline int GetTotalPlayers()
-{
-    int iPlayer;
-
-    for (int client = 1; client <= MaxClients; client++)
-    {
-        if (IsPlayerExist(client, false)) 
-        {
-            iPlayer++;
+    property bool InBound {
+        public get() {
+            return (this.Index > 0 && this.Index <= MaxClients);
         }
     }
-    return iPlayer;
-}
 
-/**
- * @brief Gets total team players in the game.
- *
- * @param team                  Team number.
- *
- * @return                      Total team players in the game.
- */
-inline int GetTeamPlayers(int team)
-{
-    int iPlayer;
-
-    for (int client = 1; client <= MaxClients; client++)
-    {
-        if (IsPlayerExist(client, false) && (GetClientTeam(client) == team)) 
-        {
-            iPlayer++;
+    property bool Connected {
+        public get() {
+            return IsClientConnected(this.Index);
         }
     }
-    return iPlayer;
-}
 
-/**
- * @brief Gets total alive players in the game.
- *
- * @return                      Total alive players in the game.
- */
-inline int GetTotalAlives()
-{
-    int iPlayer;
-
-    for (int client = 1; client <= MaxClients; client++)
-    {
-        if (IsPlayerExist(client)) 
-        {
-            iPlayer++;
+    property bool InGame {
+        public get() {
+            return IsClientInGame(this.Index);
         }
     }
-    return iPlayer;
-}
 
-/**
- * @brief Gets total alive team players in the game.
- *
- * @param team                  Team number.
- *
- * @return                      Total alive team players in the game.
- */
-inline int GetTeamAlives(int team)
-{
-    int iPlayer;
-
-    for (int client = 1; client <= MaxClients; client++)
-    {
-        if (IsPlayerExist(client) && (GetClientTeam(client) == team)) 
-        {
-            iPlayer++;
+    property bool InKickQueue {
+        public get() {
+            return IsClientInKickQueue(this.Index);
         }
     }
-    return iPlayer;
+
+    property bool SourceTV {
+        public get() {
+            return IsClientSourceTV(this.Index);
+        }
+    }
+
+    property bool Alive {
+        public get() {
+            return IsPlayerAlive(this.Index);
+        }
+    }
+
+    property bool Fake {
+        public get() {
+            return IsFakeClient(this.Index);
+        }
+    }
+
+    property int Serial {
+        public get() {
+            return GetClientSerial(this.Index);
+        }
+    }
+
+    public int GetFromSerial(int serial) {
+        return GetClientFromSerial(serial);
+    }
+
+    public int GetFromUserId(int userid) {
+        return GetClientOfUserId(userid);
+    }
+
+    public bool IsExist(bool alive=true) {
+        if (!this.InBound) {
+            return false;
+        }
+
+        if (!this.Connected) {
+            return false;
+        }
+
+        if (!this.InGame || this.InKickQueue) {
+            return false;
+        }
+
+        if (this.SourceTV) {
+            return false;
+        }
+
+        if (alive && !this.Alive) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool IsHuman(bool alive=true) {
+        if (this.IsExist(alive)) {
+            if (!this.Fake) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void Kick(const char[] buffer="", any ...) {
+        char message[512];
+        VFormat(message, sizeof(message), buffer, 2);
+        KickClient(this.Index, message);
+    }
+
+    public void KickEx(const char[] buffer="", any ...) {
+        char message[512];
+        VFormat(message, sizeof(message), buffer, 2);
+        KickClientEx(this.Index, message);
+    }
+
+    property int m_iTeamNum {
+        public set(int val) {
+            // <= TEAM_SPECTATOR
+            if (this.m_iTeamNum <= TEAM_SPECTATOR) {
+                ChangeClientTeam(this.Index, val);
+            } else {
+                #if defined _cstrike_included
+                    CS_SwitchTeam(this.Index, val);
+                #elseif defined _tf2_stocks_included
+                    TF2_ChangeClientTeam(this.Index, view_as<TFTeam>(val));
+                #else
+                    PrintToServer("No game-specific library found.");
+                    PrintToServer("You must include game-specific library to let this setter works.");
+                #endif
+            }
+        }
+    }
+}
+
+methodmap PlayerEx {
+    /**
+    * @brief Returns true if the player is connected and alive, false if not.
+    *
+    * @param client            The client index.
+    * @param bAlive            (Optional) Set to true to validate that the client is alive, false to ignore.
+    *  
+    * @return                  True or false.
+    **/
+    public static bool IsExist(int client, bool bAlive = true)
+    {
+        // If client isn't valid, then stop
+        if (client <= 0 || client > MaxClients)
+        {
+            return false;
+        }
+
+        // If client isn't connected, then stop
+        if (!IsClientConnected(client))
+        {
+            return false;
+        }
+
+        // If client isn't in game, then stop
+        if (!IsClientInGame(client) || IsClientInKickQueue(client))
+        {
+            return false;
+        }
+
+        // If client is TV, then stop
+        if (IsClientSourceTV(client))
+        {
+            return false;
+        }
+
+        // If client isn't alive, then stop
+        if (bAlive && !IsPlayerAlive(client))
+        {
+            return false;
+        }
+
+        // If client exist
+        return true;
+    }
+
+    /**
+     * @brief Gets whether the player is human.
+     *
+     * @param client            The client index.
+     * @param bAlive            (Optional) Set to true to validate that the client is alive, false to ignore.
+     *
+     * @return                  T/F.
+     */
+    public static bool IsHuman(int client, bool bAlive = true) {
+        return (PlayerEx.IsExist(client, bAlive) && !IsFakeClient(client));
+    }
+
+    /**
+     * @brief Get players in the game.
+     *
+     * @param aliveOnly             Sets true to count alive only.
+     * @param teamOnly              Sets true to count team only.
+     * @param teamNum               Team specified.
+     *
+     * @return                      Players what have been counted.
+     */
+    public static int GetPlayers(bool aliveOnly, bool teamOnly, int teamNum)
+    {
+        if (aliveOnly)
+        {
+            return (teamOnly) ? GetTeamAlives(teamNum) : GetTotalAlives();
+        }
+        else
+        {
+            return (teamOnly) ? GetTeamPlayers(teamNum) : GetTotalPlayers();
+        }
+    }
+
+    /**
+     * @brief Gets total players in the game.
+     *
+     * @return                      Total players in the game.
+     */
+    public static int GetTotalPlayers()
+    {
+        int iPlayer;
+
+        for (int client = 1; client <= MaxClients; client++)
+        {
+            if (PlayerEx.IsExist(client, false)) 
+            {
+                iPlayer++;
+            }
+        }
+        return iPlayer;
+    }
+
+    /**
+     * @brief Gets total team players in the game.
+     *
+     * @param team                  Team number.
+     *
+     * @return                      Total team players in the game.
+     */
+    public static int GetTeamPlayers(int team)
+    {
+        int iPlayer;
+
+        for (int client = 1; client <= MaxClients; client++)
+        {
+            if (PlayerEx.IsExist(client, false) && (GetClientTeam(client) == team)) 
+            {
+                iPlayer++;
+            }
+        }
+        return iPlayer;
+    }
+
+    /**
+     * @brief Gets total alive players in the game.
+     *
+     * @return                      Total alive players in the game.
+     */
+    public static int GetTotalAlives()
+    {
+        int iPlayer;
+
+        for (int client = 1; client <= MaxClients; client++)
+        {
+            if (PlayerEx.IsExist(client)) 
+            {
+                iPlayer++;
+            }
+        }
+        return iPlayer;
+    }
+
+    /**
+     * @brief Gets total alive team players in the game.
+     *
+     * @param team                  Team number.
+     *
+     * @return                      Total alive team players in the game.
+     */
+    public static int GetTeamAlives(int team)
+    {
+        int iPlayer;
+
+        for (int client = 1; client <= MaxClients; client++)
+        {
+            if (PlayerEx.IsExist(client) && (GetClientTeam(client) == team)) 
+            {
+                iPlayer++;
+            }
+        }
+        return iPlayer;
+    }
+
+    /**
+     * @brief Create a death icon.
+     * 
+     * @param userID            The user id who victim.
+     * @param attackerID        The user id who killed.
+     * @param sIcon             The icon name.
+     * @param bHead             (Optional) States the additional headshot icon.
+     * @param bPenetrated       (Optional) Number of objects shot penetrated before killing target.
+     * @param bRevenge          (Optional) Killer get revenge on victim with this kill.
+     * @param bDominated        (Optional) Did killer dominate victim with this kill.
+     * @param assisterID        (Optional) The user id who assisted in the kill.
+     */
+    public static void CreateDeathIcon(
+        int userID,                 int attackerID,         char[] sIcon,               bool bHead = false, 
+        bool bPenetrated = false,   bool bRevenge = false,  bool bDominated = false,    int assisterID = 0)
+    {
+        // Creates and send custom death icon
+        Event hEvent = CreateEvent("player_death");
+        if (hEvent != null)
+        {
+            // Sets event properties
+            hEvent.SetInt("userid", userID);
+            hEvent.SetInt("attacker", attackerID);
+            hEvent.SetInt("assister", assisterID);
+            hEvent.SetString("weapon", sIcon);
+            hEvent.SetBool("headshot", bHead);
+            hEvent.SetBool("penetrated", bPenetrated);
+            hEvent.SetBool("revenge", bRevenge);
+            hEvent.SetBool("dominated", bDominated);
+
+            // i = client index
+            for (int i = 1; i <= MaxClients; i++)
+            {
+                // Send fake event
+                if (PlayerEx.IsHuman(i, false)) hEvent.FireToClient(i);
+            }
+            
+            // Close it
+            hEvent.Cancel();
+        }
+    }
 }

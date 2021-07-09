@@ -85,190 +85,191 @@ static const char mime_chars[]       = "+/=";
 static const char url_chars[]        = "-_.";
 
 /**
- * Encodes a string or binary data into Base64
- *
- * @param sSource		The input string or binary data to be encoded.
- * @param sResult		The storage buffer for the Base64-encoded result.
- * @param len			The maximum length of the storage buffer, in characters/bytes.
- * @param sourcelen 	(optional): The number of characters or length in bytes to be read from the input source.
- *						This is not needed for a text string, but is important for binary data since there is no end-of-line character.
- * @return				The length of the written Base64 string, in bytes.
+ * An Object-oriented warpper for Base 64 algorithm.
  */
-inline int encode(const char[] sSource, char[] sResult, int len, int sourcelen = 0)
-{
-    int nLength;	// The string length to be read from the input
-    int resPos;		// The string position in the result buffer
+methodmap Base64 {
+    /**
+     * Encodes a string or binary data into Base64
+     *
+     * @param sSource		The input string or binary data to be encoded.
+     * @param sResult		The storage buffer for the Base64-encoded result.
+     * @param len			The maximum length of the storage buffer, in characters/bytes.
+     * @param sourcelen 	(optional): The number of characters or length in bytes to be read from the input source.
+     *						This is not needed for a text string, but is important for binary data since there is no end-of-line character.
+     * @return				The length of the written Base64 string, in bytes.
+     */
+    public static int Encode(const char[] sSource, char[] sResult, int len, int sourcelen = 0) {
+        int nLength;	// The string length to be read from the input
+        int resPos;		// The string position in the result buffer
 
-    // If the read length was specified, use it; otherwise, pull the string length from the input.
-    if (sourcelen > 0) { nLength = sourcelen; }
-    else { nLength = strlen(sSource); }
+        // If the read length was specified, use it; otherwise, pull the string length from the input.
+        if (sourcelen > 0) { nLength = sourcelen; }
+        else { nLength = strlen(sSource); }
 
-    // Loop through and generate the Base64 encoded string
-    // NOTE: This performs the standard encoding process.  Do not manipulate the logic within this loop.
-    for (int nPos = 0; nPos < nLength; nPos++) 
-    {
-        int cCode;
-
-        cCode = (sSource[nPos] >> 2) & 0x3f;
-
-        resPos += FormatEx(sResult[resPos], len - resPos, "%c", table[cCode]);
-
-        cCode = (sSource[nPos] << 4) & 0x3f;
-        if (++nPos < nLength) { cCode |= (sSource[nPos] >> 4) & 0x0f; }
-        resPos += FormatEx(sResult[resPos], len - resPos, "%c", table[cCode]);
-
-        if ( nPos < nLength ) 
+        // Loop through and generate the Base64 encoded string
+        // NOTE: This performs the standard encoding process.  Do not manipulate the logic within this loop.
+        for (int nPos = 0; nPos < nLength; nPos++) 
         {
-            cCode = (sSource[nPos] << 2) & 0x3f;
-            if (++nPos < nLength) { cCode |= (sSource[nPos] >> 6) & 0x03; }
+            int cCode;
+
+            cCode = (sSource[nPos] >> 2) & 0x3f;
 
             resPos += FormatEx(sResult[resPos], len - resPos, "%c", table[cCode]);
-        }
-        else 
-        {
-            nPos++;
-            resPos += FormatEx(sResult[resPos], len - resPos, "%c", cFillChar);
+
+            cCode = (sSource[nPos] << 4) & 0x3f;
+            if (++nPos < nLength) { cCode |= (sSource[nPos] >> 4) & 0x0f; }
+            resPos += FormatEx(sResult[resPos], len - resPos, "%c", table[cCode]);
+
+            if ( nPos < nLength ) 
+            {
+                cCode = (sSource[nPos] << 2) & 0x3f;
+                if (++nPos < nLength) { cCode |= (sSource[nPos] >> 6) & 0x03; }
+
+                resPos += FormatEx(sResult[resPos], len - resPos, "%c", table[cCode]);
+            }
+            else 
+            {
+                nPos++;
+                resPos += FormatEx(sResult[resPos], len - resPos, "%c", cFillChar);
+            }
+
+            if (nPos < nLength) 
+            {
+                cCode = sSource[nPos] & 0x3f;
+                resPos += FormatEx(sResult[resPos], len - resPos, "%c", table[cCode]);
+            }
+            else 
+            {
+                resPos += FormatEx(sResult[resPos], len - resPos, "%c", cFillChar);
+            }
         }
 
-        if (nPos < nLength) 
-        {
-            cCode = sSource[nPos] & 0x3f;
-            resPos += FormatEx(sResult[resPos], len - resPos, "%c", table[cCode]);
-        }
-        else 
-        {
-            resPos += FormatEx(sResult[resPos], len - resPos, "%c", cFillChar);
-        }
+        return resPos;
     }
 
-    return resPos;
-}
+    /**
+     * Decodes a Base64 string.
+     *
+     * @param sSource		The input string in compliant Base64 format to be decoded.
+     * @param sResult		The storage buffer for the decoded text strihg or binary data.
+     * @param len			The maximum length of the storage buffer, in characters/bytes.
+     * @return				The length of the decoded data, in bytes.
+     */
+    public static int Decode(const char[] sSource, char[] sResult, int len) {
+        int nLength = strlen(sSource);  // The string length to be read from the input
+        int resPos;                     // The string position in the result buffer
 
-/**
- * Decodes a Base64 string.
- *
- * @param sSource		The input string in compliant Base64 format to be decoded.
- * @param sResult		The storage buffer for the decoded text strihg or binary data.
- * @param len			The maximum length of the storage buffer, in characters/bytes.
- * @return				The length of the decoded data, in bytes.
- */
-inline int decode(const char[] sSource, char[] sResult, int len)
-{
-    int nLength = strlen(sSource);  // The string length to be read from the input
-    int resPos;                     // The string position in the result buffer
-
-    // Loop through and generate the Base64 encoded string
-    // NOTE: This performs the standard encoding process.  Do not manipulate the logic within this loop.
-    for (int nPos = 0; nPos < nLength; nPos++) 
-    {
-        int c, c1;
-
-        c	= decodeTable[sSource[nPos++]];
-        c1	= decodeTable[sSource[nPos]];
-
-        c = (c << 2) | ((c1 >> 4) & 0x3);
-
-        resPos += FormatEx(sResult[resPos], len - resPos, "%c", c);
-
-        if (++nPos < nLength) 
+        // Loop through and generate the Base64 encoded string
+        // NOTE: This performs the standard encoding process.  Do not manipulate the logic within this loop.
+        for (int nPos = 0; nPos < nLength; nPos++) 
         {
-            c = sSource[nPos];
+            int c, c1;
 
-            if (c == cFillChar) break;
+            c	= decodeTable[sSource[nPos++]];
+            c1	= decodeTable[sSource[nPos]];
 
-            c = decodeTable[sSource[nPos]];
-            c1 = ((c1 << 4) & 0xf0) | ((c >> 2) & 0xf);
-
-            resPos += FormatEx(sResult[resPos], len - resPos, "%c", c1);
-        }
-
-        if (++nPos < nLength) 
-        {
-            c1 = sSource[nPos];
-
-            if (c1 == cFillChar) break;
-
-            c1 = decodeTable[sSource[nPos]];
-            c = ((c << 6) & 0xc0) | c1;
+            c = (c << 2) | ((c1 >> 4) & 0x3);
 
             resPos += FormatEx(sResult[resPos], len - resPos, "%c", c);
-        }
-    }
 
-    return resPos;
-}
-
-/*
- * Converts a standards-compliant Base64 string to the commonly accepted URL-compliant alternative.
- * Note: The result will be the same length as the input string as long as the output buffer is large enough.
- *
- * @param sSource		The standards-compliant Base64 input string to converted.
- * @param sResult		The storage buffer for the URL-compliant result.
- * @param len			The maximum length of the storage buffer in characters/bytes.
- * @return				Number of cells written.
- */
-inline int mime2url(const char[] sSource, char[] sResult, int len)
-{
-    int chars_len = sizeof(mime_chars);	// Length of the two standards vs. URL character lists
-    int nLength;								// The string length to be read from the input
-    int temp_char;								// Buffer character
-
-    nLength = strlen(sSource);
-
-    char[] sTemp = new char[ nLength + 1 ]; // Buffer string
-
-    // Loop through string
-    for (int i = 0; i < nLength; i++) 
-    {
-        temp_char = sSource[i];
-
-        for (int j = 0; j < chars_len; j++) 
-        {
-            if(temp_char == mime_chars[j]) 
+            if (++nPos < nLength) 
             {
-                temp_char = url_chars[j];
-                break;
+                c = sSource[nPos];
+
+                if (c == cFillChar) break;
+
+                c = decodeTable[sSource[nPos]];
+                c1 = ((c1 << 4) & 0xf0) | ((c >> 2) & 0xf);
+
+                resPos += FormatEx(sResult[resPos], len - resPos, "%c", c1);
+            }
+
+            if (++nPos < nLength) 
+            {
+                c1 = sSource[nPos];
+
+                if (c1 == cFillChar) break;
+
+                c1 = decodeTable[sSource[nPos]];
+                c = ((c << 6) & 0xc0) | c1;
+
+                resPos += FormatEx(sResult[resPos], len - resPos, "%c", c);
             }
         }
-        sTemp[i] = temp_char;
+
+        return resPos;
     }
-    sTemp[nLength] = '\0';
-    return strcopy(sResult, len, sTemp);
-}
 
-/*
- * Converts a URL-compliant Base64 string to the standards-compliant version.
- * Note: The result will be the same length as the input string as long as the output buffer is large enough.
- *
- * @param sSource		The URL-compliant Base64 input string to converted.
- * @param sResult		The storage buffer for the standards-compliant result.
- * @param len			The maximum length of the storage buffer in characters/bytes.
- * @return				Number of cells written.
- */
-inline int url2mime(const char[] sSource, char[] sResult, int len)
-{
-    int chars_len = sizeof(mime_chars);	// Length of the two standards vs. URL character lists
-    int nLength;                        // The string length to be read from the input
-    int temp_char;                      // Buffer character
+    /**
+     * Converts a standards-compliant Base64 string to the commonly accepted URL-compliant alternative.
+     * Note: The result will be the same length as the input string as long as the output buffer is large enough.
+     *
+     * @param sSource		The standards-compliant Base64 input string to converted.
+     * @param sResult		The storage buffer for the URL-compliant result.
+     * @param len			The maximum length of the storage buffer in characters/bytes.
+     * @return				Number of cells written.
+     */
+    public static int MimeToURL(const char[] sSource, char[] sResult, int len) {
+        int chars_len = sizeof(mime_chars);	// Length of the two standards vs. URL character lists
+        int nLength;								// The string length to be read from the input
+        int temp_char;								// Buffer character
 
-    nLength = strlen(sSource);
+        nLength = strlen(sSource);
 
-    char[] sTemp = new char[ nLength + 1 ]; // Buffer string
+        char[] sTemp = new char[ nLength + 1 ]; // Buffer string
 
-    // Loop through string
-    for (int i = 0; i < nLength; i++) 
-    {
-        temp_char = sSource[i];
-        for (int j = 0; j < chars_len; j++) 
+        // Loop through string
+        for (int i = 0; i < nLength; i++) 
         {
-            if (temp_char == url_chars[j]) 
+            temp_char = sSource[i];
+
+            for (int j = 0; j < chars_len; j++) 
             {
-                temp_char = mime_chars[j];
-                break;
+                if(temp_char == mime_chars[j]) 
+                {
+                    temp_char = url_chars[j];
+                    break;
+                }
             }
+            sTemp[i] = temp_char;
         }
-        sTemp[i] = temp_char;
+        sTemp[nLength] = '\0';
+        return strcopy(sResult, len, sTemp);
     }
-    sTemp[nLength] = '\0';
-    return strcopy(sResult, len, sTemp);
+
+    /**
+     * Converts a URL-compliant Base64 string to the standards-compliant version.
+     * Note: The result will be the same length as the input string as long as the output buffer is large enough.
+     *
+     * @param sSource		The URL-compliant Base64 input string to converted.
+     * @param sResult		The storage buffer for the standards-compliant result.
+     * @param len			The maximum length of the storage buffer in characters/bytes.
+     * @return				Number of cells written.
+     */
+    public static int URLToMime(const char[] sSource, char[] sResult, int len) {
+        int chars_len = sizeof(mime_chars);	// Length of the two standards vs. URL character lists
+        int nLength;                        // The string length to be read from the input
+        int temp_char;                      // Buffer character
+
+        nLength = strlen(sSource);
+
+        char[] sTemp = new char[ nLength + 1 ]; // Buffer string
+
+        // Loop through string
+        for (int i = 0; i < nLength; i++) 
+        {
+            temp_char = sSource[i];
+            for (int j = 0; j < chars_len; j++) 
+            {
+                if (temp_char == url_chars[j]) 
+                {
+                    temp_char = mime_chars[j];
+                    break;
+                }
+            }
+            sTemp[i] = temp_char;
+        }
+        sTemp[nLength] = '\0';
+        return strcopy(sResult, len, sTemp);
+    }
 }

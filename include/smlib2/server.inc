@@ -3,8 +3,8 @@
  *
  *  SourceMod Library 2
  *
- *  File:          convert.sp
- *  Description:   Convertion with specific requirements
+ *  File:          server.sp
+ *  Description:   Server.
  *
  *  Copyright (c) 2021 laper32.
  *
@@ -24,26 +24,17 @@
  * ============================================================================
  */
 
-#if defined _smlib2_convert_included
+#if defined _smlib2_server_included
     #endinput
 #endif
 
-#define _smlib2_convert_included
+#define _smlib2_server_included
 
-methodmap Convert {
-    /**
-     * @brief Converts string of "yes/on", "no/off", "false/true", "1/0" to a boolean value.
-     * Always uses english as main language.
-     * 
-     * @param sOption           The string to be converted.
-     * @return                  True if string is equivalent to "yes", false otherwise.
-     */
-    public static bool SettingToBool(char[] sOption) {
-        return (
-        !strcmp(sOption, "yes",     false)      || 
-        !strcmp(sOption, "on",      false)      || 
-        !strcmp(sOption, "true",    false)      || 
-        !strcmp(sOption, "1",       false)
-        ) ? true : false;
+methodmap Server {
+    public static void GetIPAddress(char[] ip, int maxlen, int port) {
+        int _ip = FindConVar("hostip").IntValue;
+        Format(ip, maxlen, "%d.%d.%d.%d", 
+        (_ip >> 24) & 0x000000FF, (_ip >> 16) & 0x000000FF, (_ip >> 8) & 0x000000FF, _ip & 0x000000FF);
+        port = FindConVar("hostport").IntValue;
     }
 }
