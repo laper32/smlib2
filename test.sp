@@ -75,6 +75,8 @@ public void OnPluginStart()
     FileParser.PrecacheParticle("");
     FileParser.PrecacheTexture("", "");
     FileParser.PrecacheSound("");
+
+    Server.GetIPAddress(string(_str), offset);
     
 
     // char str[16];
