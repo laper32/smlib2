@@ -177,7 +177,7 @@ inline float sqrt(any val)
  * @param all           Integer value
  * @return              An Integer value between 0 and 100 (inclusive).
  */
-inline int GerPercentageInt(int value, int all)
+inline int GetPercentageInt(int value, int all)
 {
     return RoundToNearest(float(value) / float(all) * 100.0);
 }

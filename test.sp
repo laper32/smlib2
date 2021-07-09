@@ -32,8 +32,7 @@ public void OnPluginStart()
     Memory.CreateMemoryForSDKCall(gd)
     Memory.GetModuleSize(nullptr);
     Memory.memcpy(nullptr, _any, sizeof(_any));
-    Memory.memcpy4b(nullptr, _any, sizeof(_any));
-    Memory.writeDWORD(_any, nullptr, 0);
+    Memory.writeDWORD("\x58\x59\x5a\x50\xb8\x00\x00\x00\x00\xff\xe0", nullptr, 0);
 
     Math.abs(1);
     Math.fabs(1.0);
