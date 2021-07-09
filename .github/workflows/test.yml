@@ -5,15 +5,23 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        SM_VERSION_110: 1.10
+        SM_VERSION_111: 1.11
+    
+        
+
     steps:
       - uses: actions/checkout@v2
       - name: Dep install
         run: |
           sudo apt-get update
           sudo apt install gcc-multilib
-      - name: Build-1.11
+      - name: Build-${{ matrix.SM_VERSION_111 }}
         run: |
-          bash ./ci/test.sh 1.11
-      - name: Build-1.10
+          bash ./ci/test.sh ${{ matrix.SM_VERSION_111 }}
+      - name: Build-${{ matrix.SM_VERSION_110 }}
         run: |
-          bash ./ci/test.sh 1.10
+          bash ./ci/test.sh ${{ matrix.SM_VERSION_110 }}
