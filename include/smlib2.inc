@@ -60,8 +60,8 @@
 #include <smlib2/convert>
 #include <smlib2/engine>
 #include <smlib2/math>
-// #include <smlib2/matrix>
-// #include <smlib2/numeric>
+#include <smlib2/matrix>
+#include <smlib2/numeric>
 // #include <smlib2/memory>
 // #include <smlib2/string>
 // #include <smlib2/paramparser>

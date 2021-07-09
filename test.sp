@@ -40,6 +40,13 @@ public void OnPluginStart()
     int sth[2] = {1, 1}; 
     Math.mean(sth);
 
+    float matrix[16];
+    Matrix3x4.Identity(matrix);
+    Matrix3x4.RotateX(matrix, 15.0);
+    Matrix3x4.RotateY(matrix, 15.0);
+    Matrix3x4.RotateZ(matrix, 15.0);
+    Matrix3x4.Concatenate(matrix, matrix, matrix);
+
     // // ZP here
     // char ASMTRAMPOLINE[64]="\x58\x59\x5a\x50\xb8\x00\x00\x00\x00\xff\xe0";
     // Memory.CreateMemoryForSDKCall(gd)
