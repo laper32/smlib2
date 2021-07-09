@@ -31,15 +31,6 @@
 #define _smlib2_numeric_included
 
 methodmap Numeric {
-    public static int HexToDec(const char[] hex)
-    {
-        int i, result, value;
-        while((value = Numeric.IsHexSymbol(hex[i++])) != -1)
-        {
-            result = result * 16 + value;
-        }
-        return result;
-    }
     public static int IsHexSymbol(int ch)
     {
         if(!ch)
@@ -54,4 +45,14 @@ methodmap Numeric {
         
         return -1;
     }
+    public static int HexToDec(const char[] hex)
+    {
+        int i, result, value;
+        while((value = Numeric.IsHexSymbol(hex[i++])) != -1)
+        {
+            result = result * 16 + value;
+        }
+        return result;
+    }
+    
 }
