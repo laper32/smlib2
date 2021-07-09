@@ -8,8 +8,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        SM_VERSION_110: 1.10
-        SM_VERSION_111: 1.11
+        include: 
+          SM_VERSION_110: 1.10
+          SM_VERSION_111: 1.11
     
         
 
