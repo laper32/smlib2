@@ -96,6 +96,24 @@ public void OnPluginStart()
     ent.GetDataString(0, string(_str));
     ent.SetDataString(0, string(_str));
 
+    int _intarr[4];
+    ent.GetDataIntArray(0, _intarr, 4);
+    ent.SetDataIntArray(0, _intarr, 4);
+    ent.GetDataMapInfo("");
+    ent.GetSendPropOffset("");
+    ent.HasProp(Prop_Data, "");
+    ent.GetPropInt(Prop_Data, "");
+    ent.SetPropInt(Prop_Data, "", 0);
+    ent.GetPropFloat(Prop_Data, "");
+    ent.SetPropFloat(Prop_Data, "", 0.0);
+    ent.GetPropEnt(Prop_Data, "");
+    ent.SetPropEnt(Prop_Data, "", 0);
+    ent.GetPropVector(Prop_Data, "", wtf);
+    ent.SetPropVector(Prop_Data, "", wtf);
+    ent.GetPropString(Prop_Data, "", string(_str));
+    ent.SetPropString(Prop_Data, "", _str);
+    ent.GetPropArraySize(Prop_Data, "");
+
     // char str[16];
     // Base64.Encode("123", string(str), 1);
     // Base64.Decode("123", string(str));
@@ -110,7 +128,4 @@ public void OnPluginStart()
     // EntityEx.SetFlashLight(0, false)
 
     // PlayerEx.CreateDeathIcon(0, 0, "")
-
-    // ArrayList _arr;
-    // ParamParseString(_arr, "", 0, ' ')
 }
