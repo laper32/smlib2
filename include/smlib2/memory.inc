@@ -48,8 +48,8 @@ methodmap Memory {
     
         // Gets the server address
         Address pServerBase; 
-        InitGameConfAddress(gameConf, pServerBase, "server");
-        int pAddress = view_as<int>(pServerBase) + GetModuleSize(pServerBase) - 1;
+        Engine.InitGameConfAddress(gameConf, pServerBase, "server");
+        int pAddress = view_as<int>(pServerBase) + Memory.GetModuleSize(pServerBase) - 1;
     
         // Find the free memory
         for(;;) {
@@ -87,7 +87,7 @@ methodmap Memory {
     public static void memcpy(Address pDest, char[] sSource, int iSize) {
         // For more copying speed
         int i = iSize / 4;
-        memcpy4b(pDest, view_as<any>(sSource), i);
+        Memory.memcpy4b(pDest, view_as<any>(sSource), i);
     
         // Copy the rest of staff
         for(i *= 4, pDest += view_as<Address>(i); i < iSize; i++) {
