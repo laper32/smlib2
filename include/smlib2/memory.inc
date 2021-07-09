@@ -43,7 +43,7 @@ methodmap Memory {
         return LoadFromAddress(pAddress + view_as<Address>(iOffset + 0x50), NumberType_Int32); // nt->OptionalHeader.SizeOfImage
     }
 
-#if defined SOURCEMOD_V_MAJOR == 1 && SOURCEMOD_V_MINOR == 10
+#if SOURCEMOD_V_MAJOR == 1 && SOURCEMOD_V_MINOR == 10
     /**
      * @brief Copies the 4 bytes from the location pointed to by source directly to the memory block pointed to by destination. 
      *
