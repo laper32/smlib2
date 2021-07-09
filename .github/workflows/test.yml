@@ -11,6 +11,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt install gcc-multilib
-      - name: Build
+      - name: Build-1.11
         run: |
           bash ./ci/test.sh 1.11
+      - name: Build-1.10
+        run: |
+          bash ./ci/test.sh 1.10
