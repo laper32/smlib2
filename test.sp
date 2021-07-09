@@ -114,7 +114,7 @@ public void OnPluginStart()
     ent.SetPropString(Prop_Data, "", _str);
     ent.GetPropArraySize(Prop_Data, "");
     PrintToServer("%x", ent.Addr);
-    ent.GetClassname(string(_wtf));
+    ent.GetClassname(string(_str));
     ent.Teleport(wtf, wtf, wtf);
     ent.GetVelocity(wtf);
     PrintToServer("%.2f", ent.Speed);
@@ -130,8 +130,8 @@ public void OnPluginStart()
     PrintToServer("%d", ent.m_hOwnerEntity);
     ent.m_pParent = 0;
     PrintToServer("%d", ent.m_pParent);
-    PrintToServer("%d", m_hRagdoll);
-    PrintToServer("%d", m_pActivator);
+    PrintToServer("%d", ent.m_hRagdoll);
+    PrintToServer("%d", ent.m_pActivator);
 
     // char str[16];
     // Base64.Encode("123", string(str), 1);
