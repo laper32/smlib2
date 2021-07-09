@@ -76,6 +76,19 @@ methodmap Memory {
             StoreToAddress(pDest++, sSource[i], NumberType_Int8);
         }
     }
+    /**
+     * @brief Writes the DWord D (i.e. 4 bytes) to the string. 
+     *
+     * @param asm             The assemly string.
+     * @param pAddress        The address of the call.
+     * @param iOffset         (Optional) The address offset. (Where 0x0 starts)
+     */
+     public static void writeDWORD(char[] asm, any pAddress, int iOffset = 0) {
+        asm[iOffset]   = pAddress & 0xFF;
+        asm[iOffset+1] = pAddress >> 8 & 0xFF;
+        asm[iOffset+2] = pAddress >> 16 & 0xFF;
+        asm[iOffset+3] = pAddress >> 24 & 0xFF;
+    }
 #endif
 
     /**
@@ -108,21 +121,5 @@ methodmap Memory {
         /* Align for safe code injection */
         pZeroMemory = view_as<Address>(pAddress + 0x100 & 0xFFFFFF00); // 255 bytes
         return pZeroMemory;
-    }
-
-    
-
-    /**
-     * @brief Writes the DWord D (i.e. 4 bytes) to the string. 
-     *
-     * @param asm             The assemly string.
-     * @param pAddress        The address of the call.
-     * @param iOffset         (Optional) The address offset. (Where 0x0 starts)
-     */
-     public static void writeDWORD(char[] asm, any pAddress, int iOffset = 0) {
-        asm[iOffset]   = pAddress & 0xFF;
-        asm[iOffset+1] = pAddress >> 8 & 0xFF;
-        asm[iOffset+2] = pAddress >> 16 & 0xFF;
-        asm[iOffset+3] = pAddress >> 24 & 0xFF;
     }
 }
