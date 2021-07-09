@@ -35,6 +35,21 @@
 
 methodmap Memory {
     /**
+     * @brief Copies the 4 bytes from the location pointed to by source directly to the memory block pointed to by destination. 
+     *
+     * @param pDest        The destination address where the content is to be copied.
+     * @param sSource      The source of data to be copied.
+     * @param iSize        The number of bytes to copy.
+     */
+    public static void memcpy4b(Address pDest, any[] sSource, int iSize) {
+        // Copy 4 bytes at once
+        for(int i = 0; i < iSize; i++) {
+            StoreToAddress(pDest, sSource[i], NumberType_Int32);
+            pDest += view_as<Address>(4);
+        }
+    }
+
+    /**
      * @brief Create a memory for the custom convention call.
      *
      * @param gameConf          The game config handle.
@@ -92,21 +107,6 @@ methodmap Memory {
         // Copy the rest of staff
         for(i *= 4, pDest += view_as<Address>(i); i < iSize; i++) {
             StoreToAddress(pDest++, sSource[i], NumberType_Int8);
-        }
-    }
-
-    /**
-     * @brief Copies the 4 bytes from the location pointed to by source directly to the memory block pointed to by destination. 
-     *
-     * @param pDest        The destination address where the content is to be copied.
-     * @param sSource      The source of data to be copied.
-     * @param iSize        The number of bytes to copy.
-     */
-    public static void memcpy4b(Address pDest, any[] sSource, int iSize) {
-        // Copy 4 bytes at once
-        for(int i = 0; i < iSize; i++) {
-            StoreToAddress(pDest, sSource[i], NumberType_Int32);
-            pDest += view_as<Address>(4);
         }
     }
 

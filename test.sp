@@ -28,11 +28,12 @@ public void OnPluginStart()
     Engine.InitDataPropOffset(offset, 0, "")
     Engine.CreateEngineInterface(gd, "", "", ptr)
 
-    char _any[32];
+    // ZP here
+    char ASMTRAMPOLINE[64]="\x58\x59\x5a\x50\xb8\x00\x00\x00\x00\xff\xe0";
     Memory.CreateMemoryForSDKCall(gd)
     Memory.GetModuleSize(nullptr);
-    Memory.memcpy(nullptr, _any, sizeof(_any));
-    Memory.writeDWORD("\x58\x59\x5a\x50\xb8\x00\x00\x00\x00\xff\xe0", nullptr, 0);
+    Memory.memcpy(nullptr, ASMTRAMPOLINE, sizeof(ASMTRAMPOLINE));
+    Memory.writeDWORD(ASMTRAMPOLINE, nullptr, 0);
 
     Math.abs(1);
     Math.fabs(1.0);
