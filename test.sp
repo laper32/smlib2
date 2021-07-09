@@ -79,8 +79,22 @@ public void OnPluginStart()
     Server.GetIPAddress(string(_str), offset);
     
     Entity ent = new Entity(0);
-    ent.m_iHealth = 0;
-    
+    PrintToServer("%d", ent.Index);
+    PrintToServer("%d", ent.Valid);
+    PrintToServer("%d", ent.Networkable);
+    ent.Remove();
+    ent.SetParent(0);
+    ent.AcceptInput("");
+    ent.GetDataInt(0);
+    ent.SetDataInt(0, 0);
+    ent.GetDataFloat(0);
+    ent.SetDataFloat(0, 0);
+    ent.GetDataEnt(0);
+    ent.SetDataEnt(0, 0);
+    ent.GetDataVector(0, wtf);
+    ent.SetDataVector(0, wtf);
+    ent.GetDataString(0, string(_str));
+    ent.SetDataString(0, string(_str));
 
     // char str[16];
     // Base64.Encode("123", string(str), 1);
