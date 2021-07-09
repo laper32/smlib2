@@ -78,6 +78,9 @@ public void OnPluginStart()
 
     Server.GetIPAddress(string(_str), offset);
     
+    Entity ent = new Entity(0);
+    ent.m_iHealth = 0;
+    
 
     // char str[16];
     // Base64.Encode("123", string(str), 1);
