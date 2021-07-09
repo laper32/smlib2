@@ -30,9 +30,6 @@
 
 #define _smlib2_mem_included
 
-#define Pointer Address
-#define nullptr Address_Null
-
 methodmap Memory {
     /**
      * @brief Gets the size of a module in the memory.

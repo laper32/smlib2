@@ -33,7 +33,8 @@
 
 #define inline stock
 #define extern native
-
+#define Pointer Address
+#define nullptr Address_Null
 
 
 // To let most of these functions works, you must include following parts:
