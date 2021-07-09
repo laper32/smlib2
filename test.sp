@@ -66,7 +66,7 @@ public void OnPluginStart()
 
     char _str[16];
     StringEx.ToLower(_str);
-    StringEx.CountOccurence(_str, '');
+    StringEx.CountOccurence(_str, ' ');
     StringEx.RandomOut(string(_str));
     StringEx.StrContainsEx(_str, _str);
     

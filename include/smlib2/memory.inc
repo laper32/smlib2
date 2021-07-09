@@ -42,7 +42,8 @@ methodmap Memory {
         int iOffset = LoadFromAddress(pAddress + view_as<Address>(0x3C), NumberType_Int32);    // NT headers offset
         return LoadFromAddress(pAddress + view_as<Address>(iOffset + 0x50), NumberType_Int32); // nt->OptionalHeader.SizeOfImage
     }
-    
+
+#if defined SOURCEMOD_V_MAJOR == 1 && SOURCEMOD_V_MINOR == 10
     /**
      * @brief Copies the 4 bytes from the location pointed to by source directly to the memory block pointed to by destination. 
      *
@@ -57,6 +58,25 @@ methodmap Memory {
             pDest += view_as<Address>(4);
         }
     }
+
+    /**
+     * @brief Copies the values of num bytes from the location pointed to by source directly to the memory block pointed to by destination.
+     *
+     * @param pDest        The destination address where the content is to be copied.
+     * @param sSource      The source of data to be copied.
+     * @param iSize        The number of bytes to copy.
+     */
+    public static void memcpy(Address pDest, char[] sSource, int iSize) {
+        // For more copying speed
+        int i = iSize / 4;
+        Memory.memcpy4b(pDest, view_as<any>(sSource), i);
+    
+        // Copy the rest of staff
+        for(i *= 4, pDest += view_as<Address>(i); i < iSize; i++) {
+            StoreToAddress(pDest++, sSource[i], NumberType_Int8);
+        }
+    }
+#endif
 
     /**
      * @brief Create a memory for the custom convention call.
@@ -90,23 +110,7 @@ methodmap Memory {
         return pZeroMemory;
     }
 
-    /**
-     * @brief Copies the values of num bytes from the location pointed to by source directly to the memory block pointed to by destination.
-     *
-     * @param pDest        The destination address where the content is to be copied.
-     * @param sSource      The source of data to be copied.
-     * @param iSize        The number of bytes to copy.
-     */
-    public static void memcpy(Address pDest, char[] sSource, int iSize) {
-        // For more copying speed
-        int i = iSize / 4;
-        Memory.memcpy4b(pDest, view_as<any>(sSource), i);
     
-        // Copy the rest of staff
-        for(i *= 4, pDest += view_as<Address>(i); i < iSize; i++) {
-            StoreToAddress(pDest++, sSource[i], NumberType_Int8);
-        }
-    }
 
     /**
      * @brief Writes the DWord D (i.e. 4 bytes) to the string. 
