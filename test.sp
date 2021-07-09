@@ -28,6 +28,13 @@ public void OnPluginStart()
     Engine.InitDataPropOffset(offset, 0, "")
     Engine.CreateEngineInterface(gd, "", "", ptr)
 
+    char _any[32];
+    Memory.CreateMemoryForSDKCall(gd)
+    Memory.GetModuleSize(nullptr);
+    Memory.memcpy(nullptr, _any, sizeof(_any));
+    Memory.memcpy4b(nullptr, _any, sizeof(_any));
+    Memory.writeDWORD(_any, nullptr, 0);
+
     // char str[16];
     // Base64.Encode("123", string(str), 1);
     // Base64.Decode("123", string(str));
