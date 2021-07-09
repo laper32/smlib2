@@ -88,7 +88,7 @@ public void OnPluginStart()
     ent.GetDataInt(0);
     ent.SetDataInt(0, 0);
     ent.GetDataFloat(0);
-    ent.SetDataFloat(0, 0);
+    ent.SetDataFloat(0, 0.0);
     ent.GetDataEnt(0);
     ent.SetDataEnt(0, 0);
     ent.GetDataVector(0, wtf);
