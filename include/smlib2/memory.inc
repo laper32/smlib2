@@ -35,6 +35,18 @@
 
 methodmap Memory {
     /**
+     * @brief Gets the size of a module in the memory.
+     *
+     * @param pAddress          The module address.
+     * @return                  The size value.
+     */
+    public static int GetModuleSize(Address pAddress)
+    {
+        int iOffset = LoadFromAddress(pAddress + view_as<Address>(0x3C), NumberType_Int32);    // NT headers offset
+        return LoadFromAddress(pAddress + view_as<Address>(iOffset + 0x50), NumberType_Int32); // nt->OptionalHeader.SizeOfImage
+    }
+    
+    /**
      * @brief Copies the 4 bytes from the location pointed to by source directly to the memory block pointed to by destination. 
      *
      * @param pDest        The destination address where the content is to be copied.
@@ -81,17 +93,6 @@ methodmap Memory {
         return pZeroMemory;
     }
 
-    /**
-     * @brief Gets the size of a module in the memory.
-     *
-     * @param pAddress          The module address.
-     * @return                  The size value.
-     */
-    public static int GetModuleSize(Address pAddress)
-    {
-        int iOffset = LoadFromAddress(pAddress + view_as<Address>(0x3C), NumberType_Int32);    // NT headers offset
-        return LoadFromAddress(pAddress + view_as<Address>(iOffset + 0x50), NumberType_Int32); // nt->OptionalHeader.SizeOfImage
-    }
     /**
      * @brief Copies the values of num bytes from the location pointed to by source directly to the memory block pointed to by destination.
      *
