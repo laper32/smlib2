@@ -35,6 +35,19 @@ public void OnPluginStart()
     Memory.memcpy4b(nullptr, _any, sizeof(_any));
     Memory.writeDWORD(_any, nullptr, 0);
 
+    Math.abs(1);
+    Math.fabs(1.0);
+    Math.min(1, 1);
+    Math.max(1, 1);
+    Math.clamp(2, 1, 1);
+    Math.overflow(2, 1, 1);
+    Math.sqrt(10);
+    Math.GetPercentageInt(1, 10);
+    Math.GetPercentageFloat(1.0, 10.0);
+
+    int sth[2] = {1, 1};
+    Math.mean(sth);
+
     // char str[16];
     // Base64.Encode("123", string(str), 1);
     // Base64.Decode("123", string(str));

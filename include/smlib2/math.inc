@@ -29,10 +29,22 @@
 #endif
 #define _smlib2_math_included
 methodmap Math {
+    /**
+     * @brief Returns the positive integer of the value.
+     *
+     * @param i1                The input value.
+     * @return                  The positive integer.
+     */
     public static int abs(int i1) {
-        return abs(i1);
+        return (i1 ^ (i1 >> 31)) - (i1 >> 31);
     }
 
+    /**
+     * @brief Returns the positive float of the value.
+     *
+     * @param i1                The input value.
+     * @return                  The positive float.
+     */
     public static float fabs(float i1) {
         return FloatAbs(i1);
     }
