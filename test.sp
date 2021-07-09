@@ -20,33 +20,33 @@ public void OnPluginStart()
 
     Convert.SettingToBool("foo");
 
-    GameData gd; int offset=0; Pointer ptr = nullptr;
-    Engine.InitGameConfOffset(gd, offset, "");
-    Engine.InitGameConfAddress(gd, ptr, "")
-    Engine.InitGameConfKey(gd, "", "", 0)
-    Engine.InitSendPropOffset(offset, "", "")
-    Engine.InitDataPropOffset(offset, 0, "")
-    Engine.CreateEngineInterface(gd, "", "", ptr)
+    // GameData gd; int offset=0; Pointer ptr = nullptr;
+    // Engine.InitGameConfOffset(gd, offset, "");
+    // Engine.InitGameConfAddress(gd, ptr, "")
+    // Engine.InitGameConfKey(gd, "", "", 0)
+    // Engine.InitSendPropOffset(offset, "", "")
+    // Engine.InitDataPropOffset(offset, 0, "")
+    // Engine.CreateEngineInterface(gd, "", "", ptr)
 
-    // ZP here
-    char ASMTRAMPOLINE[64]="\x58\x59\x5a\x50\xb8\x00\x00\x00\x00\xff\xe0";
-    Memory.CreateMemoryForSDKCall(gd)
-    Memory.GetModuleSize(nullptr);
-    Memory.memcpy(nullptr, ASMTRAMPOLINE, sizeof(ASMTRAMPOLINE));
-    Memory.writeDWORD(ASMTRAMPOLINE, nullptr, 0);
+    // // ZP here
+    // char ASMTRAMPOLINE[64]="\x58\x59\x5a\x50\xb8\x00\x00\x00\x00\xff\xe0";
+    // Memory.CreateMemoryForSDKCall(gd)
+    // Memory.GetModuleSize(nullptr);
+    // Memory.memcpy(nullptr, ASMTRAMPOLINE, sizeof(ASMTRAMPOLINE));
+    // Memory.writeDWORD(ASMTRAMPOLINE, nullptr, 0);
 
-    Math.abs(1);
-    Math.fabs(1.0);
-    Math.min(1, 1);
-    Math.max(1, 1);
-    Math.clamp(2, 1, 1);
-    Math.overflow(2, 1, 1);
-    Math.sqrt(10);
-    Math.GetPercentageInt(1, 10);
-    Math.GetPercentageFloat(1.0, 10.0);
+    // Math.abs(1);
+    // Math.fabs(1.0);
+    // Math.min(1, 1);
+    // Math.max(1, 1);
+    // Math.clamp(2, 1, 1);
+    // Math.overflow(2, 1, 1);
+    // Math.sqrt(10);
+    // Math.GetPercentageInt(1, 10);
+    // Math.GetPercentageFloat(1.0, 10.0);
 
-    int sth[2] = {1, 1};
-    Math.mean(sth);
+    // int sth[2] = {1, 1};
+    // Math.mean(sth);
 
     // char str[16];
     // Base64.Encode("123", string(str), 1);
