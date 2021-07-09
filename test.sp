@@ -4,8 +4,8 @@
 
 #include <cstrike>
 
-#include <PTaH>
-#include <dhooks>
+// #include <PTaH>
+// #include <dhooks>
 
 #include <smlib2>
 
