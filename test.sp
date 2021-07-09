@@ -58,7 +58,7 @@ public void OnPluginStart()
     Numeric.IsHexSymbol(0);
 
     // // ZP here
-    char ASMTRAMPOLINE[64]="\x58\x59\x5a\x50\xb8\x00\x00\x00\x00\xff\xe0";
+    //char ASMTRAMPOLINE[64]="\x58\x59\x5a\x50\xb8\x00\x00\x00\x00\xff\xe0";
     Memory.CreateMemoryForSDKCall(gd)
     Memory.GetModuleSize(nullptr);
     // Memory.memcpy(nullptr, ASMTRAMPOLINE, sizeof(ASMTRAMPOLINE)); // char[] and any[], wtf?

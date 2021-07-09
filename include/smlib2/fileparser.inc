@@ -109,7 +109,7 @@ methodmap FileParser {
                     iShift += strlen(sTypes[x]) + 1;
 
                     // Checks if string has incorrect quotes
-                    int iQuotes = CountCharInString(sTexture[iShift], '"');
+                    int iQuotes = StringEx.CountOccurence(sTexture[iShift], '"');
                     if (iQuotes != 2) {
                         LogError("FileParser.PrecacheTexture: Error with parsing \"%s\" in file: \"%s\"", sTypes[x], sPath);
                     } else {
