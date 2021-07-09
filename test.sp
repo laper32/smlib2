@@ -11,6 +11,13 @@
 
 public void OnPluginStart()
 {
+    ConVar cvar;
+    Cvar.LockOnCvarHook(cvar, "1", "1");
+    Cvar.UnlockOnCvarHook(cvar, "1", "1");
+    Cvar.LockOnCvarHook2(cvar, "1", "1");
+    Cvar.LockOnCvarHook3(cvar, "1", "1");
+    Cvar.OnCheatSet(cvar, 1);
+
     // char str[16];
     // Base64.Encode("123", string(str), 1);
     // Base64.Decode("123", string(str));
