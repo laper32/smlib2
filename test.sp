@@ -62,13 +62,19 @@ public void OnPluginStart()
     Memory.CreateMemoryForSDKCall(gd)
     Memory.GetModuleSize(nullptr);
     // Memory.memcpy(nullptr, ASMTRAMPOLINE, sizeof(ASMTRAMPOLINE)); // char[] and any[], wtf?
-    Memory.writeDWORD(ASMTRAMPOLINE, nullptr, 0);
+    // Memory.writeDWORD(ASMTRAMPOLINE, nullptr, 0); // char[] and any[] , wtf?
 
     char _str[16];
     StringEx.ToLower(_str);
     StringEx.CountOccurence(_str, ' ');
     StringEx.RandomOut(string(_str));
     StringEx.StrContainsEx(_str, _str);
+    
+    FileParser.PrecacheModel("");
+    FileParser.PrecacheWeapon("");
+    FileParser.PrecacheParticle("");
+    FileParser.PrecacheTexture("", "");
+    FileParser.PrecacheSound("");
     
 
     // char str[16];
