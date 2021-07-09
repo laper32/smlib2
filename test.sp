@@ -18,6 +18,8 @@ public void OnPluginStart()
     Cvar.LockOnCvarHook3(cvar, "1", "1");
     Cvar.OnCheatSet(cvar, 1);
 
+    Convert.SettingToBool("foo");
+
     // char str[16];
     // Base64.Encode("123", string(str), 1);
     // Base64.Decode("123", string(str));
