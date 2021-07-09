@@ -20,6 +20,14 @@ public void OnPluginStart()
 
     Convert.SettingToBool("foo");
 
+    GameData gd; int offset=0; Pointer ptr = nullptr;
+    Engine.InitGameConfOffset(gd, offset, "");
+    Engine.InitGameConfAddress(gd, ptr, "")
+    Engine.InitGameConfKey(gd, "", "", 0)
+    Engine.InitSendPropOffset(offset, "", "")
+    Engine.InitDataPropOffset(offset, 0, "")
+    Engine.CreateEngineInterface(gd, "", "", ptr)
+
     // char str[16];
     // Base64.Encode("123", string(str), 1);
     // Base64.Decode("123", string(str));
