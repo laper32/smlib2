@@ -53,8 +53,10 @@
 
 // I recommend you include these libraries above before you include <smlib2> to let it fully works, as 
 // I have said before.
+#include <smlib2/version>
 
 #include <smlib2/const>
+
 
 #include <smlib2/cvar>
 #include <smlib2/convert>
@@ -83,7 +85,7 @@
 //     #include <smlib2/base64>
 // #endif
 
-// #include <smlib2/version>
+
 
 // #if defined USE_DLL
 //     public Extension __ext_smlib2 =
