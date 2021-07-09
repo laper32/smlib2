@@ -37,6 +37,7 @@
  * If you want to manipulating arbitrary entities, you should 
  * use EntityEx rather than this warpper.
  */
+
 methodmap Entity __nullable__ {
     /**
      * Constructor of the entity object.
