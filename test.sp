@@ -61,9 +61,14 @@ public void OnPluginStart()
     char ASMTRAMPOLINE[64]="\x58\x59\x5a\x50\xb8\x00\x00\x00\x00\xff\xe0";
     Memory.CreateMemoryForSDKCall(gd)
     Memory.GetModuleSize(nullptr);
-    Memory.memcpy(nullptr, ASMTRAMPOLINE, sizeof(ASMTRAMPOLINE));
+    // Memory.memcpy(nullptr, ASMTRAMPOLINE, sizeof(ASMTRAMPOLINE)); // char[] and any[], wtf?
     Memory.writeDWORD(ASMTRAMPOLINE, nullptr, 0);
 
+    char _str[16];
+    StringEx.ToLower(_str);
+    StringEx.CountOccurence(_str, '');
+    StringEx.RandomOut(string(_str));
+    StringEx.StrContainsEx(_str, _str);
     
 
     // char str[16];
@@ -74,23 +79,6 @@ public void OnPluginStart()
     // MD5.Digest("", "", 0)
     // Convert.SettingToBool("yes");
 
-    // ConVar cvar;
-    // Cvar.LockOnCvarHook(cvar, "1", "1");
-    // Cvar.UnlockOnCvarHook(cvar, "1", "1");
-    // Cvar.LockOnCvarHook2(cvar, "1", "1");
-    // Cvar.LockOnCvarHook3(cvar, "1", "1");
-    // Cvar.OnCheatSet(cvar, 1);
-
-    // GameData gd; int offset=0; Pointer ptr = nullptr;
-    // Engine.InitGameConfOffset(gd, offset, "");
-    // Engine.InitGameConfAddress(gd, ptr, "")
-    // Engine.InitGameConfKey(gd, "", "", 0)
-    // Engine.InitSendPropOffset(offset, "", "")
-    // Engine.InitDataPropOffset(offset, 0, "")
-    // Engine.CreateEngineInterface(gd, "", "", ptr)
-
-    // float mat[16];
-    // Matrix3x4.Identity(mat);
     
     // Shake.Create(0, 0.0, 0.0, 0.0);
 
