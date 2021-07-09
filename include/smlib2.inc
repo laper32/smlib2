@@ -53,7 +53,7 @@
 
 #include <smlib2/const>
 
-// #include <smlib2/cvar>
+#include <smlib2/cvar>
 // #include <smlib2/convert>
 // #include <smlib2/engine>
 // #include <smlib2/math>
