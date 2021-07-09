@@ -40,12 +40,22 @@ public void OnPluginStart()
     int sth[2] = {1, 1}; 
     Math.mean(sth);
 
-    float matrix[16];
+    float matrix[16]; float wtf[3];
     Matrix3x4.Identity(matrix);
-    Matrix3x4.RotateX(matrix, 15.0);
-    Matrix3x4.RotateY(matrix, 15.0);
-    Matrix3x4.RotateZ(matrix, 15.0);
     Matrix3x4.Concatenate(matrix, matrix, matrix);
+    Matrix3x4.TransformPoint(matrix, wtf, wtf);
+    Matrix3x4.Rotate(matrix, 0.0, 0, 0, 0);
+    Matrix3x4.Scale(matrix, 0.0, 0.0, 0.0);
+    Matrix3x4.Translate(matrix, wtf);
+    Matrix3x4.GetTranslate(matrix, wtf);
+    Matrix3x4.RotateByMatrix(wtf, matrix, wtf);
+    Matrix3x4.RotationOnly(matrix, matrix);
+    Matrix3x4.RotateMatrix(matrix, 0.0, 0.0, 0.0, 0.0);
+    Matrix3x4.InvertSimple(matrix, matrix);
+    Matrix3x4.InvertRotation(matrix, matrix);
+    
+    Numeric.HexToDec("");
+    Numeric.IsHexSymbol(0);
 
     // // ZP here
     // char ASMTRAMPOLINE[64]="\x58\x59\x5a\x50\xb8\x00\x00\x00\x00\xff\xe0";
