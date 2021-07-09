@@ -68,7 +68,7 @@
 #include <smlib2/fileparser>
 #include <smlib2/server>
 
-// #include <smlib2/entity>
+#include <smlib2/entity>
 // #include <smlib2/player>
 // #include <smlib2/message>
 // #include <smlib2/tools>
