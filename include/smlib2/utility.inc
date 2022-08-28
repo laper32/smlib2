@@ -6,7 +6,7 @@
  *  File:          utility.sp
  *  Description:   Utilities, used for storing non-classfied functions.
  *
- *  Copyright (c) 2021 laper32.
+ *  Copyright (c) 2022 laper32.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -87,7 +87,7 @@ methodmap UTIL {
             if (hasLength(sSound)) DispatchKeyValue(entity, "MoveSound", sSound);
             
             // Sets render mode
-            UTIL_SetRenderColor(entity, Clr_A, 0);
+            UTIL.SetRenderColor(entity, Clr_A, 0);
             
             // Spawn the entity
             DispatchSpawn(entity);
@@ -997,7 +997,7 @@ methodmap UTIL {
      *
      * @return                  The entity index.
      */
-    public static int UTIL_CreateLight(
+    public static int CreateLight(
         int parent = -1,        float vPosition[3] = NULL_VECTOR,   char[] sAttach = "",    char[] sInnerCone = "0", 
         char[] sCone = "80",    char[] sBrightness = "1",           char[] sPitch = "90",   char[] sStyle = "1", 
         int iFlags = 0,         char[] sColor,                      float flDistance,       float flRadius, 

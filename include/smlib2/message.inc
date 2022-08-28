@@ -6,7 +6,7 @@
  *  File:          text.sp
  *  Description:   Text chat related.
  *
- *  Copyright (c) 2021 laper32.
+ *  Copyright (c) 2022 laper32.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -202,7 +202,7 @@ methodmap Chat < SayText2 {
         ReplaceString(message, maxLen, "\x0F",          "", false);
     }
 
-    public static void ToSingle(int client, const char[] buffer, any ...) {
+    public static void ToOne(int client, const char[] buffer, any ...) {
         char msg[256];
         VFormat(msg, 256, buffer, 3);
         Format(msg, 256, "%s%s%s", !SkipNextPrefix ? ChatPrefix : "", ChatSpaces, msg);
@@ -249,7 +249,7 @@ methodmap Chat < SayText2 {
         int iTeam = 0;
         
         for(int client = 1; client <= MaxClients; client++) {
-            if (PlayerEx.Exist(client, false)) {
+            if (PlayerEx.IsExist(client, false)) {
                 iTeam = EntityEx.GetTeam(client); // modify it later
 
                 if (iTeam == team || (spec && iTeam == 1)) {
@@ -267,7 +267,7 @@ methodmap Chat < SayText2 {
         int total = 0;
 
         for (int client = 1; client <= MaxClients; client++) {
-            if (PlayerEx.Exist(client, true)) {
+            if (PlayerEx.IsExist(client, true)) {
                 clients[total++]=client;
             }
         }
@@ -282,7 +282,7 @@ methodmap Chat < SayText2 {
         int total = 0;
 
         for (int client = 1; client <= MaxClients; client++) {
-            if(PlayerEx.Exist(client, false)) {
+            if(PlayerEx.IsExist(client, false)) {
                 if (!IsPlayerAlive(client)) {
                     clients[total++] = client;
                 }
@@ -298,7 +298,7 @@ methodmap Chat < SayText2 {
         int total = 0;
 
         for (int client = 1; client <= MaxClients; client++) {
-            if(PlayerEx.Exist(client, false)) {
+            if(PlayerEx.IsExist(client, false)) {
                 if (GetClientTeam(client) == TEAM_SPECTATOR) {
                     clients[total++] = client;
                 }
@@ -389,7 +389,7 @@ methodmap HintText < Message {
         }
     }
 
-    public static void ToSingle(int client, const char[] buffer, any ...) {
+    public static void ToOne(int client, const char[] buffer, any ...) {
         char msg[1024];
         SetGlobalTransTarget(client);
         VFormat(msg, 1024, buffer, 3);
@@ -493,7 +493,7 @@ methodmap TextMsg < Message {
     }
     
 
-    public static void ToSingle(int client, const char[] buffer, any ...) {
+    public static void ToOne(int client, const char[] buffer, any ...) {
         char msg[2048];
         SetGlobalTransTarget(client);
         VFormat(msg, 2048, buffer, 3);
@@ -516,7 +516,7 @@ methodmap TextMsg < Message {
             text.WriteString("");
             text.WriteString("");
             text.WriteString("");
-            TextMsg.WriteString("");
+            text.WriteString("");
             EndMessage();
         }
     }
@@ -580,7 +580,7 @@ methodmap HudMsg < Message {
         hudMsg_fadeOut     = fadeOut;
     }
 
-    public static void ToSingle(int client, int channel, const char[] buffer, any ...) {
+    public static void ToOne(int client, int channel, const char[] buffer, any ...) {
         char message[512];
         VFormat(string(message), buffer, 4);
 
@@ -598,7 +598,7 @@ methodmap HudMsg < Message {
         EndMessage();
     }
 
-    public static void ToSingleEx(int client, int channel, const float hold, 
+    public static void ToOneEx(int client, int channel, const float hold, 
                                 const float pos[2], const int color[4], int effect, 
                                 float fxTime, float fadeIn, float fadeOut, 
                                 const char[] buffer, any ...) {
@@ -665,7 +665,7 @@ methodmap HudMsg < Message {
 
         // Optimization is needed.
         for (int client = 1; client <= MaxClients; client++) {
-            if (IsPlayerExist(client, false) && !IsFakeClient(client)) {
+            if (PlayerEx.IsExist(client, false) && !IsFakeClient(client)) {
                 iTeam = GetClientTeam(client);
                 if (iTeam == team) {
                     clients[total++] = client;

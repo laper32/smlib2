@@ -6,7 +6,7 @@
  *  File:          tools.sp
  *  Description:   Tools related, used for not classified functions.
  *
- *  Copyright (c) 2021 laper32.
+ *  Copyright (c) 2022 laper32.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -871,7 +871,7 @@ inline int ToolsFindPlayerInSphere(int &it, float vPosition[3], float flRadius)
     for (int i = it; i <= MaxClients; i++)
     {
         // Validate client
-        if (IsPlayerExist(i))
+        if (PlayerEx.IsExist(i))
         {
             // Build model boxes for client
             ToolsBuildModelBox(i, clientmodelbox, DEFAULT_HULL_WIDTH);

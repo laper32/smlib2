@@ -6,7 +6,7 @@
  *  File:          player.sp
  *  Description:   Player.
  *
- *  Copyright (c) 2021 laper32.
+ *  Copyright (c) 2022 laper32.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -230,11 +230,11 @@ methodmap PlayerEx {
     {
         if (aliveOnly)
         {
-            return (teamOnly) ? GetTeamAlives(teamNum) : GetTotalAlives();
+            return (teamOnly) ? PlayerEx.GetTeamAlives(teamNum) : PlayerEx.GetTotalAlives();
         }
         else
         {
-            return (teamOnly) ? GetTeamPlayers(teamNum) : GetTotalPlayers();
+            return (teamOnly) ? PlayerEx.GetTeamPlayers(teamNum) : PlayerEx.GetTotalPlayers();
         }
     }
 

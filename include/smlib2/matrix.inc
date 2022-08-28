@@ -6,7 +6,7 @@
  *  File:          matrix.sp
  *  Description:   Matrix implentation.
  *
- *  Copyright (c) 2021 laper32.
+ *  Copyright (c) 2022 laper32.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -114,7 +114,7 @@ methodmap Matrix3x4 {
     }
 
     // Create a rotation matrix for a counter-clockwise rotation of fDegrees around an arbitrary axis(x, y, z)
-    public static void RotateMatrix(float[16] mf, float fDegrees, float x, float y, float z) {
+    public static void RotateMatrix(float mf[16], float fDegrees, float x, float y, float z) {
         Matrix3x4.Identity(mf);
         
         float cosA = Cosine(DegToRad(fDegrees));
