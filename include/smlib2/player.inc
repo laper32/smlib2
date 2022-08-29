@@ -362,26 +362,4 @@ methodmap PlayerEx {
             hEvent.Cancel();
         }
     }
-
-    public static void SetTeam(int client, int team)
-    {
-        if (!PlayerEx.IsExist(client))
-        {
-            return;
-        }
-        
-        // // <= TEAM_SPECTATOR
-            // if (this.m_iTeamNum <= TEAM_SPECTATOR) {
-            //     ChangeClientTeam(this.Index, val);
-            // } else {
-            //     #if defined _cstrike_included
-            //         CS_SwitchTeam(this.Index, val);
-            //     #elseif defined _tf2_stocks_included
-            //         TF2_ChangeClientTeam(this.Index, view_as<TFTeam>(val));
-            //     #else
-            //         PrintToServer("No game-specific library found.");
-            //         PrintToServer("You must include game-specific library to let this setter works.");
-            //     #endif
-            // }
-    }
 }
