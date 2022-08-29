@@ -115,6 +115,7 @@ methodmap Matrix3x4 {
 
     // Create a rotation matrix for a counter-clockwise rotation of fDegrees around an arbitrary axis(x, y, z)
     public static void RotateMatrix(float mf[16], float fDegrees, float x, float y, float z) {
+
         Matrix3x4.Identity(mf);
         
         float cosA = Cosine(DegToRad(fDegrees));

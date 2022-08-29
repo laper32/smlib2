@@ -88,7 +88,7 @@ methodmap UTIL {
             
             // Sets render mode
             UTIL.SetRenderColor(entity, Clr_A, 0);
-            
+
             // Spawn the entity
             DispatchSpawn(entity);
         }

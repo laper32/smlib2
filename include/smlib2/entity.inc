@@ -1572,6 +1572,7 @@ methodmap EntityEx {
             // Gets entity velocity
             static float vSpeed[3];
             EntityEx.GetVelocity(entity, vSpeed);
+
             
             // Add to the current
             AddVectors(vSpeed, vVelocity, vVelocity);
