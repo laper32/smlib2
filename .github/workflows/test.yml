@@ -1,0 +1,17 @@
+name: Build-test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Dep install
+        run: |
+          sudo apt-get update
+          sudo apt install gcc-multilib
+      - name: Build
+        run: |
+          bash ./ci/test.sh 1.12
