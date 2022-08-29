@@ -35,15 +35,6 @@ echo ""
 echo "Retrieving dependencies"
 echo ""
 
-
-# PTaH
-echo "PTaH"
-wget "https://github.com/komashchenko/PTaH/raw/master/PTaH.inc" -q -O include/PTaH.inc
-
-# DHook
-echo "DHook"
-wget "https://raw.githubusercontent.com/peace-maker/DHooks2/dynhooks/sourcemod_files/scripting/include/dhooks.inc" -q -O include/dhooks.inc
-
 echo "Version info"
 for file in include/smlib2/version.inc
 do

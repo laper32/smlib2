@@ -3,7 +3,7 @@
  *  
  *  SourceMod Library 2
  *
- *  Copyright (c) 2021 laper32.
+ *  Copyright (c) 2022 laper32.
  *  
  *  Regards to Zombie-Plague, sourcemod-util, smlib, and any other library
  *  what have not covered here. These libs what have mentioned above have
@@ -34,12 +34,12 @@
 #define inline stock
 #define extern native
 
+#include <sourcemod>
+#include <sdktools>
+#include <sdkhooks>
+#include <dhooks>
+#include <string>
 
-
-// To let most of these functions works, you must include following parts:
-// - sourcemod
-// - sdktools
-// - sdkhooks
 
 // Additionally, I recommend you include:
 // - dhooks
@@ -73,6 +73,7 @@
 #include <smlib2/tools>
 #include <smlib2/hint>
 #include <smlib2/sound>
+#include <smlib2/particle>
 #include <smlib2/utility>
 
 #if defined USE_DLL

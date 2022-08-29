@@ -6,7 +6,7 @@
  *  File:          player.sp
  *  Description:   Player.
  *
- *  Copyright (c) 2021 laper32.
+ *  Copyright (c) 2022 laper32.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -142,6 +142,9 @@ methodmap Player < Entity {
     }
 
     property int m_iTeamNum {
+        public get() {
+            return GetEntProp(this.Index, Prop_Data, "m_iTeamNum");
+        }
         public set(int val) {
             // <= TEAM_SPECTATOR
             if (this.m_iTeamNum <= TEAM_SPECTATOR) {
@@ -230,11 +233,11 @@ methodmap PlayerEx {
     {
         if (aliveOnly)
         {
-            return (teamOnly) ? GetTeamAlives(teamNum) : GetTotalAlives();
+            return (teamOnly) ? PlayerEx.GetTeamAlives(teamNum) : PlayerEx.GetTotalAlives();
         }
         else
         {
-            return (teamOnly) ? GetTeamPlayers(teamNum) : GetTotalPlayers();
+            return (teamOnly) ? PlayerEx.GetTeamPlayers(teamNum) : PlayerEx.GetTotalPlayers();
         }
     }
 

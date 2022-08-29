@@ -6,7 +6,7 @@
  *  File:          fileparser.sp
  *  Description:   Parse the specific resource file.
  *
- *  Copyright (c) 2021 laper32.
+ *  Copyright (c) 2022 laper32.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -109,7 +109,8 @@ methodmap FileParser {
                     iShift += strlen(sTypes[x]) + 1;
 
                     // Checks if string has incorrect quotes
-                    int iQuotes = CountCharInString(sTexture[iShift], '"');
+                    int iQuotes = StringEx.CountOccurence(sTexture[iShift], '"');
+
                     if (iQuotes != 2) {
                         LogError("FileParser.PrecacheTexture: Error with parsing \"%s\" in file: \"%s\"", sTypes[x], sPath);
                     } else {

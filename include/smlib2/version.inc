@@ -6,7 +6,7 @@
  *  File:          version.sp
  *  Description:   Base 64 algorithm.
  *
- *  Copyright (c) 2021 laper32.
+ *  Copyright (c) 2022 laper32.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

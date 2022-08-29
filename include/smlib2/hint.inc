@@ -6,7 +6,7 @@
  *  File:          hint.sp
  *  Description:   Interface for instructor hint.
  *
- *  Copyright (c) 2021 laper32.
+ *  Copyright (c) 2022 laper32.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -53,6 +53,7 @@ enum InstructorHud_Icon
     Icon_arrow_right,
     Icon_fire,
     Icon_present, 
+    Icon_MaxCount
 };
 
 /**
@@ -246,7 +247,7 @@ methodmap InstructorHud < Event
             char iconname[32];
             this.GetString("hint_icon_onscreen", iconname, 32);
 
-            for (int i = 0; i < view_as<int>(InstructorHud_Icon); ++i)
+            for (int i = 0; i < view_as<int>(Icon_MaxCount); ++i)
             {
                 if ( strcmp( iconname, InstructorHud_Icon_String[ view_as<InstructorHud_Icon>(i) ] ) == 0)
                 {
@@ -281,7 +282,7 @@ methodmap InstructorHud < Event
             char iconname[32];
             this.GetString("hint_icon_offscreen", iconname, 32);
 
-            for(int i = 0; i < view_as<int>(InstructorHud_Icon); ++i)
+            for(int i = 0; i < view_as<int>(Icon_MaxCount); ++i)
             {
                 if(strcmp( iconname, InstructorHud_Icon_String[ view_as<InstructorHud_Icon>(i) ] ) == 0)
                 {
@@ -507,7 +508,7 @@ methodmap InstructorHud < Event
         else
         {
             char buffer[32];
-            RandomString(buffer, 32);
+            StringEx.RandomOut(buffer, 32);
             e.SetString("hint_name", buffer);
             e.SetString("hint_replace_key", buffer);
         }

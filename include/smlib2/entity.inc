@@ -6,7 +6,7 @@
  *  File:          entity.sp
  *  Description:   Entity related.
  *
- *  Copyright (c) 2021 laper32.
+ *  Copyright (c) 2022 laper32.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -1560,7 +1560,7 @@ methodmap EntityEx {
         if (!bApply)
         {
             // Gets entity velocity
-            GetVelocity(entity, vVelocity);
+            EntityEx.GetVelocity(entity, vVelocity);
             
             // Stop here
             return;
@@ -1571,7 +1571,8 @@ methodmap EntityEx {
         {
             // Gets entity velocity
             static float vSpeed[3];
-            GetVelocity(entity, vSpeed);
+            EntityEx.GetVelocity(entity, vSpeed);
+
             
             // Add to the current
             AddVectors(vSpeed, vVelocity, vVelocity);
@@ -1639,6 +1640,17 @@ methodmap EntityEx {
     {
         // Gets the max size vector of the entity.
         GetEntPropVector(entity, Prop_Data, "m_vecMaxs", vMaxs);
+    }
+
+    /**
+     * @brief Get m_vecMins.
+     *
+     * @param entity            The entity index.
+     * @param vMaxs            The max size vector output.
+     */
+    public static void GetMins(int entity, float vMins[3])
+    {
+        GetEntPropVector(entity, Prop_Data, "m_vecMins", vMins);
     }
 
     /**
@@ -1960,6 +1972,11 @@ methodmap EntityEx {
     {
         // If score is true, then set entity score, otherwise set entity deaths
         SetEntProp(entity, Prop_Data, bScore ? "m_iFrags" : "m_iDeaths", iValue);
+    }
+
+    public static float GetGravity(int entity)
+    {
+        return GetEntPropFloat(entity, Prop_Data, "m_flGravity");
     }
 
     /**
