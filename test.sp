@@ -166,7 +166,7 @@ public void OnPluginStart()
     EntityEx.SetMoney(0, 0);
     EntityEx.SetDetecting(0, false);
     EntityEx.SetHud(0, false, 0);
-    EntityEx.SetArm(0, "");
+    EntityEx.SetArmsModel(0, "");
     EntityEx.SetAttack(0, 0.0);
     EntityEx.GetEffect(0);
     EntityEx.SetEffect(0, 0);
@@ -312,9 +312,9 @@ public void OnPluginStart()
 
     Server.GetIPAddress("127.0.0.1", 16, 27015);
 
-    EmitSoundEx(arr, 4, "dasd");
-    EmitSoundOne(0, "dashjdjahsd");
-    EmitSoundAll("dahsjd");
+    SoundEx.EmitSingle(0, "dashjdjahsd");
+    SoundEx.EmitMultiple(arr, 4, "dasd");
+    SoundEx.EmitAll("dahsjd");
 
     StringEx.ToLower("ADSADAS");
     StringEx.CountOccurence("dasdasd", 'a');
