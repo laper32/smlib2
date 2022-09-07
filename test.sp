@@ -349,9 +349,9 @@ public void OnPluginStart()
     UTIL.PrecacheSound("");
     UTIL.GetVelocityByAim(vec, vec, vec, vec, _, _);
 
-    UTIL_IsOnSamePlane(0, 0, vec, PlayersFilter);
-    UTIL_GetTraceEndPoint(0, vec);
-    UTIL_TraceRay(0, 0, vec, vec, PlayersFilter);
-    UTIL_GetDistanceBetween(0, 0);
+    UTIL.IsOnSamePlane(0, 0, vec, PlayersFilter);
+    UTIL.GetTraceEndPoint(0, vec);
+    UTIL.TraceRay(0, 0, vec, vec, PlayersFilter);
+    UTIL.GetDistanceBetween(0, 0);
 
 }
