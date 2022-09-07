@@ -4,7 +4,7 @@
  *  SourceMod Library 2
  *
  *  File:          version.sp
- *  Description:   Base 64 algorithm.
+ *  Description:   Versioning.
  *
  *  Copyright (c) 2022 laper32.
  *

@@ -166,7 +166,7 @@ public void OnPluginStart()
     EntityEx.SetMoney(0, 0);
     EntityEx.SetDetecting(0, false);
     EntityEx.SetHud(0, false, 0);
-    EntityEx.SetArm(0, "");
+    EntityEx.SetArmsModel(0, "");
     EntityEx.SetAttack(0, 0.0);
     EntityEx.GetEffect(0);
     EntityEx.SetEffect(0, 0);
@@ -312,9 +312,9 @@ public void OnPluginStart()
 
     Server.GetIPAddress("127.0.0.1", 16, 27015);
 
-    EmitSoundEx(arr, 4, "dasd");
-    EmitSoundOne(0, "dashjdjahsd");
-    EmitSoundAll("dahsjd");
+    SoundEx.EmitSingle(0, "dashjdjahsd");
+    SoundEx.EmitMultiple(arr, 4, "dasd");
+    SoundEx.EmitAll("dahsjd");
 
     StringEx.ToLower("ADSADAS");
     StringEx.CountOccurence("dasdasd", 'a');
@@ -349,9 +349,9 @@ public void OnPluginStart()
     UTIL.PrecacheSound("");
     UTIL.GetVelocityByAim(vec, vec, vec, vec, _, _);
 
-    UTIL_IsOnSamePlane(0, 0, vec, PlayersFilter);
-    UTIL_GetTraceEndPoint(0, vec);
-    UTIL_TraceRay(0, 0, vec, vec, PlayersFilter);
-    UTIL_GetDistanceBetween(0, 0);
+    UTIL.IsOnSamePlane(0, 0, vec, PlayersFilter);
+    UTIL.GetTraceEndPoint(0, vec);
+    UTIL.TraceRay(0, 0, vec, vec, PlayersFilter);
+    UTIL.GetDistanceBetween(0, 0);
 
 }

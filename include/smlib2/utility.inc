@@ -1397,162 +1397,164 @@ methodmap UTIL {
         // Apply the magnitude by scaling the vector
         ScaleVector(vVelocity, flSpeedScale);
     }
-}
 
-/**
- * @brief Validate that the entity is can see the target.
- *
- * @note Check 3 spots, or else when standing right next to someone looking at their eyes, 
- *       the angle will be too great to see their center. Thank to Pelipoika.
- *
- * @note This should be a validation that whether on same plane, not can see each other.
- * 		 To check whether can need, an intersection test is required.
- *
- * @param entity            The entity index. 
- * @param target            The target index. 
- * @param vPosition         The entity position.
- * @param filter            The function to use as a filter.
- *
- * @return                  True of false.        
- **/
-inline bool UTIL_IsOnSamePlane(int entity, int target, float vPosition[3], TraceEntityFilter filter)
-{
-    // Initialize vectors
-    float vOrigin[3], vMaxs[3];
-
-    // Gets the target's bottom position
-    GetEntPropVector(target, Prop_Data, "m_vecAbsOrigin", vOrigin);
-    
-    // Validate a bot point
-    if (UTIL_TraceRay(entity, target, vPosition, vOrigin, filter))
+    /**
+     * @brief Calculates the distance between two entities.
+     *
+     * @param client            The client index. 
+     * @param entity            The entity index.
+     *
+     * @return                  The distance amount.        
+     **/
+    public static float GetDistanceBetween(int client, int entity)
     {
-        return true;
-    }
-    
-    /*___________________________________________________________________________________________________________*/
+        // Initialize vectors
+        float vPosition[3], vEndPosition[3], vMins[3], vMaxs[3];
 
-    // Gets the target's center position
-    GetClientMaxs(target, vMaxs); vOrigin[2] += vMaxs[2] / 2;
-    
-    // Validate a center point
-    if (UTIL_TraceRay(entity, target, vPosition, vOrigin, filter))
-    {
-        return true;
-    }
-    
-    /*___________________________________________________________________________________________________________*/
+        // Gets positions
+        EntityEx.GetAbsOrigin(client, vPosition);
+        EntityEx.GetAbsOrigin(entity, vEndPosition);
 
-    // Gets the target's eye position
-    GetClientEyePosition(target, vOrigin);
-    
-    // Validate a top point
-    if (UTIL_TraceRay(entity, target, vPosition, vOrigin, filter))
-    {
-        return true;
-    }
+        // Get the client's min and max size vector
+        GetClientMins(client, vMins); 
+        GetClientMaxs(client, vMaxs);
         
-    // Return on unsuccess
-    return false;
-}
-
-/**
- * @brief Gets the End of the point what the entity traces to.
- *
- * @param entity            The entity index.
- * @param vPosition         The position of the ray.
- *
- * @return                  T/F.
- */
-inline bool UTIL_GetTraceEndPoint(int entity, float vPosition[3])
-{
-    float vAngles[3], vOrigin[3];
-    ToolsGetAbsOrigin(entity, vOrigin); // player's eye position
-    ToolsGetAbsAngles(entity, vAngles); // plauer's eye angle
-
-    // trace it to the end point
-    Handle trace = TR_TraceRayFilterEx(vOrigin, vAngles, MASK_SHOT, RayType_Infinite, PlayersFilter); 
-    
-    bool bHit;
-    if (TR_DidHit(trace))
-    {
-        TR_GetEndPosition(vPosition, trace);
-        bHit = true;
-    }
-    delete trace;
-    // CloseHandle(trace);
-    return bHit;
-}
-
-/**
- * @brief Starts up a new trace ray using a new trace result and a customized trace ray filter. 
- *
- * @param entity            The entity index.
- * @param target            The target index. 
- * @param vStartPosition    The starting position of the ray.
- * @param vEndPosition      The ending position of the ray.
- * @param filter            The function to use as a filter.
- *
- * @return                  True of false.        
- **/
-inline bool UTIL_TraceRay(int entity, int target, float vStartPosition[3], float vEndPosition[3], TraceEntityFilter filter)
-{
-    // Starts up a new trace ray using a new trace result and a customized trace ray filter
-    TR_TraceRayFilter(vStartPosition, vEndPosition, (MASK_SHOT|CONTENTS_GRATE), RayType_EndPoint, filter, entity);
-
-    // Validate any kind of collision along the trace ray
-    bool bHit;
-    if (!TR_DidHit() || TR_GetEntityIndex() == target) 
-    {
-        // If trace hit, then stop
-        bHit = true;
+        // Gets height and distance
+        float flHeight = vMins[2] - vMaxs[2] + 10;
+        float fDistance = vPosition[2] - vEndPosition[2];
+        
+        // Move the calculation to 2D
+        if (fDistance > flHeight) 
+        {
+            vPosition[2] -= flHeight;
+        }
+        else if (fDistance < (-1.0 * flHeight)) 
+        {
+            vPosition[2] -= flHeight;
+        }
+        else 
+        {
+            vPosition[2] = vEndPosition[2];
+        }
+        
+        // Gets distance between them
+        return GetVectorDistance(vPosition, vEndPosition);
     }
 
-    // Return on the end
-    return bHit;
-}
+    /**
+     * @brief Starts up a new trace ray using a new trace result and a customized trace ray filter. 
+     *
+     * @param entity            The entity index.
+     * @param target            The target index. 
+     * @param vStartPosition    The starting position of the ray.
+     * @param vEndPosition      The ending position of the ray.
+     * @param filter            The function to use as a filter.
+     *
+     * @return                  True of false.        
+     **/
+    public static bool TraceRay(int entity, int target, float vStartPosition[3], float vEndPosition[3], TraceEntityFilter filter)
+    {
+        // Starts up a new trace ray using a new trace result and a customized trace ray filter
+        TR_TraceRayFilter(vStartPosition, vEndPosition, (MASK_SHOT|CONTENTS_GRATE), RayType_EndPoint, filter, entity);
 
-/**
- * @brief Calculates the distance between two entities.
- *
- * @param client            The client index. 
- * @param entity            The entity index.
- *
- * @return                  The distance amount.        
- **/
-inline float UTIL_GetDistanceBetween(int client, int entity)
-{
-    // Initialize vectors
-    float vPosition[3], vEndPosition[3], vMins[3], vMaxs[3];
+        // Validate any kind of collision along the trace ray
+        bool bHit;
+        if (!TR_DidHit() || TR_GetEntityIndex() == target) 
+        {
+            // If trace hit, then stop
+            bHit = true;
+        }
 
-    // Gets positions
-    GetEntPropVector(client, Prop_Data, "m_vecAbsOrigin", vPosition);
-    GetEntPropVector(entity, Prop_Data, "m_vecAbsOrigin", vEndPosition);
-    
-    // Get the client's min and max size vector
-    GetClientMins(client, vMins); 
-    GetClientMaxs(client, vMaxs);
-    
-    // Gets height and distance
-    float flHeight = vMins[2] - vMaxs[2] + 10;
-    float fDistance = vPosition[2] - vEndPosition[2];
-    
-    // Move the calculation to 2D
-    if (fDistance > flHeight) 
-    {
-        vPosition[2] -= flHeight;
+        // Return on the end
+        return bHit;
     }
-    else if (fDistance < (-1.0 * flHeight)) 
+
+    /**
+     * @brief Gets the End of the point what the entity traces to.
+     *
+     * @param entity            The entity index.
+     * @param vPosition         The position of the ray.
+     *
+     * @return                  T/F.
+     */
+    public static bool GetTraceEndPoint(int entity, float vPosition[3])
     {
-        vPosition[2] -= flHeight;
+        float vAngles[3], vOrigin[3];
+        EntityEx.GetAbsOrigin(entity, vOrigin); // player's eye position
+        EntityEx.GetAbsAngles(entity, vAngles); // plauer's eye angle
+
+        // trace it to the end point
+        Handle trace = TR_TraceRayFilterEx(vOrigin, vAngles, MASK_SHOT, RayType_Infinite, PlayersFilter); 
+        
+        bool bHit;
+        if (TR_DidHit(trace))
+        {
+            TR_GetEndPosition(vPosition, trace);
+            bHit = true;
+        }
+        delete trace;
+        // CloseHandle(trace);
+        return bHit;
     }
-    else 
+
+    /**
+     * @brief Validate that the entity is can see the target.
+     *
+     * @note Check 3 spots, or else when standing right next to someone looking at their eyes, 
+     *       the angle will be too great to see their center. Thank to Pelipoika.
+     *
+     * @note This should be a validation that whether on same plane, not can see each other.
+     * 		 To check whether can need, an intersection test is required.
+     *
+     * @param entity            The entity index. 
+     * @param target            The target index. 
+     * @param vPosition         The entity position.
+     * @param filter            The function to use as a filter.
+     *
+     * @return                  True of false.        
+     **/
+    public static bool IsOnSamePlane(int entity, int target, float vPosition[3], TraceEntityFilter filter)
     {
-        vPosition[2] = vEndPosition[2];
+        // Initialize vectors
+        float vOrigin[3], vMaxs[3];
+
+        // Gets the target's bottom position
+        EntityEx.GetAbsOrigin(target, vOrigin);
+        
+        // Validate a bot point
+        if (UTIL.TraceRay(entity, target, vPosition, vOrigin, filter))
+        {
+            return true;
+        }
+        
+        /*___________________________________________________________________________________________________________*/
+
+        // Gets the target's center position
+        GetClientMaxs(target, vMaxs); vOrigin[2] += vMaxs[2] / 2;
+        
+        // Validate a center point
+        if (UTIL.TraceRay(entity, target, vPosition, vOrigin, filter))
+        {
+            return true;
+        }
+        
+        /*___________________________________________________________________________________________________________*/
+
+        // Gets the target's eye position
+        GetClientEyePosition(target, vOrigin);
+        
+        // Validate a top point
+        if (UTIL.TraceRay(entity, target, vPosition, vOrigin, filter))
+        {
+            return true;
+        }
+            
+        // Return on unsuccess
+        return false;
     }
-    
-    // Gets distance between them
-    return GetVectorDistance(vPosition, vEndPosition);
-}
+
+} // methodmap UTIL
+
 
 // ______________________________________________________________________________________________ //
 

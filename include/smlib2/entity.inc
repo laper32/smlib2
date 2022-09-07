@@ -2074,7 +2074,7 @@ methodmap EntityEx {
      * @param entity            The entity index.
      * @param sModel            The model path.
      */
-    public static void SetArm(int entity, char[] sModel)
+    public static void SetArmsModel(int entity, char[] sModel)
     {
         // Sets arm on the entity
         SetEntPropString(entity, Prop_Send, "m_szArmsModel", sModel);
