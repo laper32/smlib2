@@ -14,4 +14,10 @@ jobs:
           sudo apt install gcc-multilib
       - name: Build
         run: |
-          bash ./ci/test.sh 1.12
+          bash ./ci/build.sh 1.12
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: |
+            **/*.inc
