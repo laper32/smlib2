@@ -21,3 +21,11 @@ jobs:
           name: Build
           path: |
             ./include/**/*.inc
+      - name: Create release
+        uses: actions/checkout@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: Build ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          
