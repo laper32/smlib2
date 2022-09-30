@@ -20,4 +20,4 @@ jobs:
         with:
           name: Build
           path: |
-            ./include/*/*.inc
+            ./include/**/*.inc
