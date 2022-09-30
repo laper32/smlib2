@@ -726,5 +726,5 @@ inline void CreateInstructorHintAllEnt(float holdtime,
 
     DispatchSpawn(entity);
     AcceptEntityInput(entity, "ShowHint");
-    UTIL.RemoveEntity(entity);
+    UTIL.RemoveEntity(entity, 0.1);
 }
