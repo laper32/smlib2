@@ -471,11 +471,13 @@ methodmap InstructorHud < Event
      * @param r             Red.
      * @param g             Green.
      * @param b             Blue.
+     * 
+     * Thanks '@Rainsfield Yunaleska(tenshi97)' for fix
      */
     public void color(int r, int g, int b)
     {
         char clr[32];
-        FormatEx(clr, 32, "%d %d %d", r, g, b);
+        FormatEx(clr, 32, "%d,%d,%d", r, g, b);
         this.SetString("hint_color", clr);
     }
 
@@ -648,7 +650,7 @@ inline void CreateInstructorHint(int client,
     hint.timeout = holdtime;
     hint.icon_onscreen = icon;
     char sMessage[256];
-    VFormat(sMessage, sizeof(sMessage), caption, 8);
+    VFormat(sMessage, sizeof(sMessage), caption, 9);
     hint.Display(client, sMessage);
 
     hint.Destroy();
@@ -681,7 +683,48 @@ inline void CreateInstructorHintAll(float holdtime,
     hint.timeout = holdtime;
     hint.icon_onscreen = icon;
     char sMessage[256];
-    VFormat(sMessage, 256, caption, 7);
+    VFormat(sMessage, 256, caption, 8);
     hint.DisplayAll(sMessage);
     hint.Destroy();
+}
+
+/**
+ * @brief Function to create instructor hint to all users from entity instead of event.
+ * 
+ * @param holdtime          The hint displaying time.
+ * @param icon              The icon index.
+ * @param radius            The radius about receving the hint.
+ * @param r                 The color index :: red.
+ * @param g                 The color index :: green.
+ * @param b                 The color index :: blue.
+ * @param caption           The alart message index.
+ */
+inline void CreateInstructorHintAllEnt(float holdtime,
+                                   InstructorHud_Icon icon,
+                                   float radius,
+                                   int r,
+                                   int g,
+                                   int b,
+                                   const char[] caption,
+                                   any ...)
+{
+    int entity = CreateEntityByName("env_instructor_hint");
+
+    char sBuffer[256];
+    FormatEx(sBuffer, sizeof(sBuffer), "%d %d %d", r, g, b);
+    DispatchKeyValue(entity, "hint_color", sBuffer);
+
+    FormatEx(sBuffer, sizeof(sBuffer), "%d", RoundToNearest(radius));
+    DispatchKeyValue(entity, "hint_range", sBuffer);
+
+    VFormat(sBuffer, 256, caption, 8);
+    DispatchKeyValue(entity, "hint_caption", sBuffer);
+    DispatchKeyValue(entity, "hint_icon_onscreen", InstructorHud_Icon_String[icon]);
+
+    FormatEx(sBuffer, sizeof(sBuffer), "%.1f", holdtime);
+    DispatchKeyValue(entity, "hint_timeout", sBuffer);
+
+    DispatchSpawn(entity);
+    AcceptEntityInput(entity, "ShowHint");
+    AcceptEntityInput(entity, "kill");
 }
