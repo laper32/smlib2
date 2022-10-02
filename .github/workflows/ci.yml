@@ -7,18 +7,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - uses: actions/checkout@v2
       - name: Dep install
         run: |
           sudo apt-get update
           sudo apt install gcc-multilib
+      - name: Configure Release tag
+        run: |
+          git fetch --unshallow
+          MAJOR=1
+          MINOR=0
+          COUNT=$(git rev-list --count HEAD)
+          DATE=$(date +"%Y-%m-%d %H:%M:%S")
       - name: Build
         run: |
-          zip 
           bash ./ci/build.sh 1.12
-      - name: Create release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: release-xxx
-          files: |
-            ./include/smlib2.inc
+      # - name: Create release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     tag_name: release-xxx
+      #     files: |
+      #       ./include/**/*.inc
