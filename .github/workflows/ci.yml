@@ -27,6 +27,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ./include/**/*.inc
+            ./include/smlib2.inc
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
