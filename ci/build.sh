@@ -1,13 +1,12 @@
 #!/bin/bash
 # bash build.sh <version>
 
-git fetch --unshallow
-
+# git fetch --unshallow
 # 
-MAJOR=1
-MINOR=0
-COUNT=$(git rev-list --count HEAD)
-DATE=$(date +"%Y-%M-%D %H:%m:%S")
+# MAJOR=1
+# MINOR=0
+# COUNT=$(git rev-list --count HEAD)
+# DATE=$(date +"%Y-%m-%d %H:%M:%S")
 
 echo "Building"
 
@@ -51,3 +50,5 @@ if [ ! -f "addons/sourcemod/scripting/test.smx" ]; then
     echo "Build: test.smx failed. Check error output"
     exit 1
 fi
+
+zip -r smlib2.zip ./include
