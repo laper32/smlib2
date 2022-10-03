@@ -51,4 +51,4 @@ if [ ! -f "addons/sourcemod/scripting/test.smx" ]; then
     exit 1
 fi
 
-zip -r ./include smlib2.zip
+zip -r smlib2.zip ./include
