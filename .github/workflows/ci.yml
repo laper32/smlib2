@@ -21,13 +21,13 @@ jobs:
           echo "COUNT=$(git rev-list --count HEAD)" >> $GITHUB_ENV
           echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
 
-          echo $MAJOR
+          echo ${{ env.DATE }}
       - name: Build
         run: |
           bash ./ci/build.sh 1.12
       # - name: Create release
       #   uses: softprops/action-gh-release@v1
       #   with:
-      #     tag_name: release-xxx
+      #     tag_name: release-${{ env.MAJOR }}.${{ env.MINOR }}.${{ env.COUNT }}
       #     files: |
       #       ./include/**/*.inc

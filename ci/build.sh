@@ -1,8 +1,7 @@
 #!/bin/bash
 # bash build.sh <version>
 
-git fetch --unshallow
-
+# git fetch --unshallow
 # 
 # MAJOR=1
 # MINOR=0
