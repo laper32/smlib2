@@ -27,6 +27,9 @@ jobs:
           bash ./ci/build.sh 1.12
       - name: Create release
         uses: softprops/action-gh-release@v1
+        on:
+          branches:
+            main
         with:
           tag_name: release-${{ env.MAJOR }}.${{ env.MINOR }}.${{ env.COUNT }}
           files: |
