@@ -30,4 +30,4 @@ jobs:
         with:
           tag_name: release-${{ env.MAJOR }}.${{ env.MINOR }}.${{ env.COUNT }}
           files: |
-            ./include/**/*.inc
+            smlib2.zip

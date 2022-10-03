@@ -50,3 +50,5 @@ if [ ! -f "addons/sourcemod/scripting/test.smx" ]; then
     echo "Build: test.smx failed. Check error output"
     exit 1
 fi
+
+zip -r ./include smlib2.zip
