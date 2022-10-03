@@ -16,10 +16,10 @@ jobs:
       - name: Configure Release tag
         run: |
           git fetch --unshallow
-          echo "MAJOR=1" >> GITHUB_ENV
-          echo "MINOR=0" >> GITHUB_ENV
-          echo "COUNT=$(git rev-list --count HEAD)" >> GITHUB_ENV
-          echo "DATE=$(date +\"%Y-%m-%d %H:%M:%S\")" >> GITHUB_ENV
+          echo "MAJOR=1" >> $GITHUB_ENV
+          echo "MINOR=0" >> $GITHUB_ENV
+          echo "COUNT=$(git rev-list --count HEAD)" >> $GITHUB_ENV
+          echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
 
           echo $MAJOR
       - name: Build
