@@ -1758,7 +1758,7 @@ methodmap EntityEx {
                 // Switch team of the entity
                 CS_SwitchTeam(entity, iValue);
             #else
-                #warning 'This function is game-specified. Please help us to update this part for manipulating specific game to let it works.'
+                ThrowNativeError(SP_ERROR_INVALID_NATIVE, "You must include specific game header(s) to let it work.");
             #endif 
         }
     }
