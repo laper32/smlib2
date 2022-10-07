@@ -163,7 +163,7 @@ methodmap Player < Entity {
     }
 }
 
-methodmap PlayerEx {
+methodmap PlayerEx < EntityEx {
     /**
     * @brief Returns true if the player is connected and alive, false if not.
     *
